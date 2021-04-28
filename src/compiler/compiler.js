@@ -34,7 +34,7 @@ function getDataObjectFunction(condition, mainPage) {
     const formula = `fun ${name} n =
             (if length(Mark.${mainPage}'${replaceWhiteSpace(condition.selectedDataObjectState.name)} 1 n) <> 0
             then
-            (List.${condition.quantor === "EXISTS" ? 'exists' : 'all'}(fn d => #state(d) = ${replaceWhiteSpace(condition.selectedDataObjectState.state)}) (Mark.${mainPage}'${replaceWhiteSpace(condition.selectedDataObjectState.name)} 1 n))
+            (List.${condition.quantor === "EXISTS" ? 'exists' : 'all'}(fn d => #state(d) = ${replaceWhiteSpace(condition.selectedDataObjectState.state)}) (Mark.${mainPage}'${replaceWhiteSpace(condition.selectedDataObjectState.name)}__${replaceWhiteSpace(condition.selectedDataObjectState.state)} 1 n))
             else
             false);\n`
 
