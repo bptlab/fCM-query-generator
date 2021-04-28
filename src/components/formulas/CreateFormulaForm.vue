@@ -30,7 +30,12 @@
                     <div class="pa-4 pb-0 d-flex">
                       <h3>Condition {{conditionIdx + 1}}</h3>
                       <v-spacer />
-                      <v-radio-group v-model="condition.type" row class="mt-0 pt-0 mb-n8">
+                      <v-radio-group
+                        v-model="condition.type"
+                        row
+                        class="mt-0 pt-0 mb-n8"
+                        @change="condition.selectedDataObjectState = null; condition.selectedTask = null"
+                      >
                         <v-radio
                           v-for="n in ['DATA_OBJECT', 'TASK']"
                           :key="n"
@@ -83,7 +88,12 @@
               <div v-if="logicConcatenations[conditionIdx]" class="d-flex">
                 <v-spacer></v-spacer>
                 <v-radio-group v-model="logicConcatenations[conditionIdx]" row>
-                  <v-radio v-for="n in ['AND', 'OR']" :key="n" :label="`${n}`" :value="n"></v-radio>
+                  <v-radio
+                    v-for="operator in [{label: 'AND', value: 'andalso'}, {label: 'OR', value: 'orelse'}]"
+                    :key="operator.value"
+                    :label="`${operator.label}`"
+                    :value="operator.value"
+                  ></v-radio>
                 </v-radio-group>
                 <v-spacer></v-spacer>
               </div>
@@ -198,7 +208,7 @@ export default {
 
     function onAddCondition() {
       conditions.value.push(getInitialCondition());
-      logicConcatenations.value.push("AND");
+      logicConcatenations.value.push("andalso");
     }
 
     watch(
@@ -213,6 +223,8 @@ export default {
           return;
         newFormula.value.formula = compileAskCTLFormula(
           newFormula.value.name,
+          dataObjects.value,
+          tasks.value,
           conditions.value,
           logicConcatenations.value
         );
