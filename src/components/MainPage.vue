@@ -1,8 +1,11 @@
 <template>
   <div>
-    <file-input-card @fCMUploaded="onFCMUploaded" />
+    <div v-if="useFCMUpload">
+      <file-input-card @fCMUploaded="onFCMUploaded" />
+      <input-overview-card :data-objects="dataObjects" :tasks="tasks" />
+    </div>
     <manual-input-card
-      v-if="useManualInput"
+      v-else
       :data-objects="dataObjects"
       :tasks="tasks"
       @addTask="addTask"
@@ -11,7 +14,6 @@
       @dataObjectChanged="(doIdx, newVars) => dataObjectChanged(doIdx, newVars)"
       @taskChanged="(tIdx, newVars) => taskChanged(tIdx, newVars)"
     />
-    <input-overview-card v-else :data-objects="dataObjects" :tasks="tasks" />
     <v-divider class="mx-4 my-2" color="grey" />
     <formula-card :data-objects="dataObjects" :tasks="tasks" />
   </div>
@@ -65,8 +67,8 @@ export default {
       tasks.value[tIdx] = newVars;
     }
 
-    // The indicator if the user should use the manual input. In favour of bpmn upload, this is disabled
-    const useManualInput = ref(false);
+    // The indicator if the user should use the fCM upload as input.
+    const useFCMUpload = ref(true);
 
     function onFCMUploaded(fCMInput) {
       if (!fCMInput) return;
@@ -77,7 +79,6 @@ export default {
       reader.onload = () => {
         xml2js.parseString(reader.result, function(err, result) {
           const processElements = result.definitions.process[0];
-          console.log(processElements);
           const uploadedDataObjects = processElements.dataObject.map(
             (dataObject, dataObjectIdx) => ({
               id: dataObjectIdx,
@@ -96,7 +97,6 @@ export default {
             })
           );
           dataObjects.value = uploadedDataObjects;
-          console.log(uploadedDataObjects);
           const uploadedTasks = processElements.task.map((task, taskIdx) => ({
             id: taskIdx,
             name: task.$.name.replaceAll("\n", " "),
@@ -115,7 +115,7 @@ export default {
       onDataObjectChanged,
       onTaskChanged,
       onFCMUploaded,
-      useManualInput,
+      useFCMUpload,
     };
   },
 };

@@ -1,6 +1,9 @@
 <template>
-  <v-card flat>
-    <v-card-text>
+  <v-card flat width="400">
+    <div class="d-flex px-4 pt-2">
+      <v-card-title class="pa-0">File Upload</v-card-title>
+    </div>
+    <v-card-text class="pt-0">
       <v-file-input v-model="fCMInput" accept="*.bpmn" label="fCM-Input" />
     </v-card-text>
   </v-card>
