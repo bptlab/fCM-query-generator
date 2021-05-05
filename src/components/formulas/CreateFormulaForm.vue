@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showDialog" width="800" persistent>
+  <v-dialog v-model="showDialog" width="1000" persistent>
     <template v-slot:activator="{ on, attrs }">
       <v-btn color="blue-grey" v-bind="attrs" v-on="on" class="white--text">Create new</v-btn>
     </template>
@@ -16,42 +16,94 @@
         <v-card flat outlined>
           <div class="pa-4 pb-0 d-flex">
             <h3>State 1</h3>
-            <v-spacer />
-            <v-icon>delete</v-icon>
           </div>
           <v-card-text class="pb-0 pt-2">
-            <div>
-              <h4 class="py-2">Choose the desired Data Object States:</h4>
-              <v-select
-                v-model="selectedDataObjectStates"
-                label="Data Object States"
-                outlined
-                multiple
-                clearable
-                :items="dataObjectStateInputs"
-              >
-                <template slot="selection" slot-scope="data">
-                  <v-chip>{{ data.item.name }} [{{ data.item.state }}]</v-chip>
-                </template>
-                <template slot="item" slot-scope="data">
-                  <v-checkbox :value="selectedDataObjectStates.includes(data.item)" />
-                  {{ data.item.name }} [{{ data.item.state}}]
-                </template>
-              </v-select>
-            </div>
-            <div>
-              <h4 class="py-2">Choose Tasks that should be enabled:</h4>
-              <v-select
-                v-model="selectedTasks"
-                label="Tasks"
-                outlined
-                multiple
-                chips
-                clearable
-                :items="taskInputs"
-              />
+            <div v-for="(condition, conditionIdx) in conditions" :key="conditionIdx">
+              <v-row align="center">
+                <v-col cols="2">
+                  <v-card flat>
+                    <v-checkbox v-model="condition.not" label="NOT"></v-checkbox>
+                  </v-card>
+                </v-col>
+                <v-col cols="10">
+                  <v-card>
+                    <div class="pa-4 pb-0 d-flex">
+                      <h3>Condition {{conditionIdx + 1}}</h3>
+                      <v-spacer />
+                      <v-radio-group
+                        v-model="condition.type"
+                        row
+                        class="mt-0 pt-0 mb-n8"
+                        @change="condition.selectedDataObjectState = null; condition.selectedTask = null"
+                      >
+                        <v-radio
+                          v-for="n in ['DATA_OBJECT', 'TASK']"
+                          :key="n"
+                          :label="`type: ${n}`"
+                          :value="n"
+                        ></v-radio>
+                      </v-radio-group>
+                    </div>
+                    <v-card-text v-if="condition.type === 'DATA_OBJECT'" flat outlined>
+                      <h4 class="py-2">Choose the desired Data Object State:</h4>
+                      <div class="d-flex">
+                        <v-select
+                          v-model="condition.selectedDataObjectState"
+                          label="Data Object State"
+                          outlined
+                          clearable
+                          :items="dataObjectStateInputs"
+                        >
+                          <template slot="selection" slot-scope="data">
+                            <v-chip>{{ data.item.name }} [{{ data.item.state }}]</v-chip>
+                          </template>
+                          <template
+                            slot="item"
+                            slot-scope="data"
+                          >{{ data.item.name }} [{{ data.item.state}}]</template>
+                        </v-select>
+                        <v-radio-group v-model="condition.quantor" column class="pl-4 mt-0 pt-0">
+                          <v-radio
+                            v-for="n in ['ALL', 'EXISTS']"
+                            :key="n"
+                            :label="`quantor: ${n}`"
+                            :value="n"
+                          ></v-radio>
+                        </v-radio-group>
+                      </div>
+                    </v-card-text>
+                    <v-card-text v-else-if="condition.type === 'TASK'" flat outlined>
+                      <h4 class="py-2">Choose the desired enabled Task:</h4>
+                      <v-select
+                        v-model="condition.selectedTask"
+                        label="Task"
+                        outlined
+                        clearable
+                        :items="taskInputs"
+                      />
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
+              <div v-if="logicConcatenations[conditionIdx]" class="d-flex">
+                <v-spacer></v-spacer>
+                <v-radio-group v-model="logicConcatenations[conditionIdx]" row>
+                  <v-radio
+                    v-for="operator in [{label: 'AND', value: 'andalso'}, {label: 'OR', value: 'orelse'}]"
+                    :key="operator.value"
+                    :label="`${operator.label}`"
+                    :value="operator.value"
+                  ></v-radio>
+                </v-radio-group>
+                <v-spacer></v-spacer>
+              </div>
             </div>
           </v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn icon color="blue-grey" @click="onAddCondition">
+              <v-icon>add_box</v-icon>
+            </v-btn>
+          </v-card-actions>
         </v-card>
         <v-divider class="mt-4" color="grey" />
         <h3 class="py-2">The resulting ASK-CTL formula:</h3>
@@ -140,26 +192,55 @@ export default {
       newFormula.value = getIinitialValues();
     };
 
-    const selectedDataObjectStates = ref([]);
+    function getInitialCondition() {
+      return {
+        type: "DATA_OBJECT",
+        not: false,
+        quantor: "ALL",
+        selectedDataObjectState: null,
+        selectedTask: null
+      };
+    }
 
-    const selectedTasks = ref([]);
+    const conditions = ref([getInitialCondition()]);
 
-    watch([selectedDataObjectStates, selectedTasks], () => {
-      newFormula.value.formula = compileAskCTLFormula(
-        newFormula.value.name,
-        selectedDataObjectStates.value,
-        selectedTasks.value
-      );
-    });
+    const logicConcatenations = ref([]);
+
+    function onAddCondition() {
+      conditions.value.push(getInitialCondition());
+      logicConcatenations.value.push("andalso");
+    }
+
+    watch(
+      [conditions, logicConcatenations],
+      () => {
+        if (
+          conditions.value.find(
+            condition =>
+              !condition.selectedDataObjectState && !condition.selectedTask
+          )
+        )
+          return;
+        newFormula.value.formula = compileAskCTLFormula(
+          newFormula.value.name,
+          dataObjects.value,
+          tasks.value,
+          conditions.value,
+          logicConcatenations.value
+        );
+      },
+      { deep: true }
+    );
 
     return {
       showDialog,
       dataObjectStateInputs,
       taskInputs,
-      selectedDataObjectStates,
-      selectedTasks,
       onSave,
-      newFormula
+      newFormula,
+      conditions,
+      logicConcatenations,
+      onAddCondition
     };
   }
 };
