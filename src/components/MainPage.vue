@@ -79,40 +79,20 @@ export default {
       reader.onload = () => {
         xml2js.parseString(reader.result, function(err, result) {
           const processElements = result.definitions.process[0];
-          const uploadedDataObjects = processElements.dataObject.map(
-            (dataObject, dataObjectIdx) => ({
-              id: dataObjectIdx,
-              name: dataObject.$.name,
-              states: processElements.dataObjectReference
-                .filter(
-                  (reference) => reference.$.dataObjectRef === dataObject.$.id
-                )
-                .map((reference, referenceIdx) => ({
-                  id: referenceIdx,
-                  name: reference.dataState[0].$.name
-                    .replace("[", "")
-                    .replace("]", "")
-                    .replaceAll("\n", " "),
-                })),
-            })
-          );
-          const uploadedDataObjects2 = [];
+          // console.log(result);
+          const uploadedDataObjects = [];
           processElements.dataObject.forEach((dataObject, dataObjectIdx) => {
-            console.log("old classes", uploadedDataObjects2);
-            console.log("new class", dataObject);
-            let existingClass = uploadedDataObjects2.find(
+            let existingClass = uploadedDataObjects.find(
               (oldClass) =>
                 oldClass.name === dataObject.$.name.replace("\n", "")
             );
-            console.log("existing Class", existingClass);
             if (!existingClass) {
               existingClass = {
                 id: dataObjectIdx,
                 name: dataObject.$.name.replace("\n", ""),
                 states: [],
               };
-              console.log("add Class", existingClass);
-              uploadedDataObjects2.push(existingClass);
+              uploadedDataObjects.push(existingClass);
             }
             const dataObjectStates = processElements.dataObjectReference
               .filter(
@@ -125,25 +105,21 @@ export default {
                   .replace("]", "")
                   .replaceAll("\n", " "),
               }));
-            console.log("old states", existingClass.states);
-            console.log("new states", dataObjectStates);
             dataObjectStates.forEach((dataObjectState) => {
               if (
                 !existingClass.states.find(
                   (existingState) => existingState.name === dataObjectState.name
                 )
               ) {
-                console.log("add State", dataObjectState);
                 existingClass.states.push(dataObjectState);
               }
             });
           });
-          console.log(uploadedDataObjects);
-          console.log(uploadedDataObjects2);
-          dataObjects.value = uploadedDataObjects2;
+          dataObjects.value = uploadedDataObjects;
           const uploadedTasks = processElements.task.map((task, taskIdx) => ({
             id: taskIdx,
             name: task.$.name.replaceAll("\n", " "),
+            inputOutputCombinations: 0, // TODO: add the calculation of how many combinations of input and output sets there are.
           }));
           tasks.value = uploadedTasks;
         });
