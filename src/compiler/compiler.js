@@ -83,7 +83,7 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
 
 function getTaskFunction(task) {
     const name = getTaskFunctionName(task.name)
-    if (task.inputOutputCombinations < 1) return `fun ${name} n = (false)`
+    if (task.inputOutputCombinations < 1) return `fun ${name} n = (false)\n`
     let formula = `fun ${name} n =
             (if length(OutArcs(n)) <> 0
             then

@@ -31,7 +31,7 @@ export default {
     FormulaCard,
     FileInputCard,
     ManualInputCard,
-    InputOverviewCard,
+    InputOverviewCard
   },
   setup() {
     const dataObjects = ref([]);
@@ -39,7 +39,7 @@ export default {
       dataObjects.value.push({
         id: dataObjects.value.length,
         name: `Data Object ${dataObjects.value.length + 1}`,
-        states: [{ id: 0, name: "State 1" }],
+        states: [{ id: 0, name: "State 1" }]
       });
     }
     function addState(doIdx) {
@@ -47,7 +47,7 @@ export default {
       const newStateId = dataObject.states.length + 1;
       dataObject.states.push({
         id: newStateId,
-        name: `State ${newStateId}`,
+        name: `State ${newStateId}`
       });
     }
 
@@ -55,7 +55,7 @@ export default {
     function addTask() {
       tasks.value.push({
         id: tasks.value.length,
-        name: `Task ${tasks.value.length + 1}`,
+        name: `Task ${tasks.value.length + 1}`
       });
     }
 
@@ -79,36 +79,35 @@ export default {
       reader.onload = () => {
         xml2js.parseString(reader.result, function(err, result) {
           const processElements = result.definitions.process[0];
-          // console.log(result);
+          console.log(result);
           const uploadedDataObjects = [];
           processElements.dataObject.forEach((dataObject, dataObjectIdx) => {
             let existingClass = uploadedDataObjects.find(
-              (oldClass) =>
-                oldClass.name === dataObject.$.name.replace("\n", "")
+              oldClass => oldClass.name === dataObject.$.name.replace("\n", "")
             );
             if (!existingClass) {
               existingClass = {
                 id: dataObjectIdx,
                 name: dataObject.$.name.replace("\n", ""),
-                states: [],
+                states: []
               };
               uploadedDataObjects.push(existingClass);
             }
             const dataObjectStates = processElements.dataObjectReference
               .filter(
-                (reference) => reference.$.dataObjectRef === dataObject.$.id
+                reference => reference.$.dataObjectRef === dataObject.$.id
               )
               .map((reference, referenceIdx) => ({
                 id: referenceIdx,
                 name: reference.dataState[0].$.name
                   .replace("[", "")
                   .replace("]", "")
-                  .replaceAll("\n", " "),
+                  .replaceAll("\n", " ")
               }));
-            dataObjectStates.forEach((dataObjectState) => {
+            dataObjectStates.forEach(dataObjectState => {
               if (
                 !existingClass.states.find(
-                  (existingState) => existingState.name === dataObjectState.name
+                  existingState => existingState.name === dataObjectState.name
                 )
               ) {
                 existingClass.states.push(dataObjectState);
@@ -116,11 +115,19 @@ export default {
             });
           });
           dataObjects.value = uploadedDataObjects;
-          const uploadedTasks = processElements.task.map((task, taskIdx) => ({
-            id: taskIdx,
-            name: task.$.name.replaceAll("\n", " "),
-            inputOutputCombinations: 0, // TODO: add the calculation of how many combinations of input and output sets there are.
-          }));
+          const uploadedTasks = processElements.task.map((task, taskIdx) => {
+            // TODO: add the calculation of how many combinations of input and output sets there are. sum(inputset -> sum (outputref))
+            let inputOutputCombinations = 0;
+            task.ioSpecification[0].inputSet.forEach(inputSet => {
+              console.log(inputSet);
+              inputOutputCombinations += inputSet.outputSetRefs.length;
+            });
+            return {
+              id: taskIdx,
+              name: task.$.name.replaceAll("\n", " "),
+              inputOutputCombinations
+            };
+          });
           tasks.value = uploadedTasks;
         });
       };
@@ -135,8 +142,8 @@ export default {
       onDataObjectChanged,
       onTaskChanged,
       onFCMUploaded,
-      useFCMUpload,
+      useFCMUpload
     };
-  },
+  }
 };
 </script>
