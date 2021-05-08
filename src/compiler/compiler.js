@@ -52,8 +52,7 @@ export function compileAskCTLFormula(name, dataObjects, tasks, conditions, logic
 
 function getDataObjectStateFunction(dataObject, state, mainPage) {
     const name = getDataObjectStateFunctionName(dataObject.name, state.name)
-    const formula = `fun ${name} n =
-            (length(Mark.${mainPage}'${replaceWhiteSpace(dataObject.name)}__${replaceWhiteSpaceAndCapitalize(state.name)} 1 n) <> 0);\n`
+    const formula = `fun ${name} n = (length(Mark.${mainPage}'${replaceWhiteSpace(dataObject.name)}__${replaceWhiteSpaceAndCapitalize(state.name)} 1 n) <> 0);`
 
     return formula
 }
@@ -73,7 +72,7 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
         if (dataObject.states.length > stateIdx + 1) formula += ' andalso '
     })
 
-    formula += ');\n'
+    formula += ');'
 
     return {
         name,
@@ -84,16 +83,13 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
 function getTaskFunction(task) {
     const name = getTaskFunctionName(task.name)
     if (task.inputOutputCombinations < 1) return `fun ${name} n = (false)\n`
-    let formula = `fun ${name} n =
-            (if length(OutArcs(n)) <> 0
-            then
+    let formula = `fun ${name} n = (if length(OutArcs(n)) <> 0 then
             (`
     for (let i = 0; i < task.inputOutputCombinations; i++) {
         formula += `List.exists(fn arc => ArcToTI(arc) = (TI.${replaceWhiteSpace(task.name)}'${replaceWhiteSpace(task.name)}_${i} 1)) (OutArcs(n))`
         if (i < task.inputOutputCombinations - 1) formula += '  orelse\n'
     }
-    formula += `)\nelse
-            false);\n`
+    formula += `)\nelse false);`
     return formula
 }
 
