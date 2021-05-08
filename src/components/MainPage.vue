@@ -116,7 +116,6 @@ export default {
           });
           dataObjects.value = uploadedDataObjects;
           const uploadedTasks = processElements.task.map((task, taskIdx) => {
-            // TODO: add the calculation of how many combinations of input and output sets there are. sum(inputset -> sum (outputref))
             let inputOutputCombinations = 0;
             task.ioSpecification[0].inputSet.forEach(inputSet => {
               console.log(inputSet);

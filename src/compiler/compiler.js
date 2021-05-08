@@ -68,7 +68,7 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
 
     dataObject.states.forEach((state, stateIdx) => {
         if (state.name === onlyState) formula += `${getDataObjectStateFunctionName(dataObject.name, state.name, mainPage)}(n)`;
-        else formula += `NOT(${getDataObjectStateFunctionName(dataObject.name, state.name, mainPage)})(n)`
+        else formula += `not(${getDataObjectStateFunctionName(dataObject.name, state.name, mainPage)}(n))`
 
         if (dataObject.states.length > stateIdx + 1) formula += ' andalso '
     })

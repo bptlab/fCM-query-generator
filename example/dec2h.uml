@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_5zJFkK5qEeufb4lNYx-b3g" name="dec2hv2">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_50skwK5qEeufb4lNYx-b3g">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_6cRiIK5qEeufb4lNYx-b3g" name="Conference"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_A3YkYK5rEeufb4lNYx-b3g" name="Paper"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_EH22oK5rEeufb4lNYx-b3g" name="Review"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_GJ8qMK5rEeufb4lNYx-b3g" name="Decision"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_FKVK0K5sEeufb4lNYx-b3g" memberEnd="_FKVK065sEeufb4lNYx-b3g _FKVK1q5sEeufb4lNYx-b3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_FKVK0a5sEeufb4lNYx-b3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_FKVK0q5sEeufb4lNYx-b3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_FKVK1q5sEeufb4lNYx-b3g" name="conference" type="_6cRiIK5qEeufb4lNYx-b3g" association="_FKVK0K5sEeufb4lNYx-b3g"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_FKVK065sEeufb4lNYx-b3g" name="paper" type="_A3YkYK5rEeufb4lNYx-b3g" association="_FKVK0K5sEeufb4lNYx-b3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FKVK1K5sEeufb4lNYx-b3g"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FKVK1a5sEeufb4lNYx-b3g" value="100"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_MaovsK5sEeufb4lNYx-b3g" memberEnd="_MapWwa5sEeufb4lNYx-b3g _MapWxK5sEeufb4lNYx-b3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Maovsa5sEeufb4lNYx-b3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_MapWwK5sEeufb4lNYx-b3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_MapWxK5sEeufb4lNYx-b3g" name="paper" type="_A3YkYK5rEeufb4lNYx-b3g" association="_MaovsK5sEeufb4lNYx-b3g"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_MapWwa5sEeufb4lNYx-b3g" name="decision" type="_GJ8qMK5rEeufb4lNYx-b3g" association="_MaovsK5sEeufb4lNYx-b3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MapWwq5sEeufb4lNYx-b3g"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MapWw65sEeufb4lNYx-b3g" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_St-WAK5sEeufb4lNYx-b3g" memberEnd="_St-9Eq5sEeufb4lNYx-b3g _St_kIq5sEeufb4lNYx-b3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_St-9EK5sEeufb4lNYx-b3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_St-9Ea5sEeufb4lNYx-b3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_St_kIq5sEeufb4lNYx-b3g" name="review" type="_EH22oK5rEeufb4lNYx-b3g" association="_St-WAK5sEeufb4lNYx-b3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Vnp44K5sEeufb4lNYx-b3g" value="3"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Vns8MK5sEeufb4lNYx-b3g" value="5"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_St-9Eq5sEeufb4lNYx-b3g" name="decision" type="_GJ8qMK5rEeufb4lNYx-b3g" association="_St-WAK5sEeufb4lNYx-b3g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_WeeMIK5sEeufb4lNYx-b3g" memberEnd="_WeezMq5sEeufb4lNYx-b3g _WekSwK5sEeufb4lNYx-b3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_WeezMK5sEeufb4lNYx-b3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_WeezMa5sEeufb4lNYx-b3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_WekSwK5sEeufb4lNYx-b3g" name="paper" type="_A3YkYK5rEeufb4lNYx-b3g" association="_WeeMIK5sEeufb4lNYx-b3g"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_WeezMq5sEeufb4lNYx-b3g" name="review" type="_EH22oK5rEeufb4lNYx-b3g" association="_WeeMIK5sEeufb4lNYx-b3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WehPcK5sEeufb4lNYx-b3g"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WejEoK5sEeufb4lNYx-b3g" value="5"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>
