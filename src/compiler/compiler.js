@@ -1,98 +1,144 @@
 function replaceWhiteSpace(input) {
-    if (!input) return ''
-    return input.replaceAll(' ', '_').replaceAll('\n', '_')
+  if (!input) return "";
+  return input.replaceAll(" ", "_").replaceAll("\n", "_");
 }
 
 function replaceWhiteSpaceAndCapitalize(input) {
-    if (!input) return ''
-    return replaceWhiteSpace(input.toUpperCase())
+  if (!input) return "";
+  return replaceWhiteSpace(input.toUpperCase());
 }
 
-export function compileAskCTLFormula(name, dataObjects, tasks, conditions, logicConcatenations) {
-    let formula = "";
+export function compileAskCTLFormula(
+  name,
+  dataObjects,
+  tasks,
+  conditions,
+  logicConcatenations
+) {
+  let formula = "";
 
-    const mainPage = "Main_Page"
+  const mainPage = "Main_Page";
 
-    dataObjects.forEach((dataObject) => dataObject.states.forEach((state) => {
-        const dataObjectStateFunction = getDataObjectStateFunction(dataObject, state, mainPage)
-        formula += `${dataObjectStateFunction}\n`
-    }))
-
-    tasks.forEach((task) => {
-        const taskFunction = getTaskFunction(task, mainPage)
-        formula += `${taskFunction}\n`
+  dataObjects.forEach((dataObject) =>
+    dataObject.states.forEach((state) => {
+      const dataObjectStateFunction = getDataObjectStateFunction(
+        dataObject,
+        state,
+        mainPage
+      );
+      formula += `${dataObjectStateFunction}\n`;
     })
+  );
 
-    let evaluateStateFunction = `fun evaluateState n = (`
+  tasks.forEach((task) => {
+    const taskFunction = getTaskFunction(task, mainPage);
+    formula += `${taskFunction}\n`;
+  });
 
-    conditions.forEach((condition, conditionIdx) => {
-        let functionName = condition.type === "DATA_OBJECT" ? getDataObjectStateFunctionName(condition.selectedDataObjectState.name, condition.selectedDataObjectState.state, mainPage) : getTaskFunctionName(condition.selectedTask, mainPage)
-        if (condition.not) evaluateStateFunction += ' not('
-        if (condition.type === "DATA_OBJECT" && condition.quantor === 'ALL') {
-            const {
-                name: allFunctionName,
-                formula: allFunctionFormula
-            } = getDataObjectOnlyStateFunction(dataObjects.find((dataObject) => dataObject.name === condition.selectedDataObjectState.name), condition.selectedDataObjectState.state, mainPage)
-            formula += `${allFunctionFormula}\n`
-            evaluateStateFunction += `${replaceWhiteSpace(allFunctionName)}(n)`
-        } else evaluateStateFunction += `${replaceWhiteSpace(functionName)}(n)`
-        if (condition.not) evaluateStateFunction += ' ) '
-        evaluateStateFunction += ` ${logicConcatenations[conditionIdx] ?? ''} `
-    })
+  let evaluateStateFunction = `fun evaluateState n = (`;
 
-    evaluateStateFunction += ');'
+  conditions.forEach((condition, conditionIdx) => {
+    let functionName =
+      condition.type === "DATA_OBJECT"
+        ? getDataObjectStateFunctionName(
+            condition.selectedDataObjectState.name,
+            condition.selectedDataObjectState.state,
+            mainPage
+          )
+        : getTaskFunctionName(condition.selectedTask, mainPage);
+    if (condition.not) evaluateStateFunction += " not(";
+    if (condition.type === "DATA_OBJECT" && condition.quantor === "ALL") {
+      const {
+        name: allFunctionName,
+        formula: allFunctionFormula,
+      } = getDataObjectOnlyStateFunction(
+        dataObjects.find(
+          (dataObject) =>
+            dataObject.name === condition.selectedDataObjectState.name
+        ),
+        condition.selectedDataObjectState.state,
+        mainPage
+      );
+      formula += `${allFunctionFormula}\n`;
+      evaluateStateFunction += `${replaceWhiteSpace(allFunctionName)}(n)`;
+    } else evaluateStateFunction += `${replaceWhiteSpace(functionName)}(n)`;
+    if (condition.not) evaluateStateFunction += " ) ";
+    evaluateStateFunction += ` ${logicConcatenations[conditionIdx] ?? ""} `;
+  });
 
-    const objective = `val Objective = NF("${replaceWhiteSpace(name)}", evaluateState);`
+  evaluateStateFunction += ");";
 
-    const evaluate = 'eval_node Objective <current state>;'
+  const objective = `val Objective = POS(NF("${replaceWhiteSpace(
+    name
+  )}", evaluateState));`;
 
-    formula += evaluateStateFunction + `\n` + objective + `\n` + evaluate
-    return formula;
+  const evaluate = "eval_node Objective <current state>;";
+
+  formula += evaluateStateFunction + `\n` + objective + `\n` + evaluate;
+  return formula;
 }
 
 function getDataObjectStateFunction(dataObject, state, mainPage) {
-    const name = getDataObjectStateFunctionName(dataObject.name, state.name)
-    const formula = `fun ${name} n = (length(Mark.${mainPage}'${replaceWhiteSpace(dataObject.name)}__${replaceWhiteSpaceAndCapitalize(state.name)} 1 n) <> 0);`
+  const name = getDataObjectStateFunctionName(dataObject.name, state.name);
+  const formula = `fun ${name} n = (length(Mark.${mainPage}'${replaceWhiteSpace(
+    dataObject.name
+  )}__${replaceWhiteSpaceAndCapitalize(state.name)} 1 n) <> 0);`;
 
-    return formula
+  return formula;
 }
 
 function getDataObjectStateFunctionName(dataObjectName, stateName) {
-    return `${replaceWhiteSpace(dataObjectName)}Has${replaceWhiteSpace(stateName)}`
+  return `${replaceWhiteSpace(dataObjectName)}Has${replaceWhiteSpace(
+    stateName
+  )}`;
 }
 
 function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
-    const name = `${replaceWhiteSpace(dataObject.name)}HasOnly${replaceWhiteSpace(onlyState)}`
-    let formula = `fun ${name} n = (`
+  const name = `${replaceWhiteSpace(dataObject.name)}HasOnly${replaceWhiteSpace(
+    onlyState
+  )}`;
+  let formula = `fun ${name} n = (`;
 
-    dataObject.states.forEach((state, stateIdx) => {
-        if (state.name === onlyState) formula += `${getDataObjectStateFunctionName(dataObject.name, state.name, mainPage)}(n)`;
-        else formula += `not(${getDataObjectStateFunctionName(dataObject.name, state.name, mainPage)}(n))`
+  dataObject.states.forEach((state, stateIdx) => {
+    if (state.name === onlyState)
+      formula += `${getDataObjectStateFunctionName(
+        dataObject.name,
+        state.name,
+        mainPage
+      )}(n)`;
+    else
+      formula += `not(${getDataObjectStateFunctionName(
+        dataObject.name,
+        state.name,
+        mainPage
+      )}(n))`;
 
-        if (dataObject.states.length > stateIdx + 1) formula += ' andalso '
-    })
+    if (dataObject.states.length > stateIdx + 1) formula += " andalso ";
+  });
 
-    formula += ');'
+  formula += ");";
 
-    return {
-        name,
-        formula
-    }
+  return {
+    name,
+    formula,
+  };
 }
 
 function getTaskFunction(task) {
-    const name = getTaskFunctionName(task.name)
-    if (task.inputOutputCombinations < 1) return `fun ${name} n = (false)\n`
-    let formula = `fun ${name} n = (if length(OutArcs(n)) <> 0 then
-            (`
-    for (let i = 0; i < task.inputOutputCombinations; i++) {
-        formula += `List.exists(fn arc => ArcToTI(arc) = (TI.${replaceWhiteSpace(task.name)}'${replaceWhiteSpace(task.name)}_${i} 1)) (OutArcs(n))`
-        if (i < task.inputOutputCombinations - 1) formula += '  orelse\n'
-    }
-    formula += `)\nelse false);`
-    return formula
+  const name = getTaskFunctionName(task.name);
+  if (task.inputOutputCombinations < 1) return `fun ${name} n = (false)\n`;
+  let formula = `fun ${name} n = (if length(OutArcs(n)) <> 0 then
+            (`;
+  for (let i = 0; i < task.inputOutputCombinations; i++) {
+    formula += `List.exists(fn arc => ArcToTI(arc) = (TI.${replaceWhiteSpace(
+      task.name
+    )}'${replaceWhiteSpace(task.name)}_${i} 1)) (OutArcs(n))`;
+    if (i < task.inputOutputCombinations - 1) formula += "  orelse\n";
+  }
+  formula += `)\nelse false);`;
+  return formula;
 }
 
 function getTaskFunctionName(taskName) {
-    return `is${replaceWhiteSpace(taskName)}Enabled`
+  return `is${replaceWhiteSpace(taskName)}Enabled`;
 }
