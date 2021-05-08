@@ -1,6 +1,11 @@
 function replaceWhiteSpace(input) {
     if (!input) return ''
-    return input.replace(' ', '_')
+    return input.replaceAll(' ', '_').replaceAll('\n', '_')
+}
+
+function replaceWhiteSpaceAndCapitalize(input) {
+    if (!input) return ''
+    return replaceWhiteSpace(input.toUpperCase())
 }
 
 export function compileAskCTLFormula(name, dataObjects, tasks, conditions, logicConcatenations) {
@@ -47,8 +52,7 @@ export function compileAskCTLFormula(name, dataObjects, tasks, conditions, logic
 
 function getDataObjectStateFunction(dataObject, state, mainPage) {
     const name = getDataObjectStateFunctionName(dataObject.name, state.name)
-    const formula = `fun ${name} n =
-            (length(Mark.${mainPage}'${replaceWhiteSpace(dataObject.name)}__${replaceWhiteSpace(state.name)} 1 n) <> 0);\n`
+    const formula = `fun ${name} n = (length(Mark.${mainPage}'${replaceWhiteSpace(dataObject.name)}__${replaceWhiteSpaceAndCapitalize(state.name)} 1 n) <> 0);`
 
     return formula
 }
@@ -63,12 +67,12 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
 
     dataObject.states.forEach((state, stateIdx) => {
         if (state.name === onlyState) formula += `${getDataObjectStateFunctionName(dataObject.name, state.name, mainPage)}(n)`;
-        else formula += `NOT(${getDataObjectStateFunctionName(dataObject.name, state.name, mainPage)})(n)`
+        else formula += `not(${getDataObjectStateFunctionName(dataObject.name, state.name, mainPage)}(n))`
 
         if (dataObject.states.length > stateIdx + 1) formula += ' andalso '
     })
 
-    formula += ');\n'
+    formula += ');'
 
     return {
         name,
@@ -78,12 +82,14 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
 
 function getTaskFunction(task) {
     const name = getTaskFunctionName(task.name)
-    const formula = `fun ${name} n =
-            (if length(OutArcs(n)) <> 0
-            then
-            (List.exists(fn arc => ArcToTI(arc) = (TI.${replaceWhiteSpace(task.name)}'${replaceWhiteSpace(task.name)} 1)) (OutArcs(n)))
-            else
-            false);\n`
+    if (task.inputOutputCombinations < 1) return `fun ${name} n = (false)\n`
+    let formula = `fun ${name} n = (if length(OutArcs(n)) <> 0 then
+            (`
+    for (let i = 0; i < task.inputOutputCombinations; i++) {
+        formula += `List.exists(fn arc => ArcToTI(arc) = (TI.${replaceWhiteSpace(task.name)}'${replaceWhiteSpace(task.name)}_${i} 1)) (OutArcs(n))`
+        if (i < task.inputOutputCombinations - 1) formula += '  orelse\n'
+    }
+    formula += `)\nelse false);`
     return formula
 }
 
