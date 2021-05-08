@@ -79,7 +79,6 @@ export default {
       reader.onload = () => {
         xml2js.parseString(reader.result, function(err, result) {
           const processElements = result.definitions.process[0];
-          console.log(result);
           const uploadedDataObjects = [];
           processElements.dataObject.forEach((dataObject, dataObjectIdx) => {
             let existingClass = uploadedDataObjects.find(
@@ -118,7 +117,6 @@ export default {
           const uploadedTasks = processElements.task.map((task, taskIdx) => {
             let inputOutputCombinations = 0;
             task.ioSpecification[0].inputSet.forEach(inputSet => {
-              console.log(inputSet);
               inputOutputCombinations += inputSet.outputSetRefs.length;
             });
             return {
