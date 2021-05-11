@@ -46,31 +46,49 @@
                     </div>
                     <v-card-text v-if="condition.type === 'DATA_OBJECT'" flat outlined>
                       <h4 class="py-2">Choose the desired Data Object State:</h4>
-                      <div class="d-flex">
-                        <v-select
-                          v-model="condition.selectedDataObjectState"
-                          label="Data Object State"
-                          outlined
-                          clearable
-                          :items="dataObjectStateInputs"
-                        >
-                          <template slot="selection" slot-scope="data">
-                            <v-chip>{{ data.item.name }} [{{ data.item.state }}]</v-chip>
-                          </template>
-                          <template
-                            slot="item"
-                            slot-scope="data"
-                          >{{ data.item.name }} [{{ data.item.state}}]</template>
-                        </v-select>
-                        <v-radio-group v-model="condition.quantor" column class="pl-4 mt-0 pt-0">
-                          <v-radio
-                            v-for="n in ['ALL', 'EXISTS']"
-                            :key="n"
-                            :label="`quantor: ${n}`"
-                            :value="n"
-                          ></v-radio>
-                        </v-radio-group>
-                      </div>
+                      <v-row>
+                        <v-col cols="6">
+                          <v-select
+                            v-model="condition.selectedDataObjectState"
+                            label="Data Object State"
+                            outlined
+                            clearable
+                            :items="dataObjectStateInputs"
+                          >
+                            <template slot="selection" slot-scope="data">
+                              <v-chip>{{ data.item.name }} [{{ data.item.state }}]</v-chip>
+                            </template>
+                            <template
+                              slot="item"
+                              slot-scope="data"
+                            >{{ data.item.name }} [{{ data.item.state}}]</template>
+                          </v-select>
+                        </v-col>
+                        <v-col cols="4">
+                          <v-radio-group v-model="condition.quantor" column class="pl-4 mt-0 pt-0">
+                            <v-radio
+                              v-for="n in ['ALL', 'EXISTS', 'AMOUNT']"
+                              :key="n"
+                              :label="`quantor: ${n}`"
+                              :value="n"
+                            ></v-radio>
+                          </v-radio-group>
+                        </v-col>
+                        <v-col v-if="condition.quantor === 'AMOUNT'" cols="2" class="pl-4">
+                          <v-text-field
+                            v-model="condition.amount.lowerBound"
+                            class="pt-0 ma-0"
+                            type="number"
+                            label="lower bound"
+                          ></v-text-field>
+                          <v-text-field
+                            v-model="condition.amount.upperBound"
+                            class="pt-0 ma-0"
+                            type="number"
+                            label="upper bound"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
                     </v-card-text>
                     <v-card-text v-else-if="condition.type === 'TASK'" flat outlined>
                       <h4 class="py-2">Choose the desired enabled Task:</h4>
@@ -197,6 +215,10 @@ export default {
         type: "DATA_OBJECT",
         not: false,
         quantor: "ALL",
+        amount: {
+          lowerBound: 0,
+          upperBound: 0
+        },
         selectedDataObjectState: null,
         selectedTask: null
       };
