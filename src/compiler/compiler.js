@@ -119,13 +119,28 @@ function getDataObjectStateAmountFunction(
   const name = `${replaceWhiteSpace(
     dataObject
   )}Has${lowerBound}To${upperBound}${replaceWhiteSpace(state)}`;
-  const formula = `fun ${name} n = ((length(Mark.${mainPage}'${replaceWhiteSpace(
+
+  const lowerBoundCondition = `length(Mark.${mainPage}'${replaceWhiteSpace(
     dataObject
-  )}__${replaceWhiteSpaceAndCapitalize(
-    state
-  )} 1 n) >= ${lowerBound}) andalso (length(Mark.${mainPage}'${replaceWhiteSpace(
+  )}__${replaceWhiteSpaceAndCapitalize(state)} 1 n) >= ${lowerBound}`;
+
+  const upperBoundCondition = `length(Mark.${mainPage}'${replaceWhiteSpace(
     dataObject
-  )}__${replaceWhiteSpaceAndCapitalize(state)} 1 n) <= ${upperBound});`;
+  )}__${replaceWhiteSpaceAndCapitalize(state)} 1 n) <= ${upperBound}`;
+
+  let formula = `fun ${name} n = (`;
+
+  if ((!lowerBound && !upperBound) || lowerBound > upperBound) {
+    formula += "false";
+  } else if (!!lowerBound && !!upperBound) {
+    formula += `(${lowerBoundCondition}) andalso (${upperBoundCondition})`;
+  } else if (!!lowerBound && !upperBound) {
+    formula += `${lowerBoundCondition}`;
+  } else if (!lowerBound && !!upperBound) {
+    formula += `${upperBoundCondition}`;
+  }
+
+  formula += ");";
 
   return { name, formula };
 }

@@ -204,20 +204,14 @@ export default {
       { deep: true }
     );
 
-    const onSave = () => {
-      context.emit("created", newFormula.value);
-      showDialog.value = false;
-      newFormula.value = getIinitialValues();
-    };
-
     function getInitialCondition() {
       return {
         type: "DATA_OBJECT",
         not: false,
         quantor: "ALL",
         amount: {
-          lowerBound: 0,
-          upperBound: 0
+          lowerBound: null,
+          upperBound: null
         },
         selectedDataObjectState: null,
         selectedTask: null
@@ -232,6 +226,14 @@ export default {
       conditions.value.push(getInitialCondition());
       logicConcatenations.value.push("andalso");
     }
+
+    const onSave = () => {
+      context.emit("created", newFormula.value);
+      showDialog.value = false;
+      newFormula.value = getIinitialValues();
+      conditions.value = [getInitialCondition()];
+      logicConcatenations.value = [];
+    };
 
     watch(
       [conditions, logicConcatenations],
