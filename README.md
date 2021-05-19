@@ -1,6 +1,6 @@
 # Tell Me How - Assisting Knowledge Workers in Reaching Their Objectives
 
-Knowledge Workers can be assisted in reaching their objectives by allowing them to plan further actions during the execution based on those objectives. For this planning, knowledge workers must be able to:
+Knowledge workers can be assisted in reaching their objectives by allowing them to plan further actions based on those objectives. For this planning, knowledge workers must be able to:
 
 i) specify objectives
 
@@ -9,8 +9,11 @@ ii) searche the state space of the process to find paths that satisfy these obje
 iii) get a recommenation for a sequence of actions to achieve those
 
 The fCM-query-generator aims to enable the first requirement: specifying objectives. 
-The second requirement--analyzing the state space of the model--is possible by utilizing the fcm2cpn](https://github.com/bptlab/fcm2cpn) compiler. It takes an fCM as input and generates the colored Petri net (CPN) formalization of it. This formalization can then be executed and analyzed with [CPN Tools](http://cpntools.org). The state space can by searched for objectives, by queries as created by the fCM-query-generator.
+The second requirement&mdash;analyzing the state space of the model&mdash;is possible by utilizing the fcm2cpn](https://github.com/bptlab/fcm2cpn) compiler. It takes an fCM as input and generates the colored Petri net (CPN) formalization of it. This formalization can then be executed and analyzed with [CPN Tools](http://cpntools.org). The state space can by searched for objectives, by queries as created by the fCM-query-generator.
 Third, recommending sequences of actions is only possible to a limited extend with this implementation. It requires further work in the future.
+
+
+The interplay of the mentioned components works as follows:
 
 <img width="462" alt="image" src="https://user-images.githubusercontent.com/32839252/118828351-7cf9af80-b8bd-11eb-800b-d25412d1f2c5.png">
 
@@ -21,7 +24,7 @@ The fCM-query-generator i) allows to specify objectives and ii) compiles a state
 
 It provides an interface to specify existential and universal state conditions, as well as multiplicity constraints for data objects, the condition whether certain tasks are enabled, and the concatenation of those.
 The input objective is then compiled into a state space query, which can be used in CPN Tools.
-An examlpe will be shown below.
+An examlpe will be elaborated below.
 
 ## Content of the Repository
 This repository is a [Vue.js application](https://vuejs.org). It uses the material design framework [Vuetify](https://vuetifyjs.com/). The interface is provided in `src/components`
@@ -46,14 +49,14 @@ npm run serve
 The application should then be available at `http://localhost:8080`.
 
 ## Usage
-In the following, let us consider the following examplary fragments of an fCM (It is also provided in ´example/fragments.png´):
+In the following, let us consider the following examplary fragments of an fCM (It is also provided in ´example/conference.png´):
 
 <img width="678" alt="image" src="https://user-images.githubusercontent.com/32839252/118828489-9bf84180-b8bd-11eb-8734-ba20f3e05c7f.png">
 
 
-To use the fcm-query generator, run the project.
+To use the fCM-query-generator, run the project.
 
-It is now possible to upload an fCM-model, e.g. the provided `example/conference.bpmn`. All data objects and tasks are parsed and available for specifying objectives.
+It is now possible to upload an fCM-model, e.g. the provided `example/conference.bpmn`. All data objects and tasks are parsed and made available for specifying objectives.
 
 <img width="975" alt="image" src="https://user-images.githubusercontent.com/32839252/118852024-a96bf680-b8d2-11eb-8471-a5b25c7cd4fd.png">
 
@@ -91,7 +94,7 @@ To execute the query from the current state, choose the 'Sim to State Space' opt
 
 <img width="682" alt="image" src="https://user-images.githubusercontent.com/32839252/118831448-13c76b80-b8c0-11eb-863f-248532c63380.png">
 
-The query returns a boolean indicating whether or not an execution state can be reached that satisfies the objective. For all possible successor states, it can be investigated which can lead to a satisfying state and which can't. This information assists Knowledge Worker, what tasks to execute.
+The query returns a boolean indicating whether or not an execution state can be reached that satisfies the objective. For all possible successor states, it can be investigated which can lead to a satisfying state and which can't. This information assists knowledge workers, what tasks to execute.
 
 To investigate the state space and the successor states of the current state, the state space can be visualized by using the state space tool.
 
