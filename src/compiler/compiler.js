@@ -39,13 +39,13 @@ export function compileAskCTLFormula(
 
   conditions.forEach((condition, conditionIdx) => {
     let functionName =
-      condition.type === "DATA_OBJECT"
-        ? getDataObjectStateFunctionName(
-            condition.selectedDataObjectState.name,
-            condition.selectedDataObjectState.state,
-            mainPage
-          )
-        : getTaskFunctionName(condition.selectedTask, mainPage);
+      condition.type === "DATA_OBJECT" ?
+      getDataObjectStateFunctionName(
+        condition.selectedDataObjectState.name,
+        condition.selectedDataObjectState.state,
+        mainPage
+      ) :
+      getTaskFunctionName(condition.selectedTask, mainPage);
     if (condition.not) evaluateStateFunction += " not(";
     if (condition.type === "DATA_OBJECT") {
       if (condition.quantor === "ALL") {
@@ -55,7 +55,7 @@ export function compileAskCTLFormula(
         } = getDataObjectOnlyStateFunction(
           dataObjects.find(
             (dataObject) =>
-              dataObject.name === condition.selectedDataObjectState.name
+            dataObject.name === condition.selectedDataObjectState.name
           ),
           condition.selectedDataObjectState.state,
           mainPage
@@ -130,7 +130,10 @@ function getDataObjectStateAmountFunction(
 
   let formula = `fun ${name} n = (`;
 
-  if ((!lowerBound && !upperBound) || lowerBound > upperBound) {
+  if (
+    (!lowerBound && !upperBound) ||
+    (!!lowerBound && !!upperBound && lowerBound > upperBound)
+  ) {
     formula += "false";
   } else if (!!lowerBound && !!upperBound) {
     formula += `(${lowerBoundCondition}) andalso (${upperBoundCondition})`;
@@ -142,7 +145,10 @@ function getDataObjectStateAmountFunction(
 
   formula += ");";
 
-  return { name, formula };
+  return {
+    name,
+    formula,
+  };
 }
 
 function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
