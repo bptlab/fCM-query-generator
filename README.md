@@ -55,7 +55,8 @@ To use the fcm-query generator, run the project.
 
 It is now possible to upload an fCM-model, e.g. the provided `example/conference.bpmn`. All data objects and tasks are parsed and available for specifying objectives.
 
-<img width="973" alt="Screenshot 2021-05-19 at 15 41 55" src="https://user-images.githubusercontent.com/32839252/118822863-cc89ac80-b8b8-11eb-99cc-df95ca5ccddc.png">
+<img width="975" alt="image" src="https://user-images.githubusercontent.com/32839252/118852024-a96bf680-b8d2-11eb-8471-a5b25c7cd4fd.png">
+
 
 To create a new objective, click `Create New`.
 
