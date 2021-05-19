@@ -47,6 +47,7 @@ export default {
     const onAdded = newFormula => {
       askCTLformulas.value.push(copy(newFormula));
     };
+
     return {
       askCTLformulas,
       onAdded

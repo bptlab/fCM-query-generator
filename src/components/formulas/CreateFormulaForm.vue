@@ -138,7 +138,7 @@ export default {
   props: {
     id: {
       type: Number,
-      default: 0
+      required: true
     },
     dataObjects: {
       type: Array,
@@ -220,7 +220,10 @@ export default {
     const onSave = () => {
       context.emit("created", newFormula.value);
       showDialog.value = false;
-      newFormula.value = getIinitialValues();
+      newFormula.value = {
+        name: `Objective ${id.value + 2}`,
+        formula: `-`
+      };
       conditions.value = [getInitialCondition()];
       logicConcatenations.value = [];
     };
