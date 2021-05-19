@@ -12,9 +12,10 @@
     </v-card-title>
     <v-card-text>
       <v-row>
-        <v-col v-for="(formula, fIdx) in askCTLformulas" :key="fIdx" flat cols="4">
+        <v-col v-for="(formula, fIdx) in askCTLformulas" :key="fIdx" flat cols="6">
           <v-textarea
             outlined
+            height="400"
             :name="`formula_${fIdx}`"
             :label="formula.name"
             :value="formula.formula"

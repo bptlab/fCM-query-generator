@@ -39,28 +39,44 @@ export function compileAskCTLFormula(
 
   conditions.forEach((condition, conditionIdx) => {
     let functionName =
-      condition.type === "DATA_OBJECT"
-        ? getDataObjectStateFunctionName(
-            condition.selectedDataObjectState.name,
-            condition.selectedDataObjectState.state,
-            mainPage
-          )
-        : getTaskFunctionName(condition.selectedTask, mainPage);
-    if (condition.not) evaluateStateFunction += " not(";
-    if (condition.type === "DATA_OBJECT" && condition.quantor === "ALL") {
-      const {
-        name: allFunctionName,
-        formula: allFunctionFormula,
-      } = getDataObjectOnlyStateFunction(
-        dataObjects.find(
-          (dataObject) =>
-            dataObject.name === condition.selectedDataObjectState.name
-        ),
+      condition.type === "DATA_OBJECT" ?
+      getDataObjectStateFunctionName(
+        condition.selectedDataObjectState.name,
         condition.selectedDataObjectState.state,
         mainPage
-      );
-      formula += `${allFunctionFormula}\n`;
-      evaluateStateFunction += `${replaceWhiteSpace(allFunctionName)}(n)`;
+      ) :
+      getTaskFunctionName(condition.selectedTask, mainPage);
+    if (condition.not) evaluateStateFunction += " not(";
+    if (condition.type === "DATA_OBJECT") {
+      if (condition.quantor === "ALL") {
+        const {
+          name: allFunctionName,
+          formula: allFunctionFormula,
+        } = getDataObjectOnlyStateFunction(
+          dataObjects.find(
+            (dataObject) =>
+            dataObject.name === condition.selectedDataObjectState.name
+          ),
+          condition.selectedDataObjectState.state,
+          mainPage
+        );
+        formula += `${allFunctionFormula}\n`;
+        evaluateStateFunction += `${replaceWhiteSpace(allFunctionName)}(n)`;
+      }
+      if (condition.quantor === "AMOUNT") {
+        const {
+          name: amountFunctionName,
+          formula: amountFunctionFormula,
+        } = getDataObjectStateAmountFunction(
+          condition.selectedDataObjectState.name,
+          condition.selectedDataObjectState.state,
+          condition.amount.lowerBound,
+          condition.amount.upperBound,
+          mainPage
+        );
+        formula += `${amountFunctionFormula}\n`;
+        evaluateStateFunction += `${replaceWhiteSpace(amountFunctionName)}(n)`;
+      }
     } else evaluateStateFunction += `${replaceWhiteSpace(functionName)}(n)`;
     if (condition.not) evaluateStateFunction += " ) ";
     evaluateStateFunction += ` ${logicConcatenations[conditionIdx] ?? ""} `;
@@ -91,6 +107,48 @@ function getDataObjectStateFunctionName(dataObjectName, stateName) {
   return `${replaceWhiteSpace(dataObjectName)}Has${replaceWhiteSpace(
     stateName
   )}`;
+}
+
+function getDataObjectStateAmountFunction(
+  dataObject,
+  state,
+  lowerBound,
+  upperBound,
+  mainPage
+) {
+  const name = `${replaceWhiteSpace(
+    dataObject
+  )}Has${lowerBound}To${upperBound}${replaceWhiteSpace(state)}`;
+
+  const lowerBoundCondition = `length(Mark.${mainPage}'${replaceWhiteSpace(
+    dataObject
+  )}__${replaceWhiteSpaceAndCapitalize(state)} 1 n) >= ${lowerBound}`;
+
+  const upperBoundCondition = `length(Mark.${mainPage}'${replaceWhiteSpace(
+    dataObject
+  )}__${replaceWhiteSpaceAndCapitalize(state)} 1 n) <= ${upperBound}`;
+
+  let formula = `fun ${name} n = (`;
+
+  if (
+    (!lowerBound && !upperBound) ||
+    (!!lowerBound && !!upperBound && lowerBound > upperBound)
+  ) {
+    formula += "false";
+  } else if (!!lowerBound && !!upperBound) {
+    formula += `(${lowerBoundCondition}) andalso (${upperBoundCondition})`;
+  } else if (!!lowerBound && !upperBound) {
+    formula += `${lowerBoundCondition}`;
+  } else if (!lowerBound && !!upperBound) {
+    formula += `${upperBoundCondition}`;
+  }
+
+  formula += ");";
+
+  return {
+    name,
+    formula,
+  };
 }
 
 function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
