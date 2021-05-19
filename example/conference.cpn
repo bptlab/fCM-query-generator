@@ -3459,6 +3459,55 @@ map (fn(el) =&gt; {id = unpack el collectionClass , caseId = caseId}) (listAssoc
         </annot>
       </arc>
       <constraints/>
+      <Aux id="ID1433114411">
+        <posattr x="-882.000000"
+                 y="630.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Black"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Black"
+                  bold="false"/>
+        <label/>
+        <text>use(ogpath^&quot;ASKCTL/ASKCTLloader.sml&quot;)</text>
+      </Aux>
+      <Aux id="ID1433116592">
+        <posattr x="-882.000000"
+                 y="576.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Black"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Black"
+                  bold="false"/>
+        <label/>
+        <text>fun paperHasin_review n = (length(Mark.Main_Page&apos;paper__IN_REVIEW 1 n) &lt;&gt; 0);
+
+fun paperHassubmitted n = (length(Mark.Main_Page&apos;paper__SUBMITTED 1 n) &lt;&gt; 0);
+
+fun paperHasreviewed n = (length(Mark.Main_Page&apos;paper__REVIEWED 1 n) &lt;&gt; 0);
+
+fun decisionHasaccepted n = (length(Mark.Main_Page&apos;decision__ACCEPTED 1 n) &lt;&gt; 0);
+
+fun isclose_reviewingEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.close_reviewing&apos;close_reviewing_0 1)) (OutArcs(n)))
+else false);
+
+fun paperHasOnlyreviewed n = (not(paperHasin_review(n)) 
+            andalso not(paperHassubmitted(n)) andalso paperHasreviewed(n));
+
+fun decisionHasnullTo25accepted n = (length(Mark.Main_Page&apos;decision__ACCEPTED 1 n) &lt;= 25);
+
+fun evaluateState n = (paperHasOnlyreviewed(n) andalso 
+             decisionHasnullTo25accepted(n) andalso isclose_reviewingEnabled(n));
+
+val Objective = POS(NF(&quot;Objective_1&quot;, evaluateState));
+eval_node Objective 15;</text>
+      </Aux>
     </page>
     <page id="id50">
       <pageattr name="submit_paper"/>
@@ -10139,6 +10188,58 @@ action ((decision, decisionCount),
                     bold="false"/>
         </port>
       </place>
+      <place id="ID1433115465">
+        <posattr x="-107.000000"
+                 y="576.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Black"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Black"
+                  bold="false"/>
+        <text>init</text>
+        <ellipse w="60.000000"
+                 h="40.000000"/>
+        <token x="-10.000000"
+               y="0.000000"/>
+        <marking x="0.000000"
+                 y="0.000000"
+                 hidden="false">
+          <snap snap_id="0"
+                anchor.horizontal="0"
+                anchor.vertical="0"/>
+        </marking>
+        <type id="ID1433115466">
+          <posattr x="-67.000000"
+                   y="552.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+          <text tool="CPN Tools"
+                version="4.0.1">UNIT</text>
+        </type>
+        <initmark id="ID1433115467">
+          <posattr x="-78.000000"
+                   y="599.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+          <text tool="CPN Tools"
+                version="4.0.1">1`()</text>
+        </initmark>
+      </place>
       <trans id="id244"
              explicit="false">
         <posattr x="146.000000"
@@ -10185,8 +10286,8 @@ action ((decision, decisionCount),
                 version="4.0.1"/>
         </time>
         <code id="id244c">
-          <posattr x="180.000000"
-                   y="701.000000"/>
+          <posattr x="201.000000"
+                   y="758.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -10233,8 +10334,8 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
         <transend idref="id244"/>
         <placeend idref="id245"/>
         <annot id="id246a">
-          <posattr x="510.500000"
-                   y="519.500000"/>
+          <posattr x="510.000000"
+                   y="520.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -10265,8 +10366,8 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
         <transend idref="id244"/>
         <placeend idref="id245"/>
         <annot id="id247a">
-          <posattr x="510.500000"
-                   y="519.500000"/>
+          <posattr x="511.000000"
+                   y="520.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -10297,7 +10398,7 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
         <transend idref="id244"/>
         <placeend idref="id248"/>
         <annot id="id250a">
-          <posattr x="423.500000"
+          <posattr x="424.000000"
                    y="419.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -10329,7 +10430,7 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
         <transend idref="id244"/>
         <placeend idref="id248"/>
         <annot id="id251a">
-          <posattr x="423.500000"
+          <posattr x="424.000000"
                    y="419.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -10425,7 +10526,7 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
         <transend idref="id244"/>
         <placeend idref="id256"/>
         <annot id="id257a">
-          <posattr x="286.500000"
+          <posattr x="287.000000"
                    y="581.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -10457,8 +10558,8 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
         <transend idref="id244"/>
         <placeend idref="id267"/>
         <annot id="id268a">
-          <posattr x="117.500000"
-                   y="555.500000"/>
+          <posattr x="118.000000"
+                   y="556.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -10469,6 +10570,38 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
                     bold="false"/>
           <text tool="CPN Tools"
                 version="4.0.1">caseId</text>
+        </annot>
+      </arc>
+      <arc id="ID1433115501"
+           orientation="PtoT"
+           order="1">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Black"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Black"
+                  bold="false"/>
+        <arrowattr headsize="1.200000"
+                   currentcyckle="2"/>
+        <transend idref="id244"/>
+        <placeend idref="ID1433115465"/>
+        <annot id="ID1433116695">
+          <posattr x="9.000000"
+                   y="652.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+          <text tool="CPN Tools"
+                version="4.0.1">1`()</text>
         </annot>
       </arc>
       <constraints/>
@@ -10785,22 +10918,32 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
         </zorder>
       </cpnbinder>
       <cpnbinder id="ID1433103729"
-                 x="461"
-                 y="370"
-                 width="1258"
-                 height="789">
+                 x="168"
+                 y="20"
+                 width="1194"
+                 height="650">
         <sheets>
           <cpnsheet id="ID1433103685"
-                    panx="-708.000000"
-                    pany="87.000000"
+                    panx="304.000000"
+                    pany="347.500000"
                     zoom="1.000000"
                     instance="id0itop">
             <zorder>
               <position value="0"/>
             </zorder>
           </cpnsheet>
+          <cpnsheet id="ID1433115431"
+                    panx="-330.000000"
+                    pany="502.000000"
+                    zoom="1.000000"
+                    instance="id243ia">
+            <zorder>
+              <position value="0"/>
+            </zorder>
+          </cpnsheet>
         </sheets>
         <zorder>
+          <position value="1"/>
           <position value="0"/>
         </zorder>
       </cpnbinder>
