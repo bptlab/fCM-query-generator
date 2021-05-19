@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="blue-grey" dark>
-      <h2 class="d-flex align-center">Objective Framework</h2>
+      <h2 class="d-flex align-center">fCM Query Generator</h2>
     </v-app-bar>
     <v-main>
       <MainPage />
