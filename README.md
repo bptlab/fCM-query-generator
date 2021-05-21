@@ -1,16 +1,16 @@
 # Tell Me How - Assisting Knowledge Workers in Reaching Their Objectives
 
-Knowledge workers can be assisted in reaching their objectives by allowing them to plan further actions based on those objectives. For this planning, knowledge workers must be able to:
+Knowledge workers can be assisted in reaching their objectives by allowing them to plan future actions based on those objectives. For this planning, knowledge workers must be able to
 
 i) specify objectives
 
-ii) searche the state space of the process to find paths that satisfy these objectives
+ii) search the state space of the process to find paths that satisfy these objectives
 
 iii) get a recommenation for a sequence of actions to achieve those
 
 The fCM-query-generator aims to enable the first requirement: specifying objectives. 
-The second requirement&mdash;analyzing the state space of the model&mdash;is possible by utilizing the fcm2cpn](https://github.com/bptlab/fcm2cpn) compiler. It takes an fCM as input and generates the colored Petri net (CPN) formalization of it. This formalization can then be executed and analyzed with [CPN Tools](http://cpntools.org). The state space can by searched for objectives, by queries as created by the fCM-query-generator.
-Third, recommending sequences of actions is only possible to a limited extend with this implementation. It requires further work in the future.
+The second requirement&mdash;analyzing the state space of the model&mdash;is possible by utilizing the [fcm2cpn](https://github.com/bptlab/fcm2cpn) compiler. It takes an fCM model as input and generates a colored Petri net (CPN) formalization of it. This formalization can then be executed and analyzed with [CPN Tools](http://cpntools.org). Using CPN Tools, the state space can by searched for plans satisfying objectives. Therefore, queries created by the fCM-query-generator are used.
+Third, recommending sequences of actions is only possible to a limited extend with this implementation: Every next state needs to be investigated to recommend a direct next action. Recommending paths requires further work.
 
 
 The interplay of the mentioned components works as follows:
@@ -49,7 +49,7 @@ npm run serve
 The application should then be available at `http://localhost:8080`.
 
 ## Usage
-In the following, let us consider the following examplary fragments of an fCM (It is also provided in ´example/conference.png´):
+In the following, let us consider the following fragments of an fCM model (It is also provided in ´example/conference.png´):
 
 <img width="678" alt="image" src="https://user-images.githubusercontent.com/32839252/118828489-9bf84180-b8bd-11eb-8734-ba20f3e05c7f.png">
 
