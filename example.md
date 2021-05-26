@@ -39,6 +39,9 @@ If a review is late, another reviewer may be assigned (Fragment *ff*)
 Eventually, a decision is due.
 The program chair may decide wether to accept or rejct a paper, or whether an additiona review (i.e., a meta-review) is necessary (Fragment *fh*).
 
+![grafik](https://user-images.githubusercontent.com/5269168/119678679-03733b80-be40-11eb-86b0-0d5b008badb9.png)
+
+
 ## Termination Condition
 
 The case can terminate, when the conference is in state 'reviewing closed'.
