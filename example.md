@@ -18,7 +18,7 @@ Based on reviews, a decision is created for a given paper.
 ## Object Behavior
 
 We do not model the object behavior here.
-We rather assume that the fragments compliant to the object behavior.
+We rather assume that the fragments comply with the object behavior.
 
 ## Fragments
 
