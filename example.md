@@ -7,11 +7,13 @@ The case considers the registration of authors, the grouping of authors to teams
 ## Domain Model
 
 The domain model describes the classes of data objects that may occur during a case.
-Every case is centered around the conference.
+Every case is centered around the conference (case class).
 For each conference, there can be arbitrary many submissions.
 Each submission has an author team which consists of multiple authors, which are indirectly connected via the TeamMembership class.
 Reviewers are connected via assignments to submissions.
 Reviewers create reviews for submissions.
+Based on reviews, a decision is created for a given paper.
+![grafik](https://user-images.githubusercontent.com/5269168/119836745-41d12f00-bf02-11eb-9ea6-c641b7884e01.png)
 
 ## Object Behavior
 
