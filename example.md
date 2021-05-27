@@ -13,7 +13,7 @@ Each submission has an author team which consists of multiple authors, which are
 Reviewers are connected via assignments to submissions.
 Reviewers create reviews for submissions.
 Based on reviews, a decision is created for a given paper.
-![grafik](https://user-images.githubusercontent.com/5269168/119836745-41d12f00-bf02-11eb-9ea6-c641b7884e01.png)
+![grafik](https://user-images.githubusercontent.com/5269168/119837037-8361da00-bf02-11eb-9637-55825ad41b61.png)
 
 ## Object Behavior
 
