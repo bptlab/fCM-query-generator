@@ -49,7 +49,7 @@ npm run serve
 The application should then be available at `http://localhost:8080`.
 
 ## Usage
-In the following, let us consider the following fragments of an fCM model (It is also provided in ´example/conference.png´):
+In the following, let us consider the following fragments of an fCM model (It is also provided in `example/conference.png):
 
 <img width="678" alt="image" src="https://user-images.githubusercontent.com/32839252/118828489-9bf84180-b8bd-11eb-8734-ba20f3e05c7f.png">
 
