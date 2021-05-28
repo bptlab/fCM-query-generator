@@ -13,6 +13,7 @@ Each submission has an author team which consists of multiple authors, which are
 Reviewers are connected via assignments to submissions.
 Reviewers create reviews for submissions.
 Based on reviews, a decision is created for a given paper.
+
 ![grafik](https://user-images.githubusercontent.com/5269168/119837037-8361da00-bf02-11eb-9637-55825ad41b61.png)
 
 ## Object Behavior
@@ -47,3 +48,39 @@ The program chair may decide wether to accept or rejct a paper, or whether an ad
 ## Termination Condition
 
 The case can terminate, when the conference is in state 'reviewing closed'.
+
+## Case Behavior
+
+Let's take a look a the behavior of a case.
+The start is triggered once the conference is scheduled.
+While fragments without a start event are enabled at the beginning of each case, their data-requirements are not satisfied.
+Thus 'open submission' is the only enabled activity (*fa*).
+After opening the submission fragment *fc* is enabled and authors can be registered.
+The fragment is not disabled and can thus run repeatedly (registering authors respectively).
+Once an author has been registered, an author team can be created (*fd*).
+When creating a new authorTeam, an initial author is linked to the authorTeam via a  teamMembership.
+The author can, afterward, add additional team members (*fe*).
+For each author that is added, an additional teamMembership and the corresponding links will be created.
+Each author team can submit one or multiple papers (fragment *fb*).
+When submitting their first paper, the state of the authorTeam changes to finalized.
+This prevents changes to the team (i.e., no new authors can be added).
+After submission, a notification is send.
+Note, activit 'submit paper' can read an authorTeam either in state created or in state finalized, thus teams can submit multiple papers.
+Furthermore, fragment are bound to objects.
+This guarantees, that one instance of fragment *fb* is responsible for only one paper.
+
+Eventually, the submission is closed (activity 'close submission' in fragment *fa*), and reviewing begins.
+Fragment *ff* assigns reviewers to submissions.
+The assignment is linked to both the review and the submission.
+Note, reviewers are represented by a data store, because reviewer objects exist outside of the scope of a single case.
+For each assignment, reviewers can create reviews (fragment *fg*).
+Activity 'create review' must comply to the links: it may only operate on combinaitions of submission, reviewer, and assignment that are linked.
+However, reviewers may fail to fulfill their obligation by not creating a review in time; thus, new reviewers can be assigned at any point.
+Eventually, a decision is made for each submission.
+The decision has three different outcomes:
+the reviews my be inconclusive and an additional (meta) review is assigned to an additional reviewer &mdash; this postpones the decision.
+Alternatively, the submission is accepted or rejected.
+Once a decision has been accepted or rejected, the corresponding instance of *fb* can progress:
+the gateway is evaluated and a rejection letter or acceptance notification is sent in respect to the decision.
+Once a notification for all submission has been sent, fragment *fa* can complete and close the reviewing.
+This satisfies the termination condition and the case can be closed.
