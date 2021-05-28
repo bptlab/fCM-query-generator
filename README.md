@@ -31,7 +31,8 @@ This repository is a [Vue.js application](https://vuejs.org). It uses the materi
 
 The compiler of the input to state space queries can be found in `src/compiler/compiler.js`.
 
-An example can be found in the `example`-folder. It contains the fragments of an exemplary process (`example/fragments.png`) that describes the submission and reviewing of papers for a conference. The formalized CPN of this fCM can be found in `example/conference.cpn`
+An example can be found in the `example`-folder. It contains the fragments of an exemplary process (`example/fragments.png`) that describes the submission and reviewing of papers for a conference. The formalized CPN of this fCM can be found in `example/conference.cpn`.
+Information on a more detailed example are provided in [example.md](example.md).
 
 ## Project setup
 The project can be used with the latest version of [npm](https://www.npmjs.com).
