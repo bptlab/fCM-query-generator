@@ -42,7 +42,7 @@ If a review is late, another reviewer may be assigned (Fragment *ff*)
 Eventually, a decision is due.
 The program chair may decide wether to accept or rejct a paper, or whether an additiona review (i.e., a meta-review) is necessary (Fragment *fh*).
 
-![grafik](https://user-images.githubusercontent.com/5269168/119678679-03733b80-be40-11eb-86b0-0d5b008badb9.png)
+![grafik](https://user-images.githubusercontent.com/5269168/120502585-d6d09e00-c3c2-11eb-922f-2af9648fcb8f.png)
 
 
 ## Termination Condition
