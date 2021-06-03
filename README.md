@@ -12,6 +12,8 @@ The fCM-query-generator aims to enable the first requirement: specifying objecti
 The second requirement&mdash;analyzing the state space of the model&mdash;is possible by utilizing the [fcm2cpn](https://github.com/bptlab/fcm2cpn) compiler. It takes an fCM model as input and generates a colored Petri net (CPN) formalization of it. This formalization can then be executed and analyzed with [CPN Tools](http://cpntools.org). Using CPN Tools, the state space can by searched for plans satisfying objectives. Therefore, queries created by the fCM-query-generator are used.
 Third, recommending sequences of actions is only possible to a limited extend with this implementation: Every next state needs to be investigated to recommend a direct next action. Recommending paths requires further work.
 
+A [Screencast](https://youtu.be/4gswHraTg_A) is available on youtube.
+
 The interplay of the mentioned components works as follows:
 
 <img width="462" alt="image" src="https://user-images.githubusercontent.com/32839252/118828351-7cf9af80-b8bd-11eb-800b-d25412d1f2c5.png">
