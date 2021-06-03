@@ -8,15 +8,13 @@ ii) search the state space of the process to find paths that satisfy these objec
 
 iii) get a recommenation for a sequence of actions to achieve those
 
-The fCM-query-generator aims to enable the first requirement: specifying objectives. 
+The fCM-query-generator aims to enable the first requirement: specifying objectives.
 The second requirement&mdash;analyzing the state space of the model&mdash;is possible by utilizing the [fcm2cpn](https://github.com/bptlab/fcm2cpn) compiler. It takes an fCM model as input and generates a colored Petri net (CPN) formalization of it. This formalization can then be executed and analyzed with [CPN Tools](http://cpntools.org). Using CPN Tools, the state space can by searched for plans satisfying objectives. Therefore, queries created by the fCM-query-generator are used.
 Third, recommending sequences of actions is only possible to a limited extend with this implementation: Every next state needs to be investigated to recommend a direct next action. Recommending paths requires further work.
-
 
 The interplay of the mentioned components works as follows:
 
 <img width="462" alt="image" src="https://user-images.githubusercontent.com/32839252/118828351-7cf9af80-b8bd-11eb-800b-d25412d1f2c5.png">
-
 
 ## fCM-query-generator
 
@@ -27,22 +25,26 @@ The input objective is then compiled into a state space query, which can be used
 An examlpe will be elaborated below.
 
 ## Content of the Repository
+
 This repository is a [Vue.js application](https://vuejs.org). It uses the material design framework [Vuetify](https://vuetifyjs.com/). The interface is provided in `src/components`
 
 The compiler of the input to state space queries can be found in `src/compiler/compiler.js`.
 
-An example can be found in the `example`-folder. It contains the fragments of an exemplary process (`example/fragments.png`) that describes the submission and reviewing of papers for a conference. The formalized CPN of this fCM can be found in `example/conference.cpn`.
-Information on a more detailed example are provided in [example.md](example.md).
+A simple and one more complex example can be found in the `example`-folder. Both describe the process of submissitting and reviewing papers for an academic conference. For both, the fragments of the case model are given (`example/simple/conference.bpmn`, `example/complex/conference.bpmn`). They are visualized in `example/simple/conference.png` and `example/complex/conference.png`. The data models are given in `example/simple/conference.uml` and `example/complex/conference.uml`. The formalized CPN of fCMs can be found in `example/simple/conference.cpn` and `example/complex/conference.cpn`.
+Information on the more detailed example are provided in [example.md](example.md).
 
 ## Project setup
+
 The project can be used with the latest version of [npm](https://www.npmjs.com).
 
 To install all dependencies, run:
+
 ```
 npm install
 ```
 
 To run the project, run:
+
 ```
 npm run serve
 ```
@@ -50,17 +52,16 @@ npm run serve
 The application should then be available at `http://localhost:8080`.
 
 ## Usage
-In the following, let us consider the following fragments of an fCM model (It is also provided in `example/conference.png`):
+
+In the following, let us consider the fragments of the simple case model as provided in `example/simple`:
 
 <img width="678" alt="image" src="https://user-images.githubusercontent.com/32839252/118828489-9bf84180-b8bd-11eb-8734-ba20f3e05c7f.png">
 
-
 To use the fCM-query-generator, run the project.
 
-It is now possible to upload an fCM-model, e.g. the provided `example/conference.bpmn`. All data objects and tasks are parsed and made available for specifying objectives.
+It is now possible to upload an fCM-model, e.g. the provided `example/simple/conference.bpmn`. All data objects and tasks are parsed and made available for specifying objectives.
 
 <img width="975" alt="image" src="https://user-images.githubusercontent.com/32839252/118852024-a96bf680-b8d2-11eb-8471-a5b25c7cd4fd.png">
-
 
 To create a new objective, click `Create New`.
 
@@ -69,7 +70,7 @@ In the input form, the knoowledge worker can specify their objective by choosing
 <img width="985" alt="Screenshot 2021-05-14 at 20 55 06" src="https://user-images.githubusercontent.com/32839252/118824077-d4961c00-b8b9-11eb-8bfa-c3edc77d090f.png">
 
 For the specified input, the according state space query is automatically compiled. It can be copied and used for the analysis in [CPN Tools](http://cpntools.org).
-The CPN-representation of the examplary fCM can be found in `example/conference.cpn`. To use it, run the latest version of CPN Tools, which can be downloaded from [here](http://cpntools.org/category/downloads/).
+The CPN-representation of the examplary fCM can be found in `example/simple/conference.cpn`. To use it, run the latest version of CPN Tools, which can be downloaded from [here](http://cpntools.org/category/downloads/).
 
 The state space query is an ASK-CTL formula. More information can be found [here](http://cpntools.org/wp-content/uploads/2018/01/askctlmanual.pdf).
 
@@ -102,15 +103,8 @@ To investigate the state space and the successor states of the current state, th
 <img width="100" alt="image" src="https://user-images.githubusercontent.com/32839252/110791660-bfc25a00-8272-11eb-97ff-29239c890b1e.png">
 
 ## License
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+See the GNU General Public License for more details You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
