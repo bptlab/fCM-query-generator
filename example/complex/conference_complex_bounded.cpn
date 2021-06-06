@@ -1438,8 +1438,8 @@ map (fn(el) =&gt; {id = unpack el collectionClass , caseId = caseId}) (listAssoc
         </initmark>
       </place>
       <place id="id508">
-        <posattr x="900.000000"
-                 y="-100.000000"/>
+        <posattr x="946.000000"
+                 y="-84.000000"/>
         <fillattr colour="White"
                   pattern="filled"
                   filled="false"/>
@@ -1461,8 +1461,8 @@ map (fn(el) =&gt; {id = unpack el collectionClass , caseId = caseId}) (listAssoc
                 anchor.vertical="0"/>
         </marking>
         <type id="id508a">
-          <posattr x="936.000000"
-                   y="-124.000000"/>
+          <posattr x="982.000000"
+                   y="-108.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -1475,8 +1475,8 @@ map (fn(el) =&gt; {id = unpack el collectionClass , caseId = caseId}) (listAssoc
                 version="4.0.1">CaseID</text>
         </type>
         <initmark id="id508b">
-          <posattr x="956.000000"
-                   y="-76.000000"/>
+          <posattr x="1002.000000"
+                   y="-60.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -6423,6 +6423,19 @@ map (fn(el) =&gt; {id = unpack el collectionClass , caseId = caseId}) (listAssoc
                    currentcyckle="2"/>
         <transend idref="id73"/>
         <placeend idref="id508"/>
+        <bendpoint id="ID1433116460"
+                   serial="1">
+          <posattr x="781.000000"
+                   y="-200.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+        </bendpoint>
         <annot id="id512a">
           <posattr x="450.000000"
                    y="-150.000000"/>
@@ -6759,6 +6772,97 @@ map (fn(el) =&gt; {id = unpack el collectionClass , caseId = caseId}) (listAssoc
         </annot>
       </arc>
       <constraints/>
+      <Aux id="ID1433114923">
+        <posattr x="-798.000000"
+                 y="599.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Black"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Black"
+                  bold="false"/>
+        <label/>
+        <text>use (ogpath^&quot;ASKCTL/ASKCTLloader.sml&quot;)</text>
+      </Aux>
+      <Aux id="ID1433114979">
+        <posattr x="-798.000000"
+                 y="546.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Black"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Black"
+                  bold="false"/>
+        <label/>
+        <text>fun conferenceHasscheduled n = (length(Mark.Main_Page&apos;conference__SCHEDULED 1 n) &lt;&gt; 0);
+fun conferenceHasopen_for_submissions n = (length(Mark.Main_Page&apos;conference__OPEN_FOR_SUBMISSIONS 1 n) &lt;&gt; 0);
+fun conferenceHasreviewing n = (length(Mark.Main_Page&apos;conference__REVIEWING 1 n) &lt;&gt; 0);
+fun conferenceHasreviewing_closed n = (length(Mark.Main_Page&apos;conference__REVIEWING_CLOSED 1 n) &lt;&gt; 0);
+fun submissionHassubmitted n = (length(Mark.Main_Page&apos;submission__SUBMITTED 1 n) &lt;&gt; 0);
+fun submissionHasin_review n = (length(Mark.Main_Page&apos;submission__IN_REVIEW 1 n) &lt;&gt; 0);
+fun submissionHasreviewed n = (length(Mark.Main_Page&apos;submission__REVIEWED 1 n) &lt;&gt; 0);
+fun authorHascreated n = (length(Mark.Main_Page&apos;author__CREATED 1 n) &lt;&gt; 0);
+fun teamMembershipHascreated n = (length(Mark.Main_Page&apos;teammembership__CREATED 1 n) &lt;&gt; 0);
+fun authorTeamHascreated n = (length(Mark.Main_Page&apos;authorteam__CREATED 1 n) &lt;&gt; 0);
+fun authorTeamHasfinalized n = (length(Mark.Main_Page&apos;authorteam__FINALIZED 1 n) &lt;&gt; 0);
+fun assignmentHasdue n = (length(Mark.Main_Page&apos;assignment__DUE 1 n) &lt;&gt; 0);
+fun assignmentHasdone n = (length(Mark.Main_Page&apos;assignment__DONE 1 n) &lt;&gt; 0);
+fun reviewHasavailable n = (length(Mark.Main_Page&apos;review__AVAILABLE 1 n) &lt;&gt; 0);
+fun reviewHasconsidered n = (length(Mark.Main_Page&apos;review__CONSIDERED 1 n) &lt;&gt; 0);
+fun decisionHasrejected n = (length(Mark.Main_Page&apos;decision__REJECTED 1 n) &lt;&gt; 0);
+fun decisionHasaccepted n = (length(Mark.Main_Page&apos;decision__ACCEPTED 1 n) &lt;&gt; 0);
+fun isopen_submissionEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.open_submission&apos;open_submission_0 1)) (OutArcs(n)))
+else false);
+fun isclose_submissionEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.close_submission&apos;close_submission_0 1)) (OutArcs(n)))
+else false);
+fun isclose_reviewingEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.close_reviewing&apos;close_reviewing_0 1)) (OutArcs(n)))
+else false);
+fun iscreate_author_teamEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.create_author_team&apos;create_author_team_0 1)) (OutArcs(n)))
+else false);
+fun isregister_authorEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.register_author&apos;register_author_0 1)) (OutArcs(n)))
+else false);
+fun isadd_author_to_teamEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.add_author_to_team&apos;add_author_to_team_0 1)) (OutArcs(n)))
+else false);
+fun issubmit_paperEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.submit_paper&apos;submit_paper_0 1)) (OutArcs(n))  orelse
+List.exists(fn arc =&gt; ArcToTI(arc) = (TI.submit_paper&apos;submit_paper_1 1)) (OutArcs(n)))
+else false);
+fun isassign_reviewerEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.assign_reviewer&apos;assign_reviewer_0 1)) (OutArcs(n)))
+else false);
+fun iscreate_reviewEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.create_review&apos;create_review_0 1)) (OutArcs(n)))
+else false);
+fun issend_submission_notificationEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.send_submission_notification&apos;send_submission_notification_0 1)) (OutArcs(n)))
+else false);
+fun issend_rejection_letterEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.send_rejection_letter&apos;send_rejection_letter_0 1)) (OutArcs(n)))
+else false);
+fun issend_acceptance_notificationEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.send_acceptance_notification&apos;send_acceptance_notification_0 1)) (OutArcs(n)))
+else false);
+fun isdecide_on_paperEnabled n = (if length(OutArcs(n)) &lt;&gt; 0 then
+            (List.exists(fn arc =&gt; ArcToTI(arc) = (TI.decide_on_paper&apos;decide_on_paper_0 1)) (OutArcs(n))  orelse
+List.exists(fn arc =&gt; ArcToTI(arc) = (TI.decide_on_paper&apos;decide_on_paper_1 1)) (OutArcs(n))  orelse
+List.exists(fn arc =&gt; ArcToTI(arc) = (TI.decide_on_paper&apos;decide_on_paper_2 1)) (OutArcs(n)))
+else false);
+fun decisionHas10Tonullaccepted n = (length(Mark.Main_Page&apos;decision__ACCEPTED 1 n) &gt;= 5);
+fun evaluateState n = (decisionHas10Tonullaccepted(n) andalso isclose_reviewingEnabled(n)  );
+val Objective = POS(NF(&quot;Objective_2&quot;, evaluateState));
+eval_node Objective 1;
+</text>
+      </Aux>
     </page>
     <page id="id72">
       <pageattr name="open_submission"/>
@@ -9346,8 +9450,8 @@ map (fn(el) =&gt; {id = unpack el collectionClass , caseId = caseId}) (listAssoc
         </initmark>
         <port id="ID1433106920"
               type="I/O">
-          <posattr x="59.000000"
-                   y="-40.000000"/>
+          <posattr x="84.000000"
+                   y="-24.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -21030,7 +21134,7 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
                    currentcyckle="2"/>
         <transend idref="id490"/>
         <placeend idref="ID1433104218"/>
-        <annot id="ID1433105066">
+        <annot id="ID1433113500">
           <posattr x="46.000000"
                    y="308.000000"/>
           <fillattr colour="White"
@@ -21359,14 +21463,14 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
     </options>
     <binders>
       <cpnbinder id="ID1433104042"
-                 x="603"
-                 y="51"
+                 x="280"
+                 y="25"
                  width="1364"
-                 height="789">
+                 height="725">
         <sheets>
           <cpnsheet id="ID1433103974"
-                    panx="-469.000000"
-                    pany="-78.000000"
+                    panx="184.000000"
+                    pany="316.000000"
                     zoom="1.000000"
                     instance="id0itop">
             <zorder>
@@ -21394,8 +21498,8 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
         </sheets>
         <zorder>
           <position value="1"/>
-          <position value="0"/>
           <position value="2"/>
+          <position value="0"/>
         </zorder>
       </cpnbinder>
     </binders>
@@ -21468,8 +21572,8 @@ action (String.concat[&quot;case&quot;, Int.toString(count)], (conference, confe
       <IndexNode expanded="false">
         <IndexNode expanded="false"/>
       </IndexNode>
-      <IndexNode expanded="true">
-        <IndexNode expanded="false">
+      <IndexNode expanded="false">
+        <IndexNode expanded="true">
           <IndexNode expanded="false"/>
           <IndexNode expanded="false"/>
           <IndexNode expanded="false"/>
