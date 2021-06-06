@@ -32,7 +32,7 @@ This repository is a [Vue.js application](https://vuejs.org). It uses the materi
 
 The compiler of the input to state space queries can be found in `src/compiler/compiler.js`.
 
-A simple and one more complex example can be found in the `example`-folder. Both describe the process of submissitting and reviewing papers for an academic conference. For both, the fragments of the case model are given (`example/simple/conference.bpmn`, `example/complex/conference.bpmn`). They are visualized in `example/simple/conference.png` and `example/complex/conference.png`. The data models are given in `example/simple/conference.uml` and `example/complex/conference.uml`. The formalized CPN of fCMs can be found in `example/simple/conference.cpn` and `example/complex/conference.cpn`.
+A simple and one more complex example can be found in the `example`-folder. Both describe the process of submissitting and reviewing papers for an academic conference. For both, the fragments of the case model are given (`example/simple/conference.bpmn`, `example/complex/conference_complex.bpmn`). They are visualized in `example/simple/conference.png` and `example/complex/conference_complex.png`. The data models are given in `example/simple/conference.uml` and `example/complex/conference_complex.uml`. The formalized CPN of fCMs can be found in `example/simple/conference.cpn` and `example/complex/conference_complex_bounded.cpn`/`example/complex/conference_complex_unbounded.cpn`.
 Information on the more detailed example are provided in [example.md](example.md).
 
 ## Project setup
