@@ -33,7 +33,7 @@ Eventually, the author team will be informed whether their paper got accepted or
 
 To create an author team.
 Authors must register (Fragment _fc_), create teams (Fragment _fd_), and add additional authors to the team (Fragment _fe_).
-Since 'submit paper' changes the state of author team to 'finalized', the team cannot be changed after they have submitted a first paper.
+Since `submit paper` changes the state of author team to `finalized`, the team cannot be changed after they have submitted a first paper.
 However, they can submit multiple papers (even after being finalized, author teams can make submissions).
 
 Once a paper has been submitted, multiple reviewers can be assigned (Fragment _ff_).
@@ -46,14 +46,14 @@ The program chair may decide wether to accept or rejct a paper, or whether an ad
 
 ## Termination Condition
 
-The case can terminate, when the conference is in state 'reviewing closed'.
+The case can terminate, when the conference is in state `reviewing closed`.
 
 ## Case Behavior
 
 Let's take a look a the behavior of a case.
 The start is triggered once the conference is scheduled.
 While fragments without a start event are enabled at the beginning of each case, their data-requirements are not satisfied.
-Thus 'open submission' is the only enabled activity (_fa_).
+Thus `open submission` is the only enabled activity (_fa_).
 After opening the submission fragment _fc_ is enabled and authors can be registered.
 The fragment is not disabled and can thus run repeatedly (registering authors respectively).
 Once an author has been registered, an author team can be created (_fd_).
@@ -61,19 +61,19 @@ When creating a new authorTeam, an initial author is linked to the author team v
 The author can, afterward, add additional team members (_fe_).
 For each author that is added, an additional teamMembership and the corresponding links will be created.
 Each author team can submit one or multiple papers (fragment _fb_).
-When submitting their first paper, the state of the author team changes to finalized.
+When submitting their first paper, the state of the author team changes to `finalized`.
 This prevents changes to the team (i.e., no new authors can be added).
-After submission, a notification is send.
-Note, activity 'submit paper' can read an author team either in state created or in state finalized, thus teams can submit multiple papers.
+After submission, a notification is sent.
+Note, activity `submit paper` can read an author team either in state `created` or in state `finalized`, thus teams can submit multiple papers.
 Furthermore, fragment are bound to objects.
 This guarantees, that one instance of fragment _fb_ is responsible for only one paper.
 
-Eventually, the submission is closed (activity 'close submission' in fragment _fa_), and reviewing begins.
+Eventually, the submission is closed (activity `close submission` in fragment _fa_), and reviewing begins.
 Fragment _ff_ assigns reviewers to submissions.
 The assignment is linked to both the review and the submission.
 Note, reviewers are represented by a data store, because reviewer objects exist outside of the scope of a single case.
 For each assignment, reviewers can create reviews (fragment _fg_).
-Activity 'create review' must comply to the links: it may only operate on combinaitions of submission, reviewer, and assignment that are linked.
+Activity `create review` must comply to the links: it may only operate on combinaitions of submission, reviewer, and assignment that are linked.
 However, reviewers may fail to fulfill their obligation by not creating a review in time; thus, new reviewers can be assigned at any point.
 Eventually, a decision is made for each submission.
 The decision has three different outcomes:

@@ -9,7 +9,7 @@ ii) search the state space of the process to find paths that satisfy these objec
 iii) get a recommenation for a sequence of actions to achieve those
 
 The fCM-query-generator aims to enable the first requirement: specifying objectives.
-The second requirement&mdash;analyzing the state space of the model&mdash;is possible by utilizing the [fcm2cpn](https://github.com/bptlab/fcm2cpn) compiler. It takes an fCM model as input and generates a colored Petri net (CPN) formalization of it. This formalization can then be executed and analyzed with [CPN Tools](http://cpntools.org). Using CPN Tools, the state space can by searched for plans satisfying objectives. Therefore, queries created by the fCM-query-generator are used.
+The second requirement&mdash;analyzing the state space of the model&mdash;is possible by utilizing the [fcm2cpn](https://github.com/bptlab/fcm2cpn) compiler. It takes an fCM model as input and generates a colored Petri net (CPN) formalization of it. This formalization can then be executed and analyzed with [CPN Tools](http://cpntools.org). Using CPN Tools, the state space can be searched for plans satisfying objectives. Therefore, queries created by the fCM-query-generator are used.
 Third, recommending sequences of actions is only possible to a limited extend with this implementation: Every next state needs to be investigated to recommend a direct next action. Recommending paths requires further work.
 
 A [Screencast](https://youtu.be/4gswHraTg_A) is available on youtube.
@@ -32,14 +32,14 @@ This repository is a [Vue.js application](https://vuejs.org). It uses the materi
 
 The compiler of the input to state space queries can be found in `src/compiler/compiler.js`.
 
-A simple and one more complex example can be found in the `example`-folder. Both describe the process of submissitting and reviewing papers for an academic conference. For both, the fragments of the case model are given (`example/simple/conference.bpmn`, `example/complex/conference_complex.bpmn`). They are visualized in `example/simple/conference.png` and `example/complex/conference_complex.png`. The data models are given in `example/simple/conference.uml` and `example/complex/conference_complex.uml`. The formalized CPN of fCMs can be found in `example/simple/conference.cpn` and `example/complex/conference_complex_bounded.cpn`/`example/complex/conference_complex_unbounded.cpn`.
+A simple and one more complex example can be found in the `example`-folder. Both describe the process of submissitting and reviewing papers for an academic conference. For both, the fragments of the case model are given (`example/simple/conference.bpmn`, `example/complex/conference_complex.bpmn`). They are visualized in `example/simple/conference.png` and `example/complex/conference_complex.png`. The data models are given in `example/simple/conference.uml` and `example/complex/conference_complex.uml`. The formalized CPN of the fCMs can be found in `example/simple/conference.cpn` and `example/complex/conference_complex_bounded.cpn`/`example/complex/conference_complex_unbounded.cpn`.
 Information on the more detailed example are provided in [example.md](example.md).
 
 ## Project setup
 
 The project can be used with the latest version of [npm](https://www.npmjs.com).
 
-To install all dependencies, run:
+First, navigate to the project folder. To install all dependencies, run:
 
 ```
 npm install
@@ -67,12 +67,12 @@ It is now possible to upload an fCM-model, e.g. the provided `example/simple/con
 
 To create a new objective, click `Create New`.
 
-In the input form, the knoowledge worker can specify their objective by choosing desired existental and universal conditions for a data object and state, choosing desired enabled tasks, and concatenating all those with the logic operators AND, OR, and NOT.
+In the input form, the knowledge worker can specify their objective by choosing desired existental and universal conditions for a data object and state, as well as lower and upper bounds. They can also choose desired enabled tasks, and concatenate all with the logic operators AND, OR, and NOT.
 
 <img width="985" alt="Screenshot 2021-05-14 at 20 55 06" src="https://user-images.githubusercontent.com/32839252/118824077-d4961c00-b8b9-11eb-8bfa-c3edc77d090f.png">
 
 For the specified input, the according state space query is automatically compiled. It can be copied and used for the analysis in [CPN Tools](http://cpntools.org).
-The CPN-representation of the examplary fCM can be found in `example/simple/conference.cpn`. To use it, run the latest version of CPN Tools, which can be downloaded from [here](http://cpntools.org/category/downloads/).
+The CPN-representation of the examplary fCM can be found in `example/simple/conference.cpn`. To use it, run the latest version of CPN Tools, which can be downloaded [here](http://cpntools.org/category/downloads/).
 
 The state space query is an ASK-CTL formula. More information can be found [here](http://cpntools.org/wp-content/uploads/2018/01/askctlmanual.pdf).
 
