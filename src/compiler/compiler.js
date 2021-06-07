@@ -8,6 +8,11 @@ function replaceWhiteSpaceAndCapitalize(input) {
   return replaceWhiteSpace(input.toUpperCase());
 }
 
+function replaceWitheSpaceAndLowerCase(input) {
+  if (!input) return ""
+  return replaceWhiteSpace(input.toLowerCase())
+}
+
 export function compileAskCTLFormula(
   name,
   dataObjects,
@@ -96,7 +101,7 @@ export function compileAskCTLFormula(
 
 function getDataObjectStateFunction(dataObject, state, mainPage) {
   const name = getDataObjectStateFunctionName(dataObject.name, state.name);
-  const formula = `fun ${name} n = (length(Mark.${mainPage}'${replaceWhiteSpace(
+  const formula = `fun ${name} n = (length(Mark.${mainPage}'${replaceWitheSpaceAndLowerCase(
     dataObject.name
   )}__${replaceWhiteSpaceAndCapitalize(state.name)} 1 n) <> 0);`;
 
@@ -120,11 +125,11 @@ function getDataObjectStateAmountFunction(
     dataObject
   )}Has${lowerBound}To${upperBound}${replaceWhiteSpace(state)}`;
 
-  const lowerBoundCondition = `length(Mark.${mainPage}'${replaceWhiteSpace(
+  const lowerBoundCondition = `length(Mark.${mainPage}'${replaceWitheSpaceAndLowerCase(
     dataObject
   )}__${replaceWhiteSpaceAndCapitalize(state)} 1 n) >= ${lowerBound}`;
 
-  const upperBoundCondition = `length(Mark.${mainPage}'${replaceWhiteSpace(
+  const upperBoundCondition = `length(Mark.${mainPage}'${replaceWitheSpaceAndLowerCase(
     dataObject
   )}__${replaceWhiteSpaceAndCapitalize(state)} 1 n) <= ${upperBound}`;
 
