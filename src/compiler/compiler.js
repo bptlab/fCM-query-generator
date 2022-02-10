@@ -1,3 +1,5 @@
+import { breadthFirstSearch } from "../utils/stateSpaceQuery";
+
 function replaceWhiteSpace(input) {
   if (!input) return "";
   return input.replaceAll(" ", "_").replaceAll("\n", "_");
@@ -9,8 +11,40 @@ function replaceWhiteSpaceAndCapitalize(input) {
 }
 
 function replaceWitheSpaceAndLowerCase(input) {
-  if (!input) return ""
-  return replaceWhiteSpace(input.toLowerCase())
+  if (!input) return "";
+  return replaceWhiteSpace(input.toLowerCase());
+}
+
+export function copmileStateSpaceQuery(queryVariables, dataObjects, tasks) {
+  let query = "";
+
+  query += `${getStateCheckFunction(queryVariables, dataObjects, tasks)}\n\n`;
+
+  query += `${getPathCostFunction(queryVariables)}\n\n`;
+
+  query += `${getBreadthFirstSearch(queryVariables)}\n\n`;
+
+  return query;
+}
+
+function getStateCheckFunction(queryVariables, dataObjects, tasks) {
+  if (!(queryVariables && dataObjects && tasks)) return "...";
+  return `${JSON.stringify(queryVariables)}\n${JSON.stringify(
+    dataObjects
+  )}\n${JSON.stringify(tasks)}`;
+}
+
+function getPathCostFunction(queryVariables) {
+  if (!queryVariables.pathCostFunction) {
+    return "fun pathCostFunction (path: int list) = (1.0 / Real.fromInt(List.length(path)));";
+  }
+  return "...";
+}
+
+function getBreadthFirstSearch(queryVariables) {
+  const initialState = `val initialState = ${queryVariables.initialState ??
+    1};`;
+  return `${initialState}${breadthFirstSearch}`;
 }
 
 export function compileAskCTLFormula(
@@ -44,13 +78,13 @@ export function compileAskCTLFormula(
 
   conditions.forEach((condition, conditionIdx) => {
     let functionName =
-      condition.type === "DATA_OBJECT" ?
-      getDataObjectStateFunctionName(
-        condition.selectedDataObjectState.name,
-        condition.selectedDataObjectState.state,
-        mainPage
-      ) :
-      getTaskFunctionName(condition.selectedTask, mainPage);
+      condition.type === "DATA_OBJECT"
+        ? getDataObjectStateFunctionName(
+            condition.selectedDataObjectState.name,
+            condition.selectedDataObjectState.state,
+            mainPage
+          )
+        : getTaskFunctionName(condition.selectedTask, mainPage);
     if (condition.not) evaluateStateFunction += " not(";
     if (condition.type === "DATA_OBJECT") {
       if (condition.quantor === "ALL") {
@@ -60,7 +94,7 @@ export function compileAskCTLFormula(
         } = getDataObjectOnlyStateFunction(
           dataObjects.find(
             (dataObject) =>
-            dataObject.name === condition.selectedDataObjectState.name
+              dataObject.name === condition.selectedDataObjectState.name
           ),
           condition.selectedDataObjectState.state,
           mainPage

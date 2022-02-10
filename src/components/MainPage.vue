@@ -14,12 +14,15 @@
       @dataObjectChanged="(doIdx, newVars) => dataObjectChanged(doIdx, newVars)"
       @taskChanged="(tIdx, newVars) => taskChanged(tIdx, newVars)"
     />
+    <v-divider class="mx-4 my-2" color="black" />
+    <objectives-card :data-objects="dataObjects" :tasks="tasks" :objectives="objectives" />
     <v-divider class="mx-4 my-2" color="grey" />
-    <formula-card :data-objects="dataObjects" :tasks="tasks" />
+    <queries-card :data-objects="dataObjects" :tasks="tasks" :objectives="objectives" />
   </div>
 </template>
 <script>
-import FormulaCard from "./formulas/FormulaCard.vue";
+import ObjectivesCard from "./formulas/ObjectivesCard.vue";
+import QueriesCard from "./formulas/QueriesCard.vue";
 import FileInputCard from "./input/FileInputCard.vue";
 import ManualInputCard from "./input/ManualInputCard.vue";
 import InputOverviewCard from "./input/InputOverviewCard.vue";
@@ -28,7 +31,8 @@ import xml2js from "xml2js";
 
 export default {
   components: {
-    FormulaCard,
+    QueriesCard,
+    ObjectivesCard,
     FileInputCard,
     ManualInputCard,
     InputOverviewCard
@@ -41,9 +45,12 @@ export default {
     // The indicator if the user should use the fCM upload as input.
     const showFCMUpload = ref(true);
 
+    const objectives = ref([]);
+
     return {
       dataObjects,
       tasks,
+      objectives,
       showFCMUpload,
       ...useManualInput(tasks, dataObjects),
       ...useFCMUpload(tasks, dataObjects)
