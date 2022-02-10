@@ -1,5 +1,7 @@
 import { breadthFirstSearch } from "../utils/stateSpaceQuery";
 
+const mainPage = "Main_Page";
+
 function replaceWhiteSpace(input) {
   if (!input) return "";
   return input.replaceAll(" ", "_").replaceAll("\n", "_");
@@ -28,10 +30,35 @@ export function copmileStateSpaceQuery(queryVariables, dataObjects, tasks) {
 }
 
 function getStateCheckFunction(queryVariables, dataObjects, tasks) {
-  if (!(queryVariables && dataObjects && tasks)) return "...";
-  return `${JSON.stringify(queryVariables)}\n${JSON.stringify(
-    dataObjects
-  )}\n${JSON.stringify(tasks)}`;
+  let helperFunctions = "";
+
+  helperFunctions += getDataObjectStateFunctions(dataObjects);
+
+  helperFunctions += getTaskFunctions(tasks);
+
+  let evaluationFunction = "fun evaluateObjectives (n) = (";
+
+  queryVariables.objectives.forEach((objective, oIdx) => {
+    const { formulas, evaluation } = getObjectiveEvaluation(
+      objective.conditions,
+      objective.logicConcatenations,
+      dataObjects
+    );
+    if (formulas) helperFunctions += formulas;
+    evaluationFunction += "(" + evaluation + ")";
+    if (oIdx < queryVariables.objectives.length - 1)
+      evaluationFunction += " andalso ";
+  });
+
+  evaluationFunction += ");";
+
+  return (
+    helperFunctions +
+    `\n` +
+    evaluationFunction +
+    `\n` +
+    `fun areObjectivesSatisfied (path: int list) = evaluateObjectives(List.last(path));  `
+  );
 }
 
 function getPathCostFunction(queryVariables) {
@@ -56,72 +83,19 @@ export function compileAskCTLFormula(
 ) {
   let formula = "";
 
-  const mainPage = "Main_Page";
+  formula += getDataObjectStateFunctions(dataObjects);
 
-  dataObjects.forEach((dataObject) =>
-    dataObject.states.forEach((state) => {
-      const dataObjectStateFunction = getDataObjectStateFunction(
-        dataObject,
-        state,
-        mainPage
-      );
-      formula += `${dataObjectStateFunction}\n`;
-    })
+  formula += getTaskFunctions(tasks);
+
+  const { formulas, evaluation } = getObjectiveEvaluation(
+    conditions,
+    logicConcatenations,
+    dataObjects
   );
 
-  tasks.forEach((task) => {
-    const taskFunction = getTaskFunction(task, mainPage);
-    formula += `${taskFunction}\n`;
-  });
+  formula += formulas;
 
-  let evaluateStateFunction = `fun evaluateState n = (`;
-
-  conditions.forEach((condition, conditionIdx) => {
-    let functionName =
-      condition.type === "DATA_OBJECT"
-        ? getDataObjectStateFunctionName(
-            condition.selectedDataObjectState.name,
-            condition.selectedDataObjectState.state,
-            mainPage
-          )
-        : getTaskFunctionName(condition.selectedTask, mainPage);
-    if (condition.not) evaluateStateFunction += " not(";
-    if (condition.type === "DATA_OBJECT") {
-      if (condition.quantor === "ALL") {
-        const {
-          name: allFunctionName,
-          formula: allFunctionFormula,
-        } = getDataObjectOnlyStateFunction(
-          dataObjects.find(
-            (dataObject) =>
-              dataObject.name === condition.selectedDataObjectState.name
-          ),
-          condition.selectedDataObjectState.state,
-          mainPage
-        );
-        formula += `${allFunctionFormula}\n`;
-        evaluateStateFunction += `${replaceWhiteSpace(allFunctionName)}(n)`;
-      }
-      if (condition.quantor === "AMOUNT") {
-        const {
-          name: amountFunctionName,
-          formula: amountFunctionFormula,
-        } = getDataObjectStateAmountFunction(
-          condition.selectedDataObjectState.name,
-          condition.selectedDataObjectState.state,
-          condition.amount.lowerBound,
-          condition.amount.upperBound,
-          mainPage
-        );
-        formula += `${amountFunctionFormula}\n`;
-        evaluateStateFunction += `${replaceWhiteSpace(amountFunctionName)}(n)`;
-      }
-    } else evaluateStateFunction += `${replaceWhiteSpace(functionName)}(n)`;
-    if (condition.not) evaluateStateFunction += " ) ";
-    evaluateStateFunction += ` ${logicConcatenations[conditionIdx] ?? ""} `;
-  });
-
-  evaluateStateFunction += ");";
+  formula += `fun evaluateState n = (${evaluation});`;
 
   const objective = `val Objective = POS(NF("${replaceWhiteSpace(
     name
@@ -129,11 +103,25 @@ export function compileAskCTLFormula(
 
   const evaluate = "eval_node Objective <current state>;";
 
-  formula += evaluateStateFunction + `\n` + objective + `\n` + evaluate;
+  formula += objective + `\n` + evaluate;
   return formula;
 }
 
-function getDataObjectStateFunction(dataObject, state, mainPage) {
+function getDataObjectStateFunctions(dataObjects) {
+  let result = "";
+  dataObjects.forEach((dataObject) =>
+    dataObject.states.forEach((state) => {
+      const dataObjectStateFunction = getDataObjectStateFunction(
+        dataObject,
+        state
+      );
+      result += `${dataObjectStateFunction}\n`;
+    })
+  );
+  return result;
+}
+
+function getDataObjectStateFunction(dataObject, state) {
   const name = getDataObjectStateFunctionName(dataObject.name, state.name);
   const formula = `fun ${name} n = (length(Mark.${mainPage}'${replaceWitheSpaceAndLowerCase(
     dataObject.name
@@ -152,8 +140,7 @@ function getDataObjectStateAmountFunction(
   dataObject,
   state,
   lowerBound,
-  upperBound,
-  mainPage
+  upperBound
 ) {
   const name = `${replaceWhiteSpace(
     dataObject
@@ -190,7 +177,7 @@ function getDataObjectStateAmountFunction(
   };
 }
 
-function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
+function getDataObjectOnlyStateFunction(dataObject, onlyState) {
   const name = `${replaceWhiteSpace(dataObject.name)}HasOnly${replaceWhiteSpace(
     onlyState
   )}`;
@@ -200,14 +187,12 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
     if (state.name === onlyState)
       formula += `${getDataObjectStateFunctionName(
         dataObject.name,
-        state.name,
-        mainPage
+        state.name
       )}(n)`;
     else
       formula += `not(${getDataObjectStateFunctionName(
         dataObject.name,
-        state.name,
-        mainPage
+        state.name
       )}(n))`;
 
     if (dataObject.states.length > stateIdx + 1) formula += " andalso ";
@@ -219,6 +204,15 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState, mainPage) {
     name,
     formula,
   };
+}
+
+function getTaskFunctions(tasks) {
+  let result = "";
+  tasks.forEach((task) => {
+    const taskFunction = getTaskFunction(task);
+    result += `${taskFunction}\n`;
+  });
+  return result;
 }
 
 function getTaskFunction(task) {
@@ -238,4 +232,51 @@ function getTaskFunction(task) {
 
 function getTaskFunctionName(taskName) {
   return `is${replaceWhiteSpace(taskName)}Enabled`;
+}
+
+function getObjectiveEvaluation(conditions, logicConcatenations, dataObjects) {
+  let functions = "";
+  let evaluation = "";
+  conditions.forEach((condition, conditionIdx) => {
+    let functionName =
+      condition.type === "DATA_OBJECT"
+        ? getDataObjectStateFunctionName(
+            condition.selectedDataObjectState.name,
+            condition.selectedDataObjectState.state
+          )
+        : getTaskFunctionName(condition.selectedTask);
+    if (condition.not) evaluation += " not(";
+    if (condition.type === "DATA_OBJECT") {
+      if (condition.quantor === "ALL") {
+        const {
+          name: allFunctionName,
+          formula: allFunctionFormula,
+        } = getDataObjectOnlyStateFunction(
+          dataObjects.find(
+            (dataObject) =>
+              dataObject.name === condition.selectedDataObjectState.name
+          ),
+          condition.selectedDataObjectState.state
+        );
+        functions += `${allFunctionFormula}\n`;
+        evaluation += `${replaceWhiteSpace(allFunctionName)}(n)`;
+      }
+      if (condition.quantor === "AMOUNT") {
+        const {
+          name: amountFunctionName,
+          formula: amountFunctionFormula,
+        } = getDataObjectStateAmountFunction(
+          condition.selectedDataObjectState.name,
+          condition.selectedDataObjectState.state,
+          condition.amount.lowerBound,
+          condition.amount.upperBound
+        );
+        functions += `${amountFunctionFormula}\n`;
+        evaluation += `${replaceWhiteSpace(amountFunctionName)}(n)`;
+      }
+    } else evaluation += `${replaceWhiteSpace(functionName)}(n)`;
+    if (condition.not) evaluation += " ) ";
+    evaluation += ` ${logicConcatenations[conditionIdx] ?? ""} `;
+  });
+  return { functions, evaluation };
 }

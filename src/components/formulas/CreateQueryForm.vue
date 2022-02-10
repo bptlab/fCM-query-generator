@@ -39,7 +39,7 @@ import { ref, toRefs, watch, computed } from "@vue/composition-api";
 import { copmileStateSpaceQuery } from "../../compiler/compiler";
 
 export default {
-  name: "CreateFormulaForm",
+  name: "CreateQueryForm",
   props: {
     id: {
       type: Number,

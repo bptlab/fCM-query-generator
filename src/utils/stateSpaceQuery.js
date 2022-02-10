@@ -19,7 +19,7 @@ j := 0;
 while not(Queue.isEmpty(!pathQueue)) do (
     i := !i + 1;
     currentPath := Queue.dequeue(!pathQueue);
-    if (isObjectiveSatisfied(!currentPath)) then (
+    if (areObjectivesSatisfied(!currentPath)) then (
         actionScores := List.map(fn (actionScore) => (
             if ((#1 actionScore) = List.hd(!currentPath)) then (
                 (#1 actionScore, #2 actionScore + pathCostFunction(!currentPath))

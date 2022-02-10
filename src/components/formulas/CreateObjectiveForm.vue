@@ -129,7 +129,7 @@ import { ref, toRefs, watch } from "@vue/composition-api";
 import { copy } from "../../utils/main";
 
 export default {
-  name: "CreateFormulaForm",
+  name: "CreateObjectiveForm",
   props: {
     id: {
       type: Number,
