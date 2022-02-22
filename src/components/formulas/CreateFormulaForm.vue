@@ -91,7 +91,7 @@
                     flat
                     outlined
                   >
-                    <h4 class="pt-2">Choose the desired enabled Task:</h4>
+                    <h4 class="pt-2">Choose the desired enabled Activity:</h4>
                     <v-select
                       v-model="condition.selectedTask"
                       outlined

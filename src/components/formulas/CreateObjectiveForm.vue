@@ -82,7 +82,7 @@
                   </v-row>
                 </v-card-text>
                 <v-card-text class="pa-2 pb-0" v-else-if="condition.type === 'TASK'" flat outlined>
-                  <h4 class="pt-2">Choose the desired enabled Task:</h4>
+                  <h4 class="pt-2">Choose the desired enabled Activity:</h4>
                   <v-select
                     v-model="condition.selectedTask"
                     outlined

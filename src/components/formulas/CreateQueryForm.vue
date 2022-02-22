@@ -1,11 +1,11 @@
 <template>
   <v-card>
-    <v-card-title class="pa-2 pb-0">
+    <v-card-title>
       Create a new State Space Query
       <v-spacer />
       <v-icon size="24" @click="$emit('close')">close</v-icon>
     </v-card-title>
-    <v-card-text class="px-2 pb-0">
+    <v-card-text>
       <div>
         <v-text-field v-model="newQuery.name" label="Name" />
       </div>
@@ -18,7 +18,7 @@
           multiple
         ></v-select>
       </div>
-      <div>
+      <div class="mt-4">
         <v-text-field
           v-model="newQuery.initialState"
           class="pt-0 ma-0"
@@ -27,10 +27,16 @@
         ></v-text-field>
       </div>
     </v-card-text>
-    <v-card-actions class="px-2">
+    <v-card-actions>
       <v-btn text @click="$emit('close')">Abort</v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="blue-grey" class="white--text" min-width="200" @click="onSave">Save</v-btn>
+      <v-btn
+        color="blue-grey"
+        class="white--text"
+        min-width="200"
+        :disabled="!newQuery.objectives.length"
+        @click="onSave"
+      >Save</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -66,7 +72,7 @@ export default {
     const getIinitialQuery = () => {
       return {
         name: `Query ${id.value + 1}`,
-        initialState: null,
+        initialState: 1,
         objectives: [],
         pathCostFunction: null,
         formula: "-"

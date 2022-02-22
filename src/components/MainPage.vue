@@ -79,7 +79,7 @@ function useManualInput(tasks, dataObjects) {
   function addTask() {
     tasks.value.push({
       id: tasks.value.length,
-      name: `Task ${tasks.value.length + 1}`
+      name: `Activity ${tasks.value.length + 1}`
     });
   }
 
