@@ -23,7 +23,12 @@
       :path-cost-functions="pathCostFunctions"
     />
     <v-divider class="mx-4 my-2" color="grey" />
-    <queries-card :data-objects="dataObjects" :activities="activities" :objectives="objectives" />
+    <queries-card
+      :data-objects="dataObjects"
+      :activities="activities"
+      :objectives="objectives"
+      :path-cost-functions="pathCostFunctions"
+    />
   </div>
 </template>
 <script>

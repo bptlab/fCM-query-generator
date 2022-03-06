@@ -18,6 +18,14 @@
           multiple
         ></v-select>
       </div>
+      <div>
+        <v-select
+          v-model="newQuery.pathCostFunction"
+          :items="displayedPathCostFunctions"
+          :menu-props="{ maxHeight: '400' }"
+          label="Path Cost Function"
+        ></v-select>
+      </div>
       <div class="mt-4">
         <v-text-field
           v-model="newQuery.initialState"
@@ -34,7 +42,7 @@
         color="blue-grey"
         class="white--text"
         min-width="200"
-        :disabled="!newQuery.objectives.length"
+        :disabled="!newQuery.objectives.length || !newQuery.pathCostFunction"
         @click="onSave"
       >Save</v-btn>
     </v-card-actions>
@@ -62,10 +70,20 @@ export default {
     objectives: {
       type: Array,
       required: true
+    },
+    pathCostFunctions: {
+      type: Array,
+      required: true
     }
   },
   setup(props, context) {
-    const { objectives, id, dataObjects, activities } = toRefs(props);
+    const {
+      objectives,
+      pathCostFunctions,
+      id,
+      dataObjects,
+      activities
+    } = toRefs(props);
 
     const showDialog = ref(false);
 
@@ -82,7 +100,7 @@ export default {
     const newQuery = ref(getIinitialQuery());
 
     watch(
-      objectives,
+      [objectives, pathCostFunctions],
       () => {
         newQuery.value = getIinitialQuery();
       },
@@ -107,9 +125,17 @@ export default {
       }))
     );
 
+    const displayedPathCostFunctions = computed(() =>
+      pathCostFunctions.value.map(costFunction => ({
+        text: costFunction.name,
+        value: costFunction
+      }))
+    );
+
     return {
       showDialog,
       displayedObjectives,
+      displayedPathCostFunctions,
       onSave,
       newQuery
     };

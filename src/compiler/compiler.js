@@ -70,10 +70,11 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
 }
 
 function getPathCostFunction(queryVariables) {
+  // TODO: compile the actual path cost function
   if (!queryVariables.pathCostFunction) {
     return "fun pathCostFunction (path: int list) = (1.0 / Real.fromInt(List.length(path)));";
   }
-  return "...";
+  return "fun pathCostFunction (path: int list) = (1.0 / Real.fromInt(List.length(path)));";
 }
 
 function getBreadthFirstSearch(queryVariables) {

@@ -14,7 +14,12 @@
       <v-card-title>
         Your Objectives
         <v-spacer />
-        <v-btn color="blue-grey" class="white--text" @click="onAddNew">Create new</v-btn>
+        <v-btn
+          color="blue-grey"
+          class="white--text"
+          :disabled="!activities.length"
+          @click="onAddNew"
+        >Create new</v-btn>
       </v-card-title>
       <v-card-text>
         <v-row>

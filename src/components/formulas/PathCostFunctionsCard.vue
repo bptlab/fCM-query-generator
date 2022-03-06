@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="showFunctionDialog" width="1000" persistent>
       <create-path-cost-function-form
-        :path-cost-functions="pathCostFunctions"
+        :path-cost-function="newFunction"
         :data-objects="dataObjects"
         :activities="activities"
         :id="pathCostFunctions.length"
@@ -14,7 +14,12 @@
       <v-card-title>
         Your Path Cost Functions
         <v-spacer />
-        <v-btn color="blue-grey" class="white--text" @click="onAddNew">Create new</v-btn>
+        <v-btn
+          color="blue-grey"
+          class="white--text"
+          :disabled="!activities.length"
+          @click="onAddNew"
+        >Create new</v-btn>
       </v-card-title>
       <v-card-text>
         <v-row>

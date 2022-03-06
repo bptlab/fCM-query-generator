@@ -157,6 +157,7 @@ export default {
     const { dataObjects, activities, id, objective } = toRefs(props);
 
     const getIinitialObjective = () => {
+      console.log("getIinitialObjective", id.value);
       return {
         name: `Objective ${id.value + 1}`,
         conditions: [getInitialCondition()],
@@ -169,7 +170,7 @@ export default {
     const dataObjectStateInputs = ref([]);
 
     watch(
-      objective,
+      [objective, id],
       () => {
         if (objective.value) newObjective.value = copy(objective.value);
         else newObjective.value = getIinitialObjective();
@@ -227,11 +228,7 @@ export default {
 
     const onSave = () => {
       context.emit("created", newObjective.value);
-      newObjective.value = {
-        name: `Objective ${id.value + 2}`,
-        conditions: [getInitialCondition()],
-        logicConcatenations: []
-      };
+      newObjective.value = getIinitialObjective();
     };
 
     return {

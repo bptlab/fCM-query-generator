@@ -3,6 +3,7 @@
     <v-dialog v-model="showQueryDialog" width="1000" persistent>
       <create-query-form
         :objectives="objectives"
+        :path-cost-functions="pathCostFunctions"
         :data-objects="dataObjects"
         :activities="activities"
         :id="queries.length"
@@ -14,7 +15,12 @@
       <v-card-title>
         Your State Space Queries
         <v-spacer />
-        <v-btn color="blue-grey" class="white--text" @click="onAddNew">Create new</v-btn>
+        <v-btn
+          color="blue-grey"
+          class="white--text"
+          :disabled="!objectives.length || !pathCostFunctions.length"
+          @click="onAddNew"
+        >Create new</v-btn>
       </v-card-title>
       <v-card-text>
         <v-row>
@@ -48,6 +54,10 @@ export default {
       required: true
     },
     objectives: {
+      type: Array,
+      required: true
+    },
+    pathCostFunctions: {
       type: Array,
       required: true
     }
