@@ -17,12 +17,19 @@
     <v-divider class="mx-4 my-2" color="black" />
     <objectives-card :data-objects="dataObjects" :tasks="tasks" :objectives="objectives" />
     <v-divider class="mx-4 my-2" color="grey" />
+    <path-cost-functions-card
+      :data-objects="dataObjects"
+      :tasks="tasks"
+      :path-cost-functions="pathCostFunctions"
+    />
+    <v-divider class="mx-4 my-2" color="grey" />
     <queries-card :data-objects="dataObjects" :tasks="tasks" :objectives="objectives" />
   </div>
 </template>
 <script>
 import ObjectivesCard from "./formulas/ObjectivesCard.vue";
 import QueriesCard from "./formulas/QueriesCard.vue";
+import PathCostFunctionsCard from "./formulas/PathCostFunctionsCard.vue";
 import FileInputCard from "./input/FileInputCard.vue";
 import ManualInputCard from "./input/ManualInputCard.vue";
 import InputOverviewCard from "./input/InputOverviewCard.vue";
@@ -35,7 +42,8 @@ export default {
     ObjectivesCard,
     FileInputCard,
     ManualInputCard,
-    InputOverviewCard
+    InputOverviewCard,
+    PathCostFunctionsCard
   },
   setup() {
     const dataObjects = ref([]);
@@ -47,10 +55,13 @@ export default {
 
     const objectives = ref([]);
 
+    const pathCostFunctions = ref([]);
+
     return {
       dataObjects,
       tasks,
       objectives,
+      pathCostFunctions,
       showFCMUpload,
       ...useManualInput(tasks, dataObjects),
       ...useFCMUpload(tasks, dataObjects)
