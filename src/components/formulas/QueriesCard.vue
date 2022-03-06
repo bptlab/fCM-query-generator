@@ -4,7 +4,7 @@
       <create-query-form
         :objectives="objectives"
         :data-objects="dataObjects"
-        :tasks="tasks"
+        :activities="activities"
         :id="queries.length"
         @created="(query) => onAdded(query)"
         @close="showQueryDialog = false"
@@ -43,7 +43,7 @@ export default {
       type: Array,
       required: true
     },
-    tasks: {
+    activities: {
       type: Array,
       required: true
     },

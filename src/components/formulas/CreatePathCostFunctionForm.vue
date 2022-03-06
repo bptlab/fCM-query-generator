@@ -49,7 +49,7 @@ export default {
       type: Array,
       required: true
     },
-    tasks: {
+    activities: {
       type: Array,
       required: true
     },

@@ -9,12 +9,12 @@
 import { ref, toRefs, watch } from "@vue/composition-api";
 export default {
   props: {
-    task: Object,
+    activity: Object,
     default: {}
   },
   setup(props, context) {
-    const { task } = toRefs(props);
-    const variables = ref(task.value);
+    const { activity } = toRefs(props);
+    const variables = ref(activity.value);
 
     watch(variables, () => {
       context.emit("variablesChanged", variables);

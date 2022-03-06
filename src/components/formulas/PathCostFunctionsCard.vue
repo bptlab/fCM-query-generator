@@ -4,7 +4,7 @@
       <create-path-cost-function-form
         :path-cost-functions="pathCostFunctions"
         :data-objects="dataObjects"
-        :tasks="tasks"
+        :activities="activities"
         :id="pathCostFunctions.length"
         @created="(pathCostFunction) => onAdded(pathCostFunction)"
         @close="showFunctionDialog = false"
@@ -40,7 +40,7 @@ export default {
       type: Array,
       required: true
     },
-    tasks: {
+    activities: {
       type: Array,
       required: true
     },

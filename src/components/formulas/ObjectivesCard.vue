@@ -4,7 +4,7 @@
       <create-objective-form
         :objective="newObjective"
         :data-objects="dataObjects"
-        :tasks="tasks"
+        :activities="activities"
         :id="objectives.length"
         @created="(objective) => onAdded(objective)"
         @close="showObjectiveDialog = false"
@@ -40,7 +40,7 @@ export default {
       type: Array,
       required: true
     },
-    tasks: {
+    activities: {
       type: Array,
       required: true
     },

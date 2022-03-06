@@ -17,10 +17,18 @@ function replaceWitheSpaceAndLowerCase(input) {
   return replaceWhiteSpace(input.toLowerCase());
 }
 
-export function copmileStateSpaceQuery(queryVariables, dataObjects, tasks) {
+export function copmileStateSpaceQuery(
+  queryVariables,
+  dataObjects,
+  activities
+) {
   let query = "";
 
-  query += `${getStateCheckFunction(queryVariables, dataObjects, tasks)}\n\n`;
+  query += `${getStateCheckFunction(
+    queryVariables,
+    dataObjects,
+    activities
+  )}\n\n`;
 
   query += `${getPathCostFunction(queryVariables)}\n\n`;
 
@@ -29,12 +37,12 @@ export function copmileStateSpaceQuery(queryVariables, dataObjects, tasks) {
   return query;
 }
 
-function getStateCheckFunction(queryVariables, dataObjects, tasks) {
+function getStateCheckFunction(queryVariables, dataObjects, activities) {
   let helperFunctions = "";
 
   helperFunctions += getDataObjectStateFunctions(dataObjects);
 
-  helperFunctions += getTaskFunctions(tasks);
+  helperFunctions += getActivityFunctions(activities);
 
   let evaluationFunction = "fun evaluateObjectives (n) = (";
 
@@ -77,7 +85,7 @@ function getBreadthFirstSearch(queryVariables) {
 export function compileAskCTLFormula(
   name,
   dataObjects,
-  tasks,
+  activities,
   conditions,
   logicConcatenations
 ) {
@@ -85,7 +93,7 @@ export function compileAskCTLFormula(
 
   formula += getDataObjectStateFunctions(dataObjects);
 
-  formula += getTaskFunctions(tasks);
+  formula += getActivityFunctions(activities);
 
   const { formulas, evaluation } = getObjectiveEvaluation(
     conditions,
@@ -206,31 +214,31 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState) {
   };
 }
 
-function getTaskFunctions(tasks) {
+function getActivityFunctions(activities) {
   let result = "";
-  tasks.forEach((task) => {
-    const taskFunction = getTaskFunction(task);
+  activities.forEach((activity) => {
+    const taskFunction = getActivityFunction(activity);
     result += `${taskFunction}\n`;
   });
   return result;
 }
 
-function getTaskFunction(task) {
-  const name = getTaskFunctionName(task.name);
-  if (task.inputOutputCombinations < 1) return `fun ${name} n = (false)\n`;
+function getActivityFunction(activity) {
+  const name = getActivityFunctionName(activity.name);
+  if (activity.inputOutputCombinations < 1) return `fun ${name} n = (false)\n`;
   let formula = `fun ${name} n = (if length(OutArcs(n)) <> 0 then
             (`;
-  for (let i = 0; i < task.inputOutputCombinations; i++) {
+  for (let i = 0; i < activity.inputOutputCombinations; i++) {
     formula += `List.exists(fn arc => ArcToTI(arc) = (TI.${replaceWhiteSpace(
-      task.name
-    )}'${replaceWhiteSpace(task.name)}_${i} 1)) (OutArcs(n))`;
-    if (i < task.inputOutputCombinations - 1) formula += "  orelse\n";
+      activity.name
+    )}'${replaceWhiteSpace(activity.name)}_${i} 1)) (OutArcs(n))`;
+    if (i < activity.inputOutputCombinations - 1) formula += "  orelse\n";
   }
   formula += `)\nelse false);`;
   return formula;
 }
 
-function getTaskFunctionName(taskName) {
+function getActivityFunctionName(taskName) {
   return `is${replaceWhiteSpace(taskName)}Enabled`;
 }
 
@@ -244,7 +252,7 @@ function getObjectiveEvaluation(conditions, logicConcatenations, dataObjects) {
             condition.selectedDataObjectState.name,
             condition.selectedDataObjectState.state
           )
-        : getTaskFunctionName(condition.selectedTask);
+        : getActivityFunctionName(condition.selectedActivity);
     if (condition.not) evaluation += " not(";
     if (condition.type === "DATA_OBJECT") {
       if (condition.quantor === "ALL") {

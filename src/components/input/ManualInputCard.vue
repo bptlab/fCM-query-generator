@@ -23,16 +23,16 @@
     <div class="d-flex px-4 pt-2">
       <v-card-title class="pa-0">Activity Input</v-card-title>
       <v-spacer></v-spacer>
-      <v-btn class="pa-4" icon size="30" color="blue-grey" @click="$emit('addTask')">
+      <v-btn class="pa-4" icon size="30" color="blue-grey" @click="$emit('addActivity')">
         <v-icon>add_box</v-icon>
       </v-btn>
     </div>
     <v-card-text class="pa-0">
       <div class="d-flex">
-        <task-input
-          v-for="(task, tIdx) in tasks"
+        <activity-input
+          v-for="(activity, tIdx) in activities"
           :key="tIdx"
-          :task="task"
+          :activity="activity"
           @variablesChanged="
               (newVars) => $emit('taskChanged', tIdx, newVars)
             "
@@ -43,16 +43,16 @@
 </template>
 <script>
 import DataObjectInput from "./DataObjectInput.vue";
-import TaskInput from "./TaskInput.vue";
+import ActivityInput from "./ActivityInput.vue";
 
 export default {
-  components: { DataObjectInput, TaskInput },
+  components: { DataObjectInput, ActivityInput },
   props: {
     dataObjects: {
       type: Array,
       required: true
     },
-    tasks: {
+    activities: {
       type: Array,
       required: true
     }

@@ -2,28 +2,28 @@
   <div>
     <div v-if="showFCMUpload">
       <file-input-card @fCMUploaded="onFCMUploaded" />
-      <input-overview-card :data-objects="dataObjects" :tasks="tasks" />
+      <input-overview-card :data-objects="dataObjects" :activities="activities" />
     </div>
     <manual-input-card
       v-else
       :data-objects="dataObjects"
-      :tasks="tasks"
-      @addTask="addTask"
+      :activities="activities"
+      @addActivity="addActivity"
       @addState="(doIdx) => addState(doIdx)"
       @addDataObject="addDataObject"
       @dataObjectChanged="(doIdx, newVars) => dataObjectChanged(doIdx, newVars)"
       @taskChanged="(tIdx, newVars) => taskChanged(tIdx, newVars)"
     />
     <v-divider class="mx-4 my-2" color="black" />
-    <objectives-card :data-objects="dataObjects" :tasks="tasks" :objectives="objectives" />
+    <objectives-card :data-objects="dataObjects" :activities="activities" :objectives="objectives" />
     <v-divider class="mx-4 my-2" color="grey" />
     <path-cost-functions-card
       :data-objects="dataObjects"
-      :tasks="tasks"
+      :activities="activities"
       :path-cost-functions="pathCostFunctions"
     />
     <v-divider class="mx-4 my-2" color="grey" />
-    <queries-card :data-objects="dataObjects" :tasks="tasks" :objectives="objectives" />
+    <queries-card :data-objects="dataObjects" :activities="activities" :objectives="objectives" />
   </div>
 </template>
 <script>
@@ -48,7 +48,7 @@ export default {
   setup() {
     const dataObjects = ref([]);
 
-    const tasks = ref([]);
+    const activities = ref([]);
 
     // The indicator if the user should use the fCM upload as input.
     const showFCMUpload = ref(true);
@@ -59,17 +59,17 @@ export default {
 
     return {
       dataObjects,
-      tasks,
+      activities,
       objectives,
       pathCostFunctions,
       showFCMUpload,
-      ...useManualInput(tasks, dataObjects),
-      ...useFCMUpload(tasks, dataObjects)
+      ...useManualInput(activities, dataObjects),
+      ...useFCMUpload(activities, dataObjects)
     };
   }
 };
 
-function useManualInput(tasks, dataObjects) {
+function useManualInput(activities, dataObjects) {
   function addDataObject() {
     dataObjects.value.push({
       id: dataObjects.value.length,
@@ -87,10 +87,10 @@ function useManualInput(tasks, dataObjects) {
     });
   }
 
-  function addTask() {
-    tasks.value.push({
-      id: tasks.value.length,
-      name: `Activity ${tasks.value.length + 1}`
+  function addActivity() {
+    activities.value.push({
+      id: activities.value.length,
+      name: `Activity ${activities.value.length + 1}`
     });
   }
 
@@ -98,20 +98,20 @@ function useManualInput(tasks, dataObjects) {
     dataObjects.value[doIdx] = newVars;
   }
 
-  function onTaskChanged(tIdx, newVars) {
-    tasks.value[tIdx] = newVars;
+  function onActivityChanged(tIdx, newVars) {
+    activities.value[tIdx] = newVars;
   }
 
   return {
     addDataObject,
     addState,
-    addTask,
+    addActivity,
     onDataObjectChanged,
-    onTaskChanged
+    onActivityChanged
   };
 }
 
-function useFCMUpload(tasks, dataObjects) {
+function useFCMUpload(activities, dataObjects) {
   function onFCMUploaded(fCMInput) {
     if (!fCMInput) return;
 
@@ -154,18 +154,20 @@ function useFCMUpload(tasks, dataObjects) {
           });
         });
         dataObjects.value = uploadedDataObjects;
-        const uploadedTasks = processElements.task.map((task, taskIdx) => {
-          let inputOutputCombinations = 0;
-          task.ioSpecification[0].inputSet.forEach(inputSet => {
-            inputOutputCombinations += inputSet.outputSetRefs.length;
-          });
-          return {
-            id: taskIdx,
-            name: task.$.name.replaceAll("\n", " "),
-            inputOutputCombinations
-          };
-        });
-        tasks.value = uploadedTasks;
+        const uploadedActivities = processElements.task.map(
+          (activity, taskIdx) => {
+            let inputOutputCombinations = 0;
+            activity.ioSpecification[0].inputSet.forEach(inputSet => {
+              inputOutputCombinations += inputSet.outputSetRefs.length;
+            });
+            return {
+              id: taskIdx,
+              name: activity.$.name.replaceAll("\n", " "),
+              inputOutputCombinations
+            };
+          }
+        );
+        activities.value = uploadedActivities;
       });
     };
   }

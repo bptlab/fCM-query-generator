@@ -55,7 +55,7 @@ export default {
       type: Array,
       required: true
     },
-    tasks: {
+    activities: {
       type: Array,
       required: true
     },
@@ -65,7 +65,7 @@ export default {
     }
   },
   setup(props, context) {
-    const { objectives, id, dataObjects, tasks } = toRefs(props);
+    const { objectives, id, dataObjects, activities } = toRefs(props);
 
     const showDialog = ref(false);
 
@@ -93,7 +93,7 @@ export default {
       const newFormula = copmileStateSpaceQuery(
         newQuery.value,
         dataObjects.value,
-        tasks.value
+        activities.value
       );
       context.emit("created", { ...newQuery.value, formula: newFormula });
       showDialog.value = false;

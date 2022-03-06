@@ -22,7 +22,7 @@ The interplay of the mentioned components works as follows:
 
 The fCM-query-generator i) allows to specify objectives and ii) compiles a state space query that can be used in CPN Tools.
 
-It provides an interface to specify existential and universal state conditions, as well as multiplicity constraints for data objects, the condition whether certain tasks are enabled, and the concatenation of those.
+It provides an interface to specify existential and universal state conditions, as well as multiplicity constraints for data objects, the condition whether certain activities are enabled, and the concatenation of those.
 The input objective is then compiled into a state space query, which can be used in CPN Tools.
 An examlpe will be elaborated below.
 
@@ -61,13 +61,13 @@ In the following, let us consider the fragments of the simple case model as prov
 
 To use the fCM-query-generator, run the project.
 
-It is now possible to upload an fCM-model, e.g. the provided `example/simple/conference.bpmn`. All data objects and tasks are parsed and made available for specifying objectives.
+It is now possible to upload an fCM-model, e.g. the provided `example/simple/conference.bpmn`. All data objects and activities are parsed and made available for specifying objectives.
 
 <img width="975" alt="image" src="https://user-images.githubusercontent.com/32839252/118852024-a96bf680-b8d2-11eb-8471-a5b25c7cd4fd.png">
 
 To create a new objective, click `Create New`.
 
-In the input form, the knowledge worker can specify their objective by choosing desired existental and universal conditions for a data object and state, as well as lower and upper bounds. They can also choose desired enabled tasks, and concatenate all with the logic operators AND, OR, and NOT.
+In the input form, the knowledge worker can specify their objective by choosing desired existental and universal conditions for a data object and state, as well as lower and upper bounds. They can also choose desired enabled activities, and concatenate all with the logic operators AND, OR, and NOT.
 
 <img width="985" alt="Screenshot 2021-05-14 at 20 55 06" src="https://user-images.githubusercontent.com/32839252/118824077-d4961c00-b8b9-11eb-8bfa-c3edc77d090f.png">
 
@@ -98,7 +98,7 @@ To execute the query from the current state, choose the 'Sim to State Space' opt
 
 <img width="682" alt="image" src="https://user-images.githubusercontent.com/32839252/118831448-13c76b80-b8c0-11eb-863f-248532c63380.png">
 
-The query returns a boolean indicating whether or not an execution state can be reached that satisfies the objective. For all possible successor states, it can be investigated which can lead to a satisfying state and which can't. This information assists knowledge workers, what tasks to execute.
+The query returns a boolean indicating whether or not an execution state can be reached that satisfies the objective. For all possible successor states, it can be investigated which can lead to a satisfying state and which can't. This information assists knowledge workers, what activities to execute.
 
 To investigate the state space and the successor states of the current state, the state space can be visualized by using the state space tool.
 

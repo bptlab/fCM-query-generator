@@ -26,7 +26,7 @@
                     v-model="condition.type"
                     row
                     class="mt-0 pt-0 mb-n8"
-                    @change="condition.selectedDataObjectState = null; condition.selectedTask = null"
+                    @change="condition.selectedDataObjectState = null; condition.selectedActivity = null"
                   >
                     <v-radio
                       v-for="n in ['DATA_OBJECT', 'ACTIVITY']"
@@ -89,7 +89,7 @@
                 >
                   <h4 class="pt-2">Choose the desired enabled Activity:</h4>
                   <v-select
-                    v-model="condition.selectedTask"
+                    v-model="condition.selectedActivity"
                     outlined
                     clearable
                     :items="taskInputs"
@@ -148,13 +148,13 @@ export default {
       type: Array,
       required: true
     },
-    tasks: {
+    activities: {
       type: Array,
       required: true
     }
   },
   setup(props, context) {
-    const { dataObjects, tasks, id, objective } = toRefs(props);
+    const { dataObjects, activities, id, objective } = toRefs(props);
 
     const getIinitialObjective = () => {
       return {
@@ -196,11 +196,11 @@ export default {
     const taskInputs = ref([]);
 
     watch(
-      tasks,
+      activities,
       () => {
         taskInputs.value = [];
-        tasks.value.forEach(task => {
-          taskInputs.value.push(task.name);
+        activities.value.forEach(activity => {
+          taskInputs.value.push(activity.name);
         });
       },
       { deep: true, immediate: true }
@@ -216,7 +216,7 @@ export default {
           upperBound: null
         },
         selectedDataObjectState: null,
-        selectedTask: null
+        selectedActivity: null
       };
     }
 

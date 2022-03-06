@@ -30,7 +30,7 @@
                       v-model="condition.type"
                       row
                       class="mt-0 pt-0 mb-n8"
-                      @change="condition.selectedDataObjectState = null; condition.selectedTask = null"
+                      @change="condition.selectedDataObjectState = null; condition.selectedActivity = null"
                     >
                       <v-radio
                         v-for="n in ['DATA_OBJECT', 'ACTIVITY']"
@@ -93,7 +93,7 @@
                   >
                     <h4 class="pt-2">Choose the desired enabled Activity:</h4>
                     <v-select
-                      v-model="condition.selectedTask"
+                      v-model="condition.selectedActivity"
                       outlined
                       clearable
                       :items="taskInputs"
@@ -144,13 +144,13 @@ export default {
       type: Array,
       required: true
     },
-    tasks: {
+    activities: {
       type: Array,
       required: true
     }
   },
   setup(props, context) {
-    const { dataObjects, tasks, id } = toRefs(props);
+    const { dataObjects, activities, id } = toRefs(props);
 
     const showDialog = ref(false);
 
@@ -184,11 +184,11 @@ export default {
     const taskInputs = ref([]);
 
     watch(
-      tasks,
+      activities,
       () => {
         taskInputs.value = [];
-        tasks.value.forEach(task => {
-          taskInputs.value.push(task.name);
+        activities.value.forEach(activity => {
+          taskInputs.value.push(activity.name);
         });
       },
       { deep: true }
@@ -204,7 +204,7 @@ export default {
           upperBound: null
         },
         selectedDataObjectState: null,
-        selectedTask: null
+        selectedActivity: null
       };
     }
 
@@ -234,14 +234,14 @@ export default {
         if (
           conditions.value.find(
             condition =>
-              !condition.selectedDataObjectState && !condition.selectedTask
+              !condition.selectedDataObjectState && !condition.selectedActivity
           )
         )
           return;
         newFormula.value.formula = compileAskCTLFormula(
           newFormula.value.name,
           dataObjects.value,
-          tasks.value,
+          activities.value,
           conditions.value,
           logicConcatenations.value
         );

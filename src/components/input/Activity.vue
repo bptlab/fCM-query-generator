@@ -3,7 +3,7 @@
     <v-container fill-height fluid>
       <v-row align="center" justify="center">
         <v-col>
-          <h3 class="black--text text-center">{{ task.name }}</h3>
+          <h3 class="black--text text-center">{{ activity.name }}</h3>
         </v-col>
       </v-row>
     </v-container>
@@ -12,7 +12,7 @@
 <script>
 export default {
   props: {
-    task: Object,
+    activity: Object,
     default: {}
   },
   setup() {}
