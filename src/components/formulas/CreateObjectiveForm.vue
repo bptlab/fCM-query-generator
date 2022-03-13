@@ -157,7 +157,6 @@ export default {
     const { dataObjects, activities, id, objective } = toRefs(props);
 
     const getIinitialObjective = () => {
-      console.log("getIinitialObjective", id.value);
       return {
         name: `Objective ${id.value + 1}`,
         conditions: [getInitialCondition()],

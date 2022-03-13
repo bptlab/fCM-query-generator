@@ -92,7 +92,6 @@ export default {
     const showDialog = ref(false);
 
     const getIinitialPathCostFunction = () => {
-      console.log("getIinitialPathCostFunction", id.value);
       return {
         name: `Path Cost Function ${id.value + 1}`,
         length: { weight: "length", concatenation: "addition" },

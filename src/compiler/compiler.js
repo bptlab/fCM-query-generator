@@ -47,12 +47,22 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
   let evaluationFunction = "fun evaluateObjectives (n) = (";
 
   queryVariables.objectives.forEach((objective, oIdx) => {
-    const { formulas, evaluation } = getObjectiveEvaluation(
+    const { functions, evaluation } = getObjectiveEvaluation(
       objective.conditions,
       objective.logicConcatenations,
       dataObjects
     );
-    if (formulas) helperFunctions += formulas;
+    if (functions.length)
+      // For each function, check whether the function was added before. If not, add it.
+      helperFunctions += functions.reduce(
+        (prev, current) =>
+          prev +
+          (helperFunctions.includes(` ${current.name} `) ||
+          prev.includes(` ${current.name} `)
+            ? ""
+            : current.function),
+        ""
+      );
     evaluationFunction += "(" + evaluation + ")";
     if (oIdx < queryVariables.objectives.length - 1)
       evaluationFunction += " andalso ";
@@ -96,13 +106,16 @@ export function compileAskCTLFormula(
 
   formula += getActivityFunctions(activities);
 
-  const { formulas, evaluation } = getObjectiveEvaluation(
+  const { functions, evaluation } = getObjectiveEvaluation(
     conditions,
     logicConcatenations,
     dataObjects
   );
 
-  formula += formulas;
+  if (functions.length)
+    formula += functions.reduce((prev, current) => {
+      prev += formula.contains(` ${current.name} `) ? current.function : "";
+    }, "");
 
   formula += `fun evaluateState n = (${evaluation});`;
 
@@ -244,7 +257,7 @@ function getActivityFunctionName(taskName) {
 }
 
 function getObjectiveEvaluation(conditions, logicConcatenations, dataObjects) {
-  let functions = "";
+  let functions = [];
   let evaluation = "";
   conditions.forEach((condition, conditionIdx) => {
     let functionName =
@@ -255,34 +268,40 @@ function getObjectiveEvaluation(conditions, logicConcatenations, dataObjects) {
           )
         : getActivityFunctionName(condition.selectedActivity);
     if (condition.not) evaluation += " not(";
-    if (condition.type === "DATA_OBJECT") {
-      if (condition.quantor === "ALL") {
-        const {
-          name: allFunctionName,
-          formula: allFunctionFormula,
-        } = getDataObjectOnlyStateFunction(
-          dataObjects.find(
-            (dataObject) =>
-              dataObject.name === condition.selectedDataObjectState.name
-          ),
-          condition.selectedDataObjectState.state
-        );
-        functions += `${allFunctionFormula}\n`;
-        evaluation += `${replaceWhiteSpace(allFunctionName)}(n)`;
-      }
-      if (condition.quantor === "AMOUNT") {
-        const {
-          name: amountFunctionName,
-          formula: amountFunctionFormula,
-        } = getDataObjectStateAmountFunction(
-          condition.selectedDataObjectState.name,
-          condition.selectedDataObjectState.state,
-          condition.amount.lowerBound,
-          condition.amount.upperBound
-        );
-        functions += `${amountFunctionFormula}\n`;
-        evaluation += `${replaceWhiteSpace(amountFunctionName)}(n)`;
-      }
+    if (condition.type === "DATA_OBJECT" && condition.quantor === "ALL") {
+      const {
+        name: allFunctionName,
+        formula: allFunctionFormula,
+      } = getDataObjectOnlyStateFunction(
+        dataObjects.find(
+          (dataObject) =>
+            dataObject.name === condition.selectedDataObjectState.name
+        ),
+        condition.selectedDataObjectState.state
+      );
+      functions.push({
+        name: allFunctionName,
+        function: `${allFunctionFormula}\n`,
+      });
+      evaluation += `${allFunctionName}(n)`;
+    } else if (
+      condition.type === "DATA_OBJECT" &&
+      condition.quantor === "AMOUNT"
+    ) {
+      const {
+        name: amountFunctionName,
+        formula: amountFunctionFormula,
+      } = getDataObjectStateAmountFunction(
+        condition.selectedDataObjectState.name,
+        condition.selectedDataObjectState.state,
+        condition.amount.lowerBound,
+        condition.amount.upperBound
+      );
+      functions.push({
+        name: amountFunctionName,
+        function: `${amountFunctionFormula}\n`,
+      });
+      evaluation += `${amountFunctionName}(n)`;
     } else evaluation += `${replaceWhiteSpace(functionName)}(n)`;
     if (condition.not) evaluation += " ) ";
     evaluation += ` ${logicConcatenations[conditionIdx] ?? ""} `;

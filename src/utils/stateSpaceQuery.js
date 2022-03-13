@@ -16,7 +16,7 @@ while not(!j = List.length(!nextNodes)) do (
 );
 j := 0;
 
-while not(Queue.isEmpty(!pathQueue)) do (
+while not(Queue.isEmpty(!pathQueue) orelse !i > 100000) do (
     i := !i + 1;
     currentPath := Queue.dequeue(!pathQueue);
     if (areObjectivesSatisfied(!currentPath)) then (
