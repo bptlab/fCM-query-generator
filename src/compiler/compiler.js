@@ -44,7 +44,7 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
 
   helperFunctions += getActivityFunctions(activities);
 
-  let evaluationFunction = "fun evaluateObjectives (n) = (";
+  let evaluationFunction = "fun areObjectivesSatisfied (n) = (";
 
   queryVariables.objectives.forEach((objective, oIdx) => {
     const { functions, evaluation } = getObjectiveEvaluation(
@@ -70,13 +70,7 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
 
   evaluationFunction += ");";
 
-  return (
-    helperFunctions +
-    `\n` +
-    evaluationFunction +
-    `\n` +
-    `fun areObjectivesSatisfied (path: int list) = evaluateObjectives(List.last(path));  `
-  );
+  return helperFunctions + `\n` + evaluationFunction;
 }
 
 function getPathCostFunction(queryVariables) {

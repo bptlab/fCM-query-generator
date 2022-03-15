@@ -36,15 +36,11 @@
         <div>Select a cost for each existing data object in a specific state</div>
         <v-row cols="auto">
           <v-col
-            v-for="(objectState, objectStateIdx) in newFunction.dataObjectStateCosts"
-            :key="objectStateIdx"
+            v-for="(object, objectIdx) in newFunction.dataObjectCosts"
+            :key="objectIdx"
             cols="2"
           >
-            <v-text-field
-              v-model="objectState.value"
-              type="number"
-              :label="`${objectState.dataObject} [${`${objectState.state}`}]`"
-            ></v-text-field>
+            <v-text-field v-model="object.value" type="number" :label="`${object.dataObject}`"></v-text-field>
           </v-col>
         </v-row>
       </div>
@@ -99,16 +95,10 @@ export default {
           name: activity.name,
           value: 0
         })),
-        dataObjectStateCosts: dataObjects.value.reduce((result, dataObject) => {
-          return [
-            ...result,
-            ...dataObject.states.map(state => ({
-              dataObject: dataObject.name,
-              state: state.name,
-              value: 0
-            }))
-          ];
-        }, [])
+        dataObjectCosts: dataObjects.value.map(dataObject => ({
+          dataObject: dataObject.name,
+          value: 0
+        }))
       };
     };
 
