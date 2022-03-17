@@ -22,7 +22,7 @@ export function copmileStateSpaceQuery(
   dataObjects,
   activities
 ) {
-  let query = "";
+  let query = "open List;\n";
 
   query += `${getStateCheckFunction(
     queryVariables,
