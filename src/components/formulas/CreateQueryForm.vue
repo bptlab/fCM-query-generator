@@ -11,13 +11,14 @@
       </div>
       <div>
         <v-select
-          v-model="newQuery.objectives"
+          v-model="selectedObjectives"
           :items="displayedObjectives"
           :menu-props="{ maxHeight: '400' }"
           label="Objectives"
           multiple
         ></v-select>
       </div>
+      <objectives-configuration-form :objective-configurations="newQuery.objectiveConfigs" />
       <div>
         <v-select
           v-model="newQuery.pathCostFunction"
@@ -42,7 +43,7 @@
         color="blue-grey"
         class="white--text"
         min-width="200"
-        :disabled="!newQuery.objectives.length || !newQuery.pathCostFunction"
+        :disabled="!newQuery.objectiveConfigs.length || !newQuery.pathCostFunction"
         @click="onSave"
       >Save</v-btn>
     </v-card-actions>
@@ -51,6 +52,7 @@
 <script>
 import { ref, toRefs, watch, computed } from "@vue/composition-api";
 import { copmileStateSpaceQuery } from "../../compiler/compiler";
+import ObjectivesConfigurationForm from "./ObjectivesConfigurationForm.vue";
 
 export default {
   name: "CreateQueryForm",
@@ -76,6 +78,7 @@ export default {
       required: true
     }
   },
+  components: { ObjectivesConfigurationForm },
   setup(props, context) {
     const {
       objectives,
@@ -87,11 +90,23 @@ export default {
 
     const showDialog = ref(false);
 
+    const selectedObjectives = ref([]);
+
+    watch(selectedObjectives, () => {
+      newQuery.value.objectiveConfigs = selectedObjectives.value.map(
+        selectedObjective => ({
+          objective: selectedObjective,
+          weight: 100,
+          required: true
+        })
+      );
+    });
+
     const getIinitialQuery = () => {
       return {
         name: `Query ${id.value + 1}`,
         initialState: 1,
-        objectives: [],
+        objectiveConfigs: [],
         pathCostFunction: null,
         formula: "-"
       };
@@ -137,6 +152,7 @@ export default {
       displayedObjectives,
       displayedPathCostFunctions,
       onSave,
+      selectedObjectives,
       newQuery
     };
   }

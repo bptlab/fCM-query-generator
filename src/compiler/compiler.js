@@ -46,10 +46,10 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
 
   let evaluationFunction = "fun areObjectivesSatisfied (n) = (";
 
-  queryVariables.objectives.forEach((objective, oIdx) => {
+  queryVariables.objectiveConfigs.forEach((objectiveConfig, oIdx) => {
     const { functions, evaluation } = getObjectiveEvaluation(
-      objective.conditions,
-      objective.logicConcatenations,
+      objectiveConfig.objective.conditions,
+      objectiveConfig.objective.logicConcatenations,
       dataObjects
     );
     if (functions.length)
@@ -64,7 +64,7 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
         ""
       );
     evaluationFunction += "(" + evaluation + ")";
-    if (oIdx < queryVariables.objectives.length - 1)
+    if (oIdx < queryVariables.objectiveConfigs.length - 1)
       evaluationFunction += " andalso ";
   });
 
