@@ -30,7 +30,7 @@ export function copmileStateSpaceQuery(
     activities
   )}\n\n`;
 
-  query += `${getPathCostFunction(queryVariables)}\n\n`;
+  query += `${getPathCostFunction(queryVariables, dataObjects)}\n\n`;
 
   query += `${getBreadthFirstSearch(queryVariables)}\n\n`;
 
@@ -73,12 +73,84 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
   return helperFunctions + `\n` + evaluationFunction;
 }
 
-function getPathCostFunction(queryVariables) {
-  // TODO: compile the actual path cost function
+function getDOCostFunctions(queryVariables, dataObjects) {
+  let amountFunctions = "";
+  let costFunctions = "";
+  let functionCombination = "fun getDOCosts(path: int list) = (";
+  console.log(queryVariables.pathCostFunction.dataObjectCosts);
+  dataObjects.forEach((object) => {
+    const weight = parseFloat(
+      queryVariables.pathCostFunction.dataObjectCosts.find(
+        (objectCost) => objectCost.dataObject === object.name
+      )?.value
+    ).toLocaleString("en", { useGrouping: false, minimumFractionDigits: 2 });
+    console.log(weight);
+    if (!weight) return;
+
+    object.states.forEach((state) => {
+      const amountFunctionName = `${replaceWitheSpaceAndLowerCase(
+        object.name
+      )}${replaceWhiteSpaceAndCapitalize(state.name)}`;
+
+      amountFunctions += `fun getAmount${amountFunctionName} (n) = (length(Mark.${mainPage}'${replaceWitheSpaceAndLowerCase(
+        object.name
+      )}__${replaceWhiteSpaceAndCapitalize(state.name)} 1 n));\n`;
+
+      costFunctions += `fun getCost${amountFunctionName} (path: int list) = (Real.fromInt(getAmount${amountFunctionName}(10) - getAmount${amountFunctionName}( DestNode(List.last(path)) )) * ${weight});\n`;
+
+      functionCombination += `getCost${amountFunctionName} (path) + `;
+    });
+  });
+  functionCombination += "0.0);\n";
+  return amountFunctions + costFunctions + functionCombination;
+}
+
+function getActivityCostFunctions(queryVariables) {
+  console.log(queryVariables);
+  let functions = "fun getActivityCost (t) = ( ";
+
+  queryVariables.pathCostFunction.activityCosts.forEach(
+    (activityCost, costIdx) => {
+      if (costIdx) functions += "else ";
+      functions += `if ( String.isSubstring(st_TI(ArcToTI(t)))( "${replaceWhiteSpace(
+        activityCost.name
+      )}" ) ) then (${parseFloat(activityCost.value).toLocaleString("en", {
+        useGrouping: false,
+        minimumFractionDigits: 1,
+      })})\n`;
+    }
+  );
+  functions += "else (0.0));\n";
+
+  functions += `fun sumListRec [] = 0.0
+    | sumListRec (x::xs) = x + (sumListRec xs)\n`;
+
+  functions += `fun getActivityCosts(path: int list) = sumListRec(List.map(fn (transition) => (getActivityCost(transition)))(path));\n`;
+
+  return functions;
+}
+
+function getPathCostFunction(queryVariables, dataObjects) {
   if (!queryVariables.pathCostFunction) {
     return "fun pathCostFunction (path: int list) = (1.0 / Real.fromInt(List.length(path)));";
   }
-  return "fun pathCostFunction (path: int list) = (1.0 / Real.fromInt(List.length(path)));";
+  // TODO: compile the Amount functions for each DO state
+  let functions = getDOCostFunctions(queryVariables, dataObjects);
+
+  functions += getActivityCostFunctions(queryVariables);
+
+  if (queryVariables.pathCostFunction.length.weight === "length")
+    functions += `fun getLengthCost (path: int list) = (Real.fromInt(List.length(path)) );\n`;
+  else if (queryVariables.pathCostFunction.length.weight === "squared")
+    functions += `fun getLengthCost (path: int list) = (Real.fromInt(List.length(path)) * Real.fromInt(List.length(path)));\n`;
+  else functions += `fun getLengthCost (path: int list) = (0.0);\n`;
+
+  functions += `fun pathCostFunction (path: int list) = (1.0 / ( getLengthCost(path) ${
+    queryVariables.pathCostFunction.length.concatenation === "addition"
+      ? "+"
+      : "*"
+  } (getDOCosts(path) + getActivityCosts(path))))`;
+  return functions;
 }
 
 function getBreadthFirstSearch(queryVariables) {
