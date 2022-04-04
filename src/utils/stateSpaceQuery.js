@@ -25,7 +25,7 @@ while not(Queue.isEmpty(!pathQueue) orelse !i > 100000) do (
     if (areObjectivesSatisfied(!destNode)) then (
         actionScores := List.map(fn (actionScore) => (
             if ((#1 actionScore) = List.hd(!currentPath)) then (
-                (#1 actionScore, #2 actionScore + pathCostFunction(!currentPath))
+                (#1 actionScore, #2 actionScore + getPathScore(!currentPath, !destNode))
             ) else (actionScore)
         ))(!actionScores)
     ) else (

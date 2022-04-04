@@ -30,7 +30,7 @@ export function copmileStateSpaceQuery(
     activities
   )}\n\n`;
 
-  query += `${getPathCostFunction(queryVariables, dataObjects)}\n\n`;
+  query += `${getPathScoreFunction(queryVariables, dataObjects)}\n`;
 
   query += `${getBreadthFirstSearch(queryVariables)}\n\n`;
 
@@ -44,7 +44,9 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
 
   helperFunctions += getActivityFunctions(activities);
 
-  let evaluationFunction = "fun areObjectivesSatisfied (n) = (";
+  let evaluationFunctions = "";
+
+  let requiredEvaluationFunction = "fun areRequiredObjectivesSatisfied (n) = (";
 
   queryVariables.objectiveConfigs.forEach((objectiveConfig, oIdx) => {
     const { functions, evaluation } = getObjectiveEvaluation(
@@ -63,28 +65,51 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
             : current.function),
         ""
       );
-    evaluationFunction += "(" + evaluation + ")";
+
+    const evalFunctionName = `is${replaceWhiteSpace(
+      objectiveConfig.objective.name
+    )}Satisfied`;
+    evaluationFunctions += `fun ${evalFunctionName} (n) = (${evaluation});\n`;
+
+    const weight = parseFloat(objectiveConfig.weight / 100).toLocaleString(
+      "en",
+      {
+        useGrouping: false,
+        minimumFractionDigits: 1,
+      }
+    );
+    evaluationFunctions += `fun get${replaceWhiteSpace(
+      objectiveConfig.objective.name
+    )}Score (n) =  (if (${evalFunctionName}(n)) then (${weight}) else (0.0));\n`;
+
+    if (objectiveConfig.required) {
+      requiredEvaluationFunction += `is${replaceWhiteSpace(
+        objectiveConfig.objective.name
+      )}Satisfied(n)`;
+    } else {
+      requiredEvaluationFunction += "true";
+    }
     if (oIdx < queryVariables.objectiveConfigs.length - 1)
-      evaluationFunction += " andalso ";
+      requiredEvaluationFunction += " andalso ";
   });
 
-  evaluationFunction += ");";
+  requiredEvaluationFunction += ");";
 
-  return helperFunctions + `\n` + evaluationFunction;
+  return (
+    helperFunctions + `\n` + evaluationFunctions + requiredEvaluationFunction
+  );
 }
 
 function getDOCostFunctions(queryVariables, dataObjects) {
   let amountFunctions = "";
   let costFunctions = "";
   let functionCombination = "fun getDOCosts(path: int list) = (";
-  console.log(queryVariables.pathCostFunction.dataObjectCosts);
   dataObjects.forEach((object) => {
     const weight = parseFloat(
       queryVariables.pathCostFunction.dataObjectCosts.find(
         (objectCost) => objectCost.dataObject === object.name
       )?.value
-    ).toLocaleString("en", { useGrouping: false, minimumFractionDigits: 2 });
-    console.log(weight);
+    ).toLocaleString("en", { useGrouping: false, minimumFractionDigits: 1 });
     if (!weight) return;
 
     object.states.forEach((state) => {
@@ -96,7 +121,7 @@ function getDOCostFunctions(queryVariables, dataObjects) {
         object.name
       )}__${replaceWhiteSpaceAndCapitalize(state.name)} 1 n));\n`;
 
-      costFunctions += `fun getCost${amountFunctionName} (path: int list) = (Real.fromInt(getAmount${amountFunctionName}(10) - getAmount${amountFunctionName}( DestNode(List.last(path)) )) * ${weight});\n`;
+      costFunctions += `fun getCost${amountFunctionName} (path: int list) = (Real.fromInt(getAmount${amountFunctionName}( DestNode(List.last(path)) ) - getAmount${amountFunctionName}( ${queryVariables.initialState} )) * ${weight});\n`;
 
       functionCombination += `getCost${amountFunctionName} (path) + `;
     });
@@ -106,7 +131,6 @@ function getDOCostFunctions(queryVariables, dataObjects) {
 }
 
 function getActivityCostFunctions(queryVariables) {
-  console.log(queryVariables);
   let functions = "fun getActivityCost (t) = ( ";
 
   queryVariables.pathCostFunction.activityCosts.forEach(
@@ -130,6 +154,24 @@ function getActivityCostFunctions(queryVariables) {
   return functions;
 }
 
+function getPathScoreFunction(queryVariables, dataObjects) {
+  let scoreFunction = "fun getPathScore(path: int list, n: int) = ((";
+
+  queryVariables.objectiveConfigs.forEach((objectiveConfig, oIdx) => {
+    scoreFunction += `get${replaceWhiteSpace(
+      objectiveConfig.objective.name
+    )}Score(n)`;
+    if (oIdx < queryVariables.objectiveConfigs.length - 1)
+      scoreFunction += " + ";
+  });
+
+  const functions = getPathCostFunction(queryVariables, dataObjects);
+
+  scoreFunction += `) / pathCostFunction(path));\n`;
+
+  return functions + scoreFunction;
+}
+
 function getPathCostFunction(queryVariables, dataObjects) {
   if (!queryVariables.pathCostFunction) {
     return "fun pathCostFunction (path: int list) = (1.0 / Real.fromInt(List.length(path)));";
@@ -145,11 +187,11 @@ function getPathCostFunction(queryVariables, dataObjects) {
     functions += `fun getLengthCost (path: int list) = (Real.fromInt(List.length(path)) * Real.fromInt(List.length(path)));\n`;
   else functions += `fun getLengthCost (path: int list) = (0.0);\n`;
 
-  functions += `fun pathCostFunction (path: int list) = (1.0 / ( getLengthCost(path) ${
+  functions += `fun pathCostFunction (path: int list) = (( getLengthCost(path) ${
     queryVariables.pathCostFunction.length.concatenation === "addition"
       ? "+"
       : "*"
-  } (getDOCosts(path) + getActivityCosts(path))))`;
+  } (getDOCosts(path) + getActivityCosts(path))));\n`;
   return functions;
 }
 
