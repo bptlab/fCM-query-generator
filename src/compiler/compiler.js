@@ -241,7 +241,17 @@ export function compileAskCTLFormula(
     name
   )}", evaluateState));`;
 
-  const evaluate = `eval_node Objective ${state};`;
+  const evaluate = `fun evaluateNode a = 
+    let val destNode = DestNode(a)
+    in eval_node Objective destNode
+  end
+  val nextArcs: int list ref = ref [];
+  val results: (TI.TransInst * bool) list ref = ref([]);
+  nextArcs := OutArcs(${state});
+  results := List.map(fn (action) => (
+      (ArcToTI(action), evaluateNode(action) )
+  ))(!nextArcs);
+  results;`;
 
   formula += objectiveFunction + `\n` + evaluate;
   return formula;
