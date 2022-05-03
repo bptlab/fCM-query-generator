@@ -17,7 +17,17 @@ function replaceWitheSpaceAndLowerCase(input) {
   return replaceWhiteSpace(input.toLowerCase());
 }
 
-export function copmileStateSpaceQuery(
+export function copmileStateSpaceQueryFilterBased(
+  name,
+  objective,
+  state,
+  dataObjects,
+  activities
+) {
+  return compileAskCTLFormula(name, objective, state, dataObjects, activities);
+}
+
+export function copmileStateSpaceQueryScoreBased(
   queryVariables,
   dataObjects,
   activities
@@ -203,37 +213,37 @@ function getBreadthFirstSearch(queryVariables) {
 
 export function compileAskCTLFormula(
   name,
+  objective,
+  state,
   dataObjects,
-  activities,
-  conditions,
-  logicConcatenations
+  activities
 ) {
-  let formula = "";
+  let formula = `use(ogpath^"ASKCTL/ASKCTLloader.sml");`;
 
   formula += getDataObjectStateFunctions(dataObjects);
 
   formula += getActivityFunctions(activities);
 
   const { functions, evaluation } = getObjectiveEvaluation(
-    conditions,
-    logicConcatenations,
+    objective.conditions,
+    objective.logicConcatenations,
     dataObjects
   );
 
-  if (functions.length)
-    formula += functions.reduce((prev, current) => {
-      prev += formula.contains(` ${current.name} `) ? current.function : "";
-    }, "");
+  functions.forEach((helperFunction) => {
+    if (!formula.includes(helperFunction.name))
+      formula += helperFunction.function;
+  });
 
-  formula += `fun evaluateState n = (${evaluation});`;
+  formula += `fun evaluateState n = (${evaluation});\n`;
 
-  const objective = `val Objective = POS(NF("${replaceWhiteSpace(
+  const objectiveFunction = `val Objective = POS(NF("${replaceWhiteSpace(
     name
   )}", evaluateState));`;
 
-  const evaluate = "eval_node Objective <current state>;";
+  const evaluate = `eval_node Objective ${state};`;
 
-  formula += objective + `\n` + evaluate;
+  formula += objectiveFunction + `\n` + evaluate;
   return formula;
 }
 

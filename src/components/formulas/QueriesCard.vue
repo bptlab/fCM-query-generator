@@ -18,7 +18,7 @@
         <v-btn
           color="blue-grey"
           class="white--text"
-          :disabled="!objectives.length || !pathCostFunctions.length"
+          :disabled="!objectives.length"
           @click="onAddNew"
         >Create new</v-btn>
       </v-card-title>
