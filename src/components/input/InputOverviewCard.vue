@@ -21,7 +21,7 @@
     </div>
     <v-card-text class="pa-0">
       <div v-if="activities.length" class="d-flex">
-        <activity v-for="(activity, tIdx) in activities" :key="tIdx" :activity="activity" />
+        <activity v-for="(activity, aIdx) in activities" :key="aIdx" :activity="activity" />
       </div>
       <div v-else class="pa-4 pb-8">No Activities available. Please upload an fCM with Activities</div>
     </v-card-text>
