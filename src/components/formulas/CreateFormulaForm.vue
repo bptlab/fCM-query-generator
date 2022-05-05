@@ -96,7 +96,7 @@
                       v-model="condition.selectedActivity"
                       outlined
                       clearable
-                      :items="taskInputs"
+                      :items="activityInputs"
                     />
                   </v-card-text>
                 </v-card>
@@ -181,14 +181,14 @@ export default {
       { deep: true }
     );
 
-    const taskInputs = ref([]);
+    const activityInputs = ref([]);
 
     watch(
       activities,
       () => {
-        taskInputs.value = [];
+        activityInputs.value = [];
         activities.value.forEach(activity => {
-          taskInputs.value.push(activity.name);
+          activityInputs.value.push(activity.name);
         });
       },
       { deep: true }
@@ -252,7 +252,7 @@ export default {
     return {
       showDialog,
       dataObjectStateInputs,
-      taskInputs,
+      activityInputs,
       onSave,
       newFormula,
       conditions,

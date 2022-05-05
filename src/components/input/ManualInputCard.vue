@@ -34,7 +34,7 @@
           :key="tIdx"
           :activity="activity"
           @variablesChanged="
-              (newVars) => $emit('taskChanged', tIdx, newVars)
+              (newVars) => $emit('activityChanged', tIdx, newVars)
             "
         />
       </div>

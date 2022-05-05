@@ -12,7 +12,7 @@
       @addState="(doIdx) => addState(doIdx)"
       @addDataObject="addDataObject"
       @dataObjectChanged="(doIdx, newVars) => dataObjectChanged(doIdx, newVars)"
-      @taskChanged="(tIdx, newVars) => taskChanged(tIdx, newVars)"
+      @activityChanged="(tIdx, newVars) => onActivityChanged(tIdx, newVars)"
     />
     <v-divider class="mx-4 my-2" color="black" />
     <objectives-card :data-objects="dataObjects" :activities="activities" :objectives="objectives" />
@@ -160,13 +160,13 @@ function useFCMUpload(activities, dataObjects) {
         });
         dataObjects.value = uploadedDataObjects;
         const uploadedActivities = processElements.task.map(
-          (activity, taskIdx) => {
+          (activity, activityIdx) => {
             let inputOutputCombinations = 0;
             activity.ioSpecification[0].inputSet.forEach(inputSet => {
               inputOutputCombinations += inputSet.outputSetRefs.length;
             });
             return {
-              id: taskIdx,
+              id: activityIdx,
               name: activity.$.name.replaceAll("\n", " "),
               inputOutputCombinations
             };

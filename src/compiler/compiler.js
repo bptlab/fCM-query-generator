@@ -359,8 +359,8 @@ function getDataObjectOnlyStateFunction(dataObject, onlyState) {
 function getActivityFunctions(activities) {
   let result = "";
   activities.forEach((activity) => {
-    const taskFunction = getActivityFunction(activity);
-    result += `${taskFunction}\n`;
+    const activityFunction = getActivityFunction(activity);
+    result += `${activityFunction}\n`;
   });
   return result;
 }
@@ -380,8 +380,8 @@ function getActivityFunction(activity) {
   return formula;
 }
 
-function getActivityFunctionName(taskName) {
-  return `is${replaceWhiteSpace(taskName)}Enabled`;
+function getActivityFunctionName(activityName) {
+  return `is${replaceWhiteSpace(activityName)}Enabled`;
 }
 
 function getObjectiveEvaluation(conditions, logicConcatenations, dataObjects) {
