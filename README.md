@@ -71,17 +71,29 @@ It is now possible to upload an fCM-model, e.g. the provided `example/simple/con
 
 ### Modeling Objectives
 
-To create a new objective, click `Create New`.
-
-In the input form, the knowledge worker can specify their objective by choosing desired existental and universal conditions for a data object and state, as well as lower and upper bounds. They can also choose desired enabled activities, and concatenate all with the logic operators AND, OR, and NOT.
+To create a new objective, click `Create New` in the section `Your Objectives`. In the input form, the knowledge worker can specify their objective by choosing desired existental and universal conditions for a data object and state, as well as lower and upper bounds. They can also choose desired enabled activities, and concatenate all with the logic operators AND, OR, and NOT.
 
 <img width="985" alt="Screenshot 2021-05-14 at 20 55 06" src="https://user-images.githubusercontent.com/32839252/118824077-d4961c00-b8b9-11eb-8bfa-c3edc77d090f.png">
 
 
 ### Modeling Path Cost Functions
 
+To create a new objective, click `Create New` in the section `Your Path Cost Functions`. In the form, users can specify a cost function for any path in the model's state space. It can make statements about the path length, activities that are executed on a path, and data objects that are created on a path. Therefore, it is possible to specify four things. First, the path length can be considered not at all, with the length of the path, or with the squared lenght of the path. Second, it can be specified, if the path length costs should be multiplied or added with the rest of the path costs. Third, for every activity, a cost can be assigned. And fourth, a cost for each newly created data object of each class can be defined.
+
+![Screenshot 2022-05-05 at 14 26 30](https://user-images.githubusercontent.com/32839252/166922801-9fb6fa78-89f6-4edf-8523-7ad4474d3ae1.png)
 
 ### Configuring State Space Queries
+
+To specify a state space query, two techniques are available. A user can create a query to derive filter-based recommendations, or score-based recommendations. 
+
+A filter-based recommendation query requires a name, one objective, and the current state of execution as input.
+
+![Screenshot 2022-05-05 at 14 35 41](https://user-images.githubusercontent.com/32839252/166924451-0e5c6798-f22b-4869-b18f-d38ef183d81e.png)
+
+A score-based recommendation query requires a name, a set of objectives, a path cost function, and the current state of execution as input. For each selected objective, a weight need to be assigned and to be selected if it is required to satisfy the objective.
+
+![Screenshot 2022-05-05 at 14 35 56](https://user-images.githubusercontent.com/32839252/166924866-dede3398-b279-471e-97f8-83cce27461bc.png)
+
 
 For the specified input, the according state space query is automatically compiled. It can be copied and used for the analysis in [CPN Tools](http://cpntools.org).
 
@@ -108,11 +120,7 @@ Next, the ASK-CTL compiler must be loaded. Choose the ML compiler in the simulat
 
 Now, any ASK-CTL formula can be executed by choosing the ML compiler and clicking on it. To execute the state space query, copy it into a separate text field in the net. In the exemplary CPN, the previously created state space query is already given.
 
-To execute the query from the current state, choose the 'Sim to State Space' option of the state space tool. The current state node will be returned in the execution status in the bottom left corner. Insert it into the state space query in the line `eval_node Objective <current state>;` and execute it.
-
-<img width="100" alt="image" src="https://user-images.githubusercontent.com/32839252/110791678-c6e96800-8272-11eb-8b86-919a5d1286d0.png">
-
-<img width="682" alt="image" src="https://user-images.githubusercontent.com/32839252/118831448-13c76b80-b8c0-11eb-863f-248532c63380.png">
+Insert picture!
 
 The query returns a boolean indicating whether or not an execution state can be reached that satisfies the objective. For all possible successor states, it can be investigated which can lead to a satisfying state and which can't. This information assists knowledge workers, what activities to execute.
 
