@@ -2,24 +2,39 @@
   <div>
     <div v-if="showFCMUpload">
       <file-input-card @fCMUploaded="onFCMUploaded" />
-      <input-overview-card :data-objects="dataObjects" :tasks="tasks" />
+      <input-overview-card :data-objects="dataObjects" :activities="activities" />
     </div>
     <manual-input-card
       v-else
       :data-objects="dataObjects"
-      :tasks="tasks"
-      @addTask="addTask"
+      :activities="activities"
+      @addActivity="addActivity"
       @addState="(doIdx) => addState(doIdx)"
       @addDataObject="addDataObject"
       @dataObjectChanged="(doIdx, newVars) => dataObjectChanged(doIdx, newVars)"
-      @taskChanged="(tIdx, newVars) => taskChanged(tIdx, newVars)"
+      @activityChanged="(tIdx, newVars) => onActivityChanged(tIdx, newVars)"
+    />
+    <v-divider class="mx-4 my-2" color="black" />
+    <objectives-card :data-objects="dataObjects" :activities="activities" :objectives="objectives" />
+    <v-divider class="mx-4 my-2" color="grey" />
+    <path-cost-functions-card
+      :data-objects="dataObjects"
+      :activities="activities"
+      :path-cost-functions="pathCostFunctions"
     />
     <v-divider class="mx-4 my-2" color="grey" />
-    <formula-card :data-objects="dataObjects" :tasks="tasks" />
+    <queries-card
+      :data-objects="dataObjects"
+      :activities="activities"
+      :objectives="objectives"
+      :path-cost-functions="pathCostFunctions"
+    />
   </div>
 </template>
 <script>
-import FormulaCard from "./formulas/FormulaCard.vue";
+import ObjectivesCard from "./formulas/ObjectivesCard.vue";
+import QueriesCard from "./formulas/QueriesCard.vue";
+import PathCostFunctionsCard from "./formulas/PathCostFunctionsCard.vue";
 import FileInputCard from "./input/FileInputCard.vue";
 import ManualInputCard from "./input/ManualInputCard.vue";
 import InputOverviewCard from "./input/InputOverviewCard.vue";
@@ -28,30 +43,38 @@ import xml2js from "xml2js";
 
 export default {
   components: {
-    FormulaCard,
+    QueriesCard,
+    ObjectivesCard,
     FileInputCard,
     ManualInputCard,
-    InputOverviewCard
+    InputOverviewCard,
+    PathCostFunctionsCard
   },
   setup() {
     const dataObjects = ref([]);
 
-    const tasks = ref([]);
+    const activities = ref([]);
 
     // The indicator if the user should use the fCM upload as input.
     const showFCMUpload = ref(true);
 
+    const objectives = ref([]);
+
+    const pathCostFunctions = ref([]);
+
     return {
       dataObjects,
-      tasks,
+      activities,
+      objectives,
+      pathCostFunctions,
       showFCMUpload,
-      ...useManualInput(tasks, dataObjects),
-      ...useFCMUpload(tasks, dataObjects)
+      ...useManualInput(activities, dataObjects),
+      ...useFCMUpload(activities, dataObjects)
     };
   }
 };
 
-function useManualInput(tasks, dataObjects) {
+function useManualInput(activities, dataObjects) {
   function addDataObject() {
     dataObjects.value.push({
       id: dataObjects.value.length,
@@ -69,10 +92,10 @@ function useManualInput(tasks, dataObjects) {
     });
   }
 
-  function addTask() {
-    tasks.value.push({
-      id: tasks.value.length,
-      name: `Activity ${tasks.value.length + 1}`
+  function addActivity() {
+    activities.value.push({
+      id: activities.value.length,
+      name: `Activity ${activities.value.length + 1}`
     });
   }
 
@@ -80,20 +103,20 @@ function useManualInput(tasks, dataObjects) {
     dataObjects.value[doIdx] = newVars;
   }
 
-  function onTaskChanged(tIdx, newVars) {
-    tasks.value[tIdx] = newVars;
+  function onActivityChanged(tIdx, newVars) {
+    activities.value[tIdx] = newVars;
   }
 
   return {
     addDataObject,
     addState,
-    addTask,
+    addActivity,
     onDataObjectChanged,
-    onTaskChanged
+    onActivityChanged
   };
 }
 
-function useFCMUpload(tasks, dataObjects) {
+function useFCMUpload(activities, dataObjects) {
   function onFCMUploaded(fCMInput) {
     if (!fCMInput) return;
 
@@ -136,18 +159,20 @@ function useFCMUpload(tasks, dataObjects) {
           });
         });
         dataObjects.value = uploadedDataObjects;
-        const uploadedTasks = processElements.task.map((task, taskIdx) => {
-          let inputOutputCombinations = 0;
-          task.ioSpecification[0].inputSet.forEach(inputSet => {
-            inputOutputCombinations += inputSet.outputSetRefs.length;
-          });
-          return {
-            id: taskIdx,
-            name: task.$.name.replaceAll("\n", " "),
-            inputOutputCombinations
-          };
-        });
-        tasks.value = uploadedTasks;
+        const uploadedActivities = processElements.task.map(
+          (activity, activityIdx) => {
+            let inputOutputCombinations = 0;
+            activity.ioSpecification[0].inputSet.forEach(inputSet => {
+              inputOutputCombinations += inputSet.outputSetRefs.length;
+            });
+            return {
+              id: activityIdx,
+              name: activity.$.name.replaceAll("\n", " "),
+              inputOutputCombinations
+            };
+          }
+        );
+        activities.value = uploadedActivities;
       });
     };
   }

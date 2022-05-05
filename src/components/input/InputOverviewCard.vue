@@ -20,8 +20,8 @@
       <v-card-title class="pa-0">Activities</v-card-title>
     </div>
     <v-card-text class="pa-0">
-      <div v-if="tasks.length" class="d-flex">
-        <task v-for="(task, tIdx) in tasks" :key="tIdx" :task="task" />
+      <div v-if="activities.length" class="d-flex">
+        <activity v-for="(activity, aIdx) in activities" :key="aIdx" :activity="activity" />
       </div>
       <div v-else class="pa-4 pb-8">No Activities available. Please upload an fCM with Activities</div>
     </v-card-text>
@@ -29,16 +29,16 @@
 </template>
 <script>
 import DataObject from "./DataObject.vue";
-import Task from "./Task.vue";
+import Activity from "./Activity.vue";
 
 export default {
-  components: { DataObject, Task },
+  components: { DataObject, Activity },
   props: {
     dataObjects: {
       type: Array,
       required: true
     },
-    tasks: {
+    activities: {
       type: Array,
       required: true
     }
