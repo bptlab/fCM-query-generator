@@ -21,7 +21,7 @@
       </div>
     </v-card-text>
     <div class="d-flex px-4 pt-2">
-      <v-card-title class="pa-0">Task Input</v-card-title>
+      <v-card-title class="pa-0">Activity Input</v-card-title>
       <v-spacer></v-spacer>
       <v-btn class="pa-4" icon size="30" color="blue-grey" @click="$emit('addTask')">
         <v-icon>add_box</v-icon>
