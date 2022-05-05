@@ -17,7 +17,17 @@ function replaceWitheSpaceAndLowerCase(input) {
   return replaceWhiteSpace(input.toLowerCase());
 }
 
-export function copmileStateSpaceQuery(
+export function copmileStateSpaceQueryFilterBased(
+  name,
+  objective,
+  state,
+  dataObjects,
+  activities
+) {
+  return compileAskCTLFormula(name, objective, state, dataObjects, activities);
+}
+
+export function copmileStateSpaceQueryScoreBased(
   queryVariables,
   dataObjects,
   activities
@@ -30,7 +40,7 @@ export function copmileStateSpaceQuery(
     activities
   )}\n\n`;
 
-  query += `${getPathCostFunction(queryVariables)}\n\n`;
+  query += `${getPathScoreFunction(queryVariables, dataObjects)}\n`;
 
   query += `${getBreadthFirstSearch(queryVariables)}\n\n`;
 
@@ -44,12 +54,14 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
 
   helperFunctions += getActivityFunctions(activities);
 
-  let evaluationFunction = "fun areObjectivesSatisfied (n) = (";
+  let evaluationFunctions = "";
 
-  queryVariables.objectives.forEach((objective, oIdx) => {
+  let requiredEvaluationFunction = "fun areRequiredObjectivesSatisfied (n) = (";
+
+  queryVariables.objectiveConfigs.forEach((objectiveConfig, oIdx) => {
     const { functions, evaluation } = getObjectiveEvaluation(
-      objective.conditions,
-      objective.logicConcatenations,
+      objectiveConfig.objective.conditions,
+      objectiveConfig.objective.logicConcatenations,
       dataObjects
     );
     if (functions.length)
@@ -63,22 +75,134 @@ function getStateCheckFunction(queryVariables, dataObjects, activities) {
             : current.function),
         ""
       );
-    evaluationFunction += "(" + evaluation + ")";
-    if (oIdx < queryVariables.objectives.length - 1)
-      evaluationFunction += " andalso ";
+
+    const evalFunctionName = `is${replaceWhiteSpace(
+      objectiveConfig.objective.name
+    )}Satisfied`;
+    evaluationFunctions += `fun ${evalFunctionName} (n) = (${evaluation});\n`;
+
+    const weight = parseFloat(objectiveConfig.weight / 100).toLocaleString(
+      "en",
+      {
+        useGrouping: false,
+        minimumFractionDigits: 1,
+      }
+    );
+    evaluationFunctions += `fun get${replaceWhiteSpace(
+      objectiveConfig.objective.name
+    )}Score (n) =  (if (${evalFunctionName}(n)) then (${weight}) else (0.0));\n`;
+
+    if (objectiveConfig.required) {
+      requiredEvaluationFunction += `is${replaceWhiteSpace(
+        objectiveConfig.objective.name
+      )}Satisfied(n)`;
+    } else {
+      requiredEvaluationFunction += "true";
+    }
+    if (oIdx < queryVariables.objectiveConfigs.length - 1)
+      requiredEvaluationFunction += " andalso ";
   });
 
-  evaluationFunction += ");";
+  requiredEvaluationFunction += ");";
 
-  return helperFunctions + `\n` + evaluationFunction;
+  return (
+    helperFunctions + `\n` + evaluationFunctions + requiredEvaluationFunction
+  );
 }
 
-function getPathCostFunction(queryVariables) {
-  // TODO: compile the actual path cost function
+function getDOCostFunctions(queryVariables, dataObjects) {
+  let amountFunctions = "";
+  let costFunctions = "";
+  let functionCombination = "fun getDOCosts(path: int list) = (";
+  dataObjects.forEach((object) => {
+    const weight = parseFloat(
+      queryVariables.pathCostFunction.dataObjectCosts.find(
+        (objectCost) => objectCost.dataObject === object.name
+      )?.value
+    ).toLocaleString("en", { useGrouping: false, minimumFractionDigits: 1 });
+    if (!weight) return;
+
+    object.states.forEach((state) => {
+      const amountFunctionName = `${replaceWitheSpaceAndLowerCase(
+        object.name
+      )}${replaceWhiteSpaceAndCapitalize(state.name)}`;
+
+      amountFunctions += `fun getAmount${amountFunctionName} (n) = (length(Mark.${mainPage}'${replaceWitheSpaceAndLowerCase(
+        object.name
+      )}__${replaceWhiteSpaceAndCapitalize(state.name)} 1 n));\n`;
+
+      costFunctions += `fun getCost${amountFunctionName} (path: int list) = (Real.fromInt(getAmount${amountFunctionName}( DestNode(List.last(path)) ) - getAmount${amountFunctionName}( ${queryVariables.initialState} )) * ${weight});\n`;
+
+      functionCombination += `getCost${amountFunctionName} (path) + `;
+    });
+  });
+  functionCombination += "0.0);\n";
+  return amountFunctions + costFunctions + functionCombination;
+}
+
+function getActivityCostFunctions(queryVariables) {
+  let functions = "fun getActivityCost (t) = ( ";
+
+  queryVariables.pathCostFunction.activityCosts.forEach(
+    (activityCost, costIdx) => {
+      if (costIdx) functions += "else ";
+      functions += `if ( String.isSubstring(st_TI(ArcToTI(t)))( "${replaceWhiteSpace(
+        activityCost.name
+      )}" ) ) then (${parseFloat(activityCost.value).toLocaleString("en", {
+        useGrouping: false,
+        minimumFractionDigits: 1,
+      })})\n`;
+    }
+  );
+  functions += "else (0.0));\n";
+
+  functions += `fun sumListRec [] = 0.0
+    | sumListRec (x::xs) = x + (sumListRec xs)\n`;
+
+  functions += `fun getActivityCosts(path: int list) = sumListRec(List.map(fn (transition) => (getActivityCost(transition)))(path));\n`;
+
+  return functions;
+}
+
+function getPathScoreFunction(queryVariables, dataObjects) {
+  let scoreFunction = "fun getPathScore(path: int list, n: int) = ((";
+
+  queryVariables.objectiveConfigs.forEach((objectiveConfig, oIdx) => {
+    scoreFunction += `get${replaceWhiteSpace(
+      objectiveConfig.objective.name
+    )}Score(n)`;
+    if (oIdx < queryVariables.objectiveConfigs.length - 1)
+      scoreFunction += " + ";
+  });
+
+  const functions = getPathCostFunction(queryVariables, dataObjects);
+
+  scoreFunction += `) / pathCostFunction(path));\n`;
+
+  return functions + scoreFunction;
+}
+
+function getPathCostFunction(queryVariables, dataObjects) {
   if (!queryVariables.pathCostFunction) {
     return "fun pathCostFunction (path: int list) = (1.0 / Real.fromInt(List.length(path)));";
   }
-  return "fun pathCostFunction (path: int list) = (1.0 / Real.fromInt(List.length(path)));";
+  // TODO: compile the Amount functions for each DO state
+  let functions = getDOCostFunctions(queryVariables, dataObjects);
+
+  functions += getActivityCostFunctions(queryVariables);
+
+  if (queryVariables.pathCostFunction.length.weight === "length")
+    functions += `fun getLengthCost (path: int list) = (Real.fromInt(List.length(path)) );\n`;
+  else if (queryVariables.pathCostFunction.length.weight === "squared")
+    functions += `fun getLengthCost (path: int list) = (Real.fromInt(List.length(path)) * Real.fromInt(List.length(path)));\n`;
+  else functions += `fun getLengthCost (path: int list) = (0.0);\n`;
+
+  functions += `fun pathCostFunction (path: int list) = (( getLengthCost(path) ${
+    queryVariables.pathCostFunction.length.concatenation === "addition"
+      ? "+"
+      : "*"
+  } (getDOCosts(path) + getActivityCosts(path))));\n`;
+  return functions;
 }
 
 function getBreadthFirstSearch(queryVariables) {
@@ -89,37 +213,47 @@ function getBreadthFirstSearch(queryVariables) {
 
 export function compileAskCTLFormula(
   name,
+  objective,
+  state,
   dataObjects,
-  activities,
-  conditions,
-  logicConcatenations
+  activities
 ) {
-  let formula = "";
+  let formula = `use(ogpath^"ASKCTL/ASKCTLloader.sml");`;
 
   formula += getDataObjectStateFunctions(dataObjects);
 
   formula += getActivityFunctions(activities);
 
   const { functions, evaluation } = getObjectiveEvaluation(
-    conditions,
-    logicConcatenations,
+    objective.conditions,
+    objective.logicConcatenations,
     dataObjects
   );
 
-  if (functions.length)
-    formula += functions.reduce((prev, current) => {
-      prev += formula.contains(` ${current.name} `) ? current.function : "";
-    }, "");
+  functions.forEach((helperFunction) => {
+    if (!formula.includes(helperFunction.name))
+      formula += helperFunction.function;
+  });
 
-  formula += `fun evaluateState n = (${evaluation});`;
+  formula += `fun evaluateState n = (${evaluation});\n`;
 
-  const objective = `val Objective = POS(NF("${replaceWhiteSpace(
+  const objectiveFunction = `val Objective = POS(NF("${replaceWhiteSpace(
     name
   )}", evaluateState));`;
 
-  const evaluate = "eval_node Objective <current state>;";
+  const evaluate = `fun evaluateNode a = 
+    let val destNode = DestNode(a)
+    in eval_node Objective destNode
+  end
+  val nextArcs: int list ref = ref [];
+  val results: (TI.TransInst * bool) list ref = ref([]);
+  nextArcs := OutArcs(${state});
+  results := List.map(fn (action) => (
+      (ArcToTI(action), evaluateNode(action) )
+  ))(!nextArcs);
+  results;`;
 
-  formula += objective + `\n` + evaluate;
+  formula += objectiveFunction + `\n` + evaluate;
   return formula;
 }
 
