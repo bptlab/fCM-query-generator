@@ -69,13 +69,25 @@ It is now possible to upload an fCM-model, e.g. the provided `example/simple/con
 
 <img width="975" alt="image" src="https://user-images.githubusercontent.com/32839252/118852024-a96bf680-b8d2-11eb-8471-a5b25c7cd4fd.png">
 
+### Modeling Objectives
+
 To create a new objective, click `Create New`.
 
 In the input form, the knowledge worker can specify their objective by choosing desired existental and universal conditions for a data object and state, as well as lower and upper bounds. They can also choose desired enabled activities, and concatenate all with the logic operators AND, OR, and NOT.
 
 <img width="985" alt="Screenshot 2021-05-14 at 20 55 06" src="https://user-images.githubusercontent.com/32839252/118824077-d4961c00-b8b9-11eb-8bfa-c3edc77d090f.png">
 
+
+### Modeling Path Cost Functions
+
+
+### Configuring State Space Queries
+
 For the specified input, the according state space query is automatically compiled. It can be copied and used for the analysis in [CPN Tools](http://cpntools.org).
+
+
+### Using State Space Queries
+
 The CPN-representation of the examplary fCM can be found in `example/simple/conference.cpn`. To use it, run the latest version of CPN Tools, which can be downloaded [here](http://cpntools.org/category/downloads/).
 
 The state space query is an ASK-CTL formula. More information can be found [here](http://cpntools.org/wp-content/uploads/2018/01/askctlmanual.pdf).
