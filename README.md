@@ -1,5 +1,9 @@
 # Tell Me How - Assisting Knowledge Workers in Reaching Their Objectives
 
+This repository provides the proof of concept implementation for different publications.
+- To see the state of work for the publication "Modeling Objectives of Knowledge Workers" (DEC2H Workshop at BPM Conference 2021), visit the [dedicated branch]{https://github.com/bptlab/fCM-query-generator/tree/DEC2H2021}.
+- To see the state of work for the publication "Decision Support for Kowledge-Intensive Processes" (ZEUS Workshop 2022), visit [this branch]{https://github.com/bptlab/fCM-query-generator/tree/ZEUS_2022}.
+
 Knowledge workers can be assisted in reaching their objectives by allowing them to plan future actions based on those objectives. For this planning, knowledge workers must be able to
 
 i) specify objectives
