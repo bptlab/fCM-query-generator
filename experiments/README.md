@@ -32,9 +32,11 @@ The elaborate objective (config 2) is the same as for the filter-based recommend
 The complex example (config 3) uses the both objectives from the filter-based recommendations. The simple objective is required and weighted 100%. The elaborate one is not required and weighted 53%. The path cost function is the an elaborate one.
 
 The path cost function:
+
 ![Screenshot 2022-05-05 at 14 26 30](https://user-images.githubusercontent.com/32839252/167308287-675e998c-5b39-496a-9652-c0e1a321a1d8.png)
 
 The configuration:
+
 ![Screenshot 2022-05-05 at 14 35 41](https://user-images.githubusercontent.com/32839252/167308292-94a48ac9-cb28-488c-a4d3-1e7c78c40238.png)
 
 
