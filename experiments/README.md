@@ -1,8 +1,8 @@
 # Experiments
 
-To prove the feasibility of our approach, we conducted some experiments that measure the performance of our approach. We tested different queries generated with our tool and measured, how long the computation of recommendations needs. All measurements were made on a 8 GB memory and an 5405U CPU running Windows 11 and CPN Tools 4.0.1.}
+To prove the feasibility of our approach, we conducted some experiments that measure the performance of our approach. We tested different queries generated with our tool and measured, how long the computation of recommendations needs. All measurements were made on a 8 GB memory and an 5405U CPU running Windows 11 and CPN Tools 4.0.1.
 
-We measured the time it took to compute the state space in CPN Tools for the provided complex example in The `complex` folder. Also, we measured the generated number of nodes and edges. Those results can be found in `results/generation.csv`.
+We measured the time it took to compute the state space in CPN Tools for the provided complex example in The `../example/complex` folder. Also, we measured the generated number of nodes and edges. Those results can be found in `results/generation.csv`.
 
 ## Filter-based Recommendations
 
