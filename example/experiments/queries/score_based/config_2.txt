@@ -1,0 +1,178 @@
+val startTime = Time.now();
+fun RiskHashigh n = (length(Mark.Main_Page'risk__HIGH 1 n) <> 0);
+fun RiskHasmedium n = (length(Mark.Main_Page'risk__MEDIUM 1 n) <> 0);
+fun RiskHaslow n = (length(Mark.Main_Page'risk__LOW 1 n) <> 0);
+fun ClaimHasreceived n = (length(Mark.Main_Page'claim__RECEIVED 1 n) <> 0);
+fun ClaimHasapproved n = (length(Mark.Main_Page'claim__APPROVED 1 n) <> 0);
+fun ClaimHasin_question n = (length(Mark.Main_Page'claim__IN_QUESTION 1 n) <> 0);
+fun ClaimHasrejected n = (length(Mark.Main_Page'claim__REJECTED 1 n) <> 0);
+fun ClaimHasrejection_sent n = (length(Mark.Main_Page'claim__REJECTION_SENT 1 n) <> 0);
+fun ClaimHasdisbursed n = (length(Mark.Main_Page'claim__DISBURSED 1 n) <> 0);
+fun AssessmentHasrequested n = (length(Mark.Main_Page'assessment__REQUESTED 1 n) <> 0);
+fun AssessmentHasrejected n = (length(Mark.Main_Page'assessment__REJECTED 1 n) <> 0);
+fun AssessmentHascreated n = (length(Mark.Main_Page'assessment__CREATED 1 n) <> 0);
+fun AssessmentHasimproved n = (length(Mark.Main_Page'assessment__IMPROVED 1 n) <> 0);
+fun AssessmentHasapproved n = (length(Mark.Main_Page'assessment__APPROVED 1 n) <> 0);
+fun AdviceHasapprove n = (length(Mark.Main_Page'advice__APPROVE 1 n) <> 0);
+fun AdviceHasreject n = (length(Mark.Main_Page'advice__REJECT 1 n) <> 0);
+fun isassess_riskEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.assess_risk'assess_risk_0 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.assess_risk'assess_risk_1 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.assess_risk'assess_risk_2 1)) (OutArcs(n)))
+else false);
+fun isdecide_on_claimEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.decide_on_claim'decide_on_claim_0 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.decide_on_claim'decide_on_claim_1 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.decide_on_claim'decide_on_claim_2 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.decide_on_claim'decide_on_claim_3 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.decide_on_claim'decide_on_claim_4 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.decide_on_claim'decide_on_claim_5 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.decide_on_claim'decide_on_claim_6 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.decide_on_claim'decide_on_claim_7 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.decide_on_claim'decide_on_claim_8 1)) (OutArcs(n)))
+else false);
+fun isrequest_expert_assessmentEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.request_expert_assessment'request_expert_assessment_0 1)) (OutArcs(n)))
+else false);
+fun iscreate_assessmentEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.create_assessment'create_assessment_0 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.create_assessment'create_assessment_1 1)) (OutArcs(n)))
+else false);
+fun isreview_assessmentEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.review_assessment'review_assessment_0 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.review_assessment'review_assessment_1 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.review_assessment'review_assessment_2 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.review_assessment'review_assessment_3 1)) (OutArcs(n)))
+else false);
+fun isreassess_claimEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.reassess_claim'reassess_claim_0 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.reassess_claim'reassess_claim_1 1)) (OutArcs(n)))
+else false);
+fun isrevise_decisionEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.revise_decision'revise_decision_0 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.revise_decision'revise_decision_1 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.revise_decision'revise_decision_2 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.revise_decision'revise_decision_3 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.revise_decision'revise_decision_4 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.revise_decision'revise_decision_5 1)) (OutArcs(n)))
+else false);
+fun isreject_claimEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.reject_claim'reject_claim_0 1)) (OutArcs(n)))
+else false);
+fun isdisburse_claimEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.disburse_claim'disburse_claim_0 1)) (OutArcs(n)))
+else false);
+fun isreassess_riskEnabled n = (if length(OutArcs(n)) <> 0 then
+            (List.exists(fn arc => ArcToTI(arc) = (TI.reassess_risk'reassess_risk_0 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.reassess_risk'reassess_risk_1 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.reassess_risk'reassess_risk_2 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.reassess_risk'reassess_risk_3 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.reassess_risk'reassess_risk_4 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.reassess_risk'reassess_risk_5 1)) (OutArcs(n))  orelse
+List.exists(fn arc => ArcToTI(arc) = (TI.reassess_risk'reassess_risk_6 1)) (OutArcs(n)))
+else false);
+fun RiskHasOnlymedium n = (not(RiskHashigh(n)) andalso RiskHasmedium(n) andalso not(RiskHaslow(n)));
+fun AssessmentHas2Tonullapproved n = (length(Mark.Main_Page'assessment__APPROVED 1 n) >= 2);
+
+fun isObjective_2Satisfied (n) = (isreject_claimEnabled(n) andalso RiskHasOnlymedium(n) andalso AssessmentHas2Tonullapproved(n) andalso AdviceHasreject(n)  );
+fun getObjective_2Score (n) =  (if (isObjective_2Satisfied(n)) then (1.0) else (0.0));
+fun areRequiredObjectivesSatisfied (n) = (isObjective_2Satisfied(n));
+
+fun getAmountriskHIGH (n) = (length(Mark.Main_Page'risk__HIGH 1 n));
+fun getAmountriskMEDIUM (n) = (length(Mark.Main_Page'risk__MEDIUM 1 n));
+fun getAmountriskLOW (n) = (length(Mark.Main_Page'risk__LOW 1 n));
+fun getAmountclaimRECEIVED (n) = (length(Mark.Main_Page'claim__RECEIVED 1 n));
+fun getAmountclaimAPPROVED (n) = (length(Mark.Main_Page'claim__APPROVED 1 n));
+fun getAmountclaimIN_QUESTION (n) = (length(Mark.Main_Page'claim__IN_QUESTION 1 n));
+fun getAmountclaimREJECTED (n) = (length(Mark.Main_Page'claim__REJECTED 1 n));
+fun getAmountclaimREJECTION_SENT (n) = (length(Mark.Main_Page'claim__REJECTION_SENT 1 n));
+fun getAmountclaimDISBURSED (n) = (length(Mark.Main_Page'claim__DISBURSED 1 n));
+fun getAmountassessmentREQUESTED (n) = (length(Mark.Main_Page'assessment__REQUESTED 1 n));
+fun getAmountassessmentREJECTED (n) = (length(Mark.Main_Page'assessment__REJECTED 1 n));
+fun getAmountassessmentCREATED (n) = (length(Mark.Main_Page'assessment__CREATED 1 n));
+fun getAmountassessmentIMPROVED (n) = (length(Mark.Main_Page'assessment__IMPROVED 1 n));
+fun getAmountassessmentAPPROVED (n) = (length(Mark.Main_Page'assessment__APPROVED 1 n));
+fun getAmountadviceAPPROVE (n) = (length(Mark.Main_Page'advice__APPROVE 1 n));
+fun getAmountadviceREJECT (n) = (length(Mark.Main_Page'advice__REJECT 1 n));
+fun getCostriskHIGH (path: int list) = (Real.fromInt(getAmountriskHIGH( DestNode(List.last(path)) ) - getAmountriskHIGH( 1 )) * 0.0);
+fun getCostriskMEDIUM (path: int list) = (Real.fromInt(getAmountriskMEDIUM( DestNode(List.last(path)) ) - getAmountriskMEDIUM( 1 )) * 0.0);
+fun getCostriskLOW (path: int list) = (Real.fromInt(getAmountriskLOW( DestNode(List.last(path)) ) - getAmountriskLOW( 1 )) * 0.0);
+fun getCostclaimRECEIVED (path: int list) = (Real.fromInt(getAmountclaimRECEIVED( DestNode(List.last(path)) ) - getAmountclaimRECEIVED( 1 )) * 0.0);
+fun getCostclaimAPPROVED (path: int list) = (Real.fromInt(getAmountclaimAPPROVED( DestNode(List.last(path)) ) - getAmountclaimAPPROVED( 1 )) * 0.0);
+fun getCostclaimIN_QUESTION (path: int list) = (Real.fromInt(getAmountclaimIN_QUESTION( DestNode(List.last(path)) ) - getAmountclaimIN_QUESTION( 1 )) * 0.0);
+fun getCostclaimREJECTED (path: int list) = (Real.fromInt(getAmountclaimREJECTED( DestNode(List.last(path)) ) - getAmountclaimREJECTED( 1 )) * 0.0);
+fun getCostclaimREJECTION_SENT (path: int list) = (Real.fromInt(getAmountclaimREJECTION_SENT( DestNode(List.last(path)) ) - getAmountclaimREJECTION_SENT( 1 )) * 0.0);
+fun getCostclaimDISBURSED (path: int list) = (Real.fromInt(getAmountclaimDISBURSED( DestNode(List.last(path)) ) - getAmountclaimDISBURSED( 1 )) * 0.0);
+fun getCostassessmentREQUESTED (path: int list) = (Real.fromInt(getAmountassessmentREQUESTED( DestNode(List.last(path)) ) - getAmountassessmentREQUESTED( 1 )) * 0.0);
+fun getCostassessmentREJECTED (path: int list) = (Real.fromInt(getAmountassessmentREJECTED( DestNode(List.last(path)) ) - getAmountassessmentREJECTED( 1 )) * 0.0);
+fun getCostassessmentCREATED (path: int list) = (Real.fromInt(getAmountassessmentCREATED( DestNode(List.last(path)) ) - getAmountassessmentCREATED( 1 )) * 0.0);
+fun getCostassessmentIMPROVED (path: int list) = (Real.fromInt(getAmountassessmentIMPROVED( DestNode(List.last(path)) ) - getAmountassessmentIMPROVED( 1 )) * 0.0);
+fun getCostassessmentAPPROVED (path: int list) = (Real.fromInt(getAmountassessmentAPPROVED( DestNode(List.last(path)) ) - getAmountassessmentAPPROVED( 1 )) * 0.0);
+fun getCostadviceAPPROVE (path: int list) = (Real.fromInt(getAmountadviceAPPROVE( DestNode(List.last(path)) ) - getAmountadviceAPPROVE( 1 )) * 0.0);
+fun getCostadviceREJECT (path: int list) = (Real.fromInt(getAmountadviceREJECT( DestNode(List.last(path)) ) - getAmountadviceREJECT( 1 )) * 0.0);
+fun getDOCosts(path: int list) = (getCostriskHIGH (path) + getCostriskMEDIUM (path) + getCostriskLOW (path) + getCostclaimRECEIVED (path) + getCostclaimAPPROVED (path) + getCostclaimIN_QUESTION (path) + getCostclaimREJECTED (path) + getCostclaimREJECTION_SENT (path) + getCostclaimDISBURSED (path) + getCostassessmentREQUESTED (path) + getCostassessmentREJECTED (path) + getCostassessmentCREATED (path) + getCostassessmentIMPROVED (path) + getCostassessmentAPPROVED (path) + getCostadviceAPPROVE (path) + getCostadviceREJECT (path) + 0.0);
+fun getActivityCost (t) = ( if ( String.isSubstring(st_TI(ArcToTI(t)))( "assess_risk" ) ) then (0.0)
+else if ( String.isSubstring(st_TI(ArcToTI(t)))( "decide_on_claim" ) ) then (0.0)
+else if ( String.isSubstring(st_TI(ArcToTI(t)))( "request_expert_assessment" ) ) then (0.0)
+else if ( String.isSubstring(st_TI(ArcToTI(t)))( "create_assessment" ) ) then (0.0)
+else if ( String.isSubstring(st_TI(ArcToTI(t)))( "review_assessment" ) ) then (0.0)
+else if ( String.isSubstring(st_TI(ArcToTI(t)))( "reassess_claim" ) ) then (0.0)
+else if ( String.isSubstring(st_TI(ArcToTI(t)))( "revise_decision" ) ) then (0.0)
+else if ( String.isSubstring(st_TI(ArcToTI(t)))( "reject_claim" ) ) then (0.0)
+else if ( String.isSubstring(st_TI(ArcToTI(t)))( "disburse_claim" ) ) then (0.0)
+else if ( String.isSubstring(st_TI(ArcToTI(t)))( "reassess_risk" ) ) then (0.0)
+else (0.0));
+fun sumListRec [] = 0.0
+    | sumListRec (x::xs) = x + (sumListRec xs)
+fun getActivityCosts(path: int list) = sumListRec(List.map(fn (transition) => (getActivityCost(transition)))(path));
+fun getLengthCost (path: int list) = (Real.fromInt(List.length(path)) );
+fun pathCostFunction (path: int list) = (( getLengthCost(path) + (getDOCosts(path) + getActivityCosts(path))));
+fun getPathScore(path: int list, n: int) = ((getObjective_2Score(n)) / pathCostFunction(path));
+
+val initialState = 1;
+val actionScores: (int * real) list ref = ref([]);
+val results: (TI.TransInst * real) list ref = ref([]);
+val pathQueue: int list Queue.queue ref = ref(Queue.mkQueue());
+val i = ref 0;
+val j = ref 0;
+val currentPath: int list ref = ref [];
+val nextArcs: int list ref = ref [];
+val nextArc: int ref = ref 0;
+val destNode: int ref = ref 0;
+
+nextArcs := OutArcs(initialState);
+while not(!j = List.length(!nextArcs)) do (
+    nextArc := List.nth(!nextArcs, !j);
+    Queue.enqueue(!pathQueue, [!nextArc]);
+    actionScores := !actionScores @ [(!nextArc, 0.0)];
+    j := !j + 1
+);
+j := 0;
+
+while not(Queue.isEmpty(!pathQueue) orelse !i > 100000) do (
+    i := !i + 1;
+    currentPath := Queue.dequeue(!pathQueue);
+    destNode := DestNode(List.last(!currentPath));
+    if (areRequiredObjectivesSatisfied(!destNode)) then (
+        actionScores := List.map(fn (actionScore) => (
+            if ((#1 actionScore) = List.hd(!currentPath)) then (
+                (#1 actionScore, #2 actionScore + getPathScore(!currentPath, !destNode))
+            ) else (actionScore)
+        ))(!actionScores)
+    ) else (
+        nextArcs := OutArcs(!destNode);
+        while not(!j = List.length(!nextArcs)) do (
+            Queue.enqueue(!pathQueue, !currentPath @ [List.nth(!nextArcs, !j)]);
+            j := !j + 1
+        );
+        j := 0
+    )
+);
+results := List.map(fn (actionScore) => (
+    (ArcToTI(#1 actionScore), #2 actionScore)
+))(!actionScores);
+results;
+
+val endTime = Time.now();
+Time.toMilliseconds(endTime) - Time.toMilliseconds(startTime)
+

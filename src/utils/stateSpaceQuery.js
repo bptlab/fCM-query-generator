@@ -22,7 +22,7 @@ while not(Queue.isEmpty(!pathQueue) orelse !i > 100000) do (
     i := !i + 1;
     currentPath := Queue.dequeue(!pathQueue);
     destNode := DestNode(List.last(!currentPath));
-    if (areObjectivesSatisfied(!destNode)) then (
+    if (areRequiredObjectivesSatisfied(!destNode)) then (
         actionScores := List.map(fn (actionScore) => (
             if ((#1 actionScore) = List.hd(!currentPath)) then (
                 (#1 actionScore, #2 actionScore + getPathScore(!currentPath, !destNode))
