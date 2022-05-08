@@ -10,11 +10,13 @@ We tested two different Queries for the filter-based recommendations. Each is ba
 
 The simple objective requires that the activity `disburse claim` is enabled, and that a `risk` exists in the state `low`.
 
-Insert screenshot
+![Screenshot 2022-05-05 at 13 24 32](https://user-images.githubusercontent.com/32839252/167308119-4fc62e94-1762-4723-b588-6c2c2a3ffedf.png)
 
-The elaborate objective requires that...
 
-Insert Screenshot.
+The elaborate objective requires that the activity `reject claim`is enabled, that there are all `risks` in `medium`, at least two approved `assessments`exist and a rejecting `advice` exists.
+
+![Screenshot 2022-05-05 at 13 24 44](https://user-images.githubusercontent.com/32839252/167308124-03d6f861-0838-4210-aa86-9f983f0df2f1.png)
+
 
 For both queries, we measured the time to execute it in five different, randomly selected state space nodes. For each node, we measured five times. To reproduce the results, the initial state needs to be changed in the query files.
 The results can be found in `results/filter_based`.
@@ -25,18 +27,16 @@ We tested a set of different queries for the filter-based recommendations. On th
 
 The simple objective (config 1) is the same as for the filter-based recommendations. It is required and has a weight of 100%. The simple path cost function simply assigns the length of a path as the cost.
 
-Insert Screenshot.
-
 The elaborate objective (config 2) is the same as for the filter-based recommendations. It is required and has a weight of 100%. It uses the simple path cost function as well.
 
-Insert Screenshot.
-
-The complex example (config 3) uses the both objectives from the filter-based recommendations. The simple objective is required and weighted 100%. The elaborate one is not required and weighted 37%. The path cost function is the an elaborate one.
+The complex example (config 3) uses the both objectives from the filter-based recommendations. The simple objective is required and weighted 100%. The elaborate one is not required and weighted 53%. The path cost function is the an elaborate one.
 
 The path cost function:
+![Screenshot 2022-05-05 at 14 26 30](https://user-images.githubusercontent.com/32839252/167308287-675e998c-5b39-496a-9652-c0e1a321a1d8.png)
 
 The configuration:
-Insert Screenshots.
+![Screenshot 2022-05-05 at 14 35 41](https://user-images.githubusercontent.com/32839252/167308292-94a48ac9-cb28-488c-a4d3-1e7c78c40238.png)
+
 
 For the three configurations, we measured the time to execute it in two randomly selected state space nodes. We measured it for different configurations of the termination condition. We aborted the search after 100, 1.000, 10.000, 100.000, and 1.000.000 investigated paths and without the condition. Without a termiation condition, the search failed and aborted in the most cases. The other results can be found in `results/score_based`.
 
