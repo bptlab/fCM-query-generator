@@ -37,8 +37,7 @@ This repository is a [Vue.js application](https://vuejs.org). It uses the materi
 
 The compiler of the input to state space queries can be found in `src/compiler/compiler.js`.
 
-A simple and one more complex example can be found in the `example`-folder. Both describe the process of submissitting and reviewing papers for an academic conference. For both, the fragments of the case model are given (`example/conference/simple/conference.bpmn`, `example/conference/complex/conference_complex.bpmn`). They are visualized in `example/conference/simple/conference.png` and `example/conference/complex/conference_complex.png`. The data models are given in `example/conference/simple/conference.uml` and `example/conference/complex/conference_complex.uml`. The formalized CPN of the fCMs can be found in `example/conference/simple/conference.cpn` and `example/conference/complex/conference_complex_bounded.cpn`/`example/conference/complex/conference_complex_unbounded.cpn`.
-Information on the more detailed example are provided in [example/conference/example.md](example.md).
+Two examples can be found in the `example`-folder. One describes a claim handling process in an insurance company. The other describes the reviewing process for an academic conference. For the conference example, a simple and a more complex variation are provided.
 
 ## Project setup
 
