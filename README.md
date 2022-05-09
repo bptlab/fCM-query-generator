@@ -39,6 +39,8 @@ The compiler of the input to state space queries can be found in `src/compiler/c
 
 Two examples can be found in the `example`-folder. One describes a claim handling process in an insurance company. The other describes the reviewing process for an academic conference. For the conference example, a simple and a more complex variation are provided.
 
+To evaluate the performance of the generated state space queries, some measurements are provided in the `experiments` folder.
+
 ## Project setup
 
 The project can be used with the latest version of [npm](https://www.npmjs.com).
