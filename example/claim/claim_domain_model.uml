@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_ZqzSYJDCEeyAobEy5Y3GMQ" name="jiisexperiment">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_Z4fwIJDCEeyAobEy5Y3GMQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_e4Z_sJDCEeyAobEy5Y3GMQ" name="Claim"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_hEYIAJDCEeyAobEy5Y3GMQ" name="Risk"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_iz0sYJDCEeyAobEy5Y3GMQ" name="Assessment"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_k2r8AJDCEeyAobEy5Y3GMQ" name="Advice"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_8B2bEJDCEeyAobEy5Y3GMQ" memberEnd="_8B8hsJDCEeyAobEy5Y3GMQ _8B_lAZDCEeyAobEy5Y3GMQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_8B3CIJDCEeyAobEy5Y3GMQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_8B3pMJDCEeyAobEy5Y3GMQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_8B_lAZDCEeyAobEy5Y3GMQ" name="risk" type="_hEYIAJDCEeyAobEy5Y3GMQ" association="_8B2bEJDCEeyAobEy5Y3GMQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__VYBUJDCEeyAobEy5Y3GMQ"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_8B8hsJDCEeyAobEy5Y3GMQ" name="claim" type="_e4Z_sJDCEeyAobEy5Y3GMQ" association="_8B2bEJDCEeyAobEy5Y3GMQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_BbJbAJDDEeyAobEy5Y3GMQ" memberEnd="_BbKpIJDDEeyAobEy5Y3GMQ _BbKpI5DDEeyAobEy5Y3GMQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_BbKCEJDDEeyAobEy5Y3GMQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_BbKCEZDDEeyAobEy5Y3GMQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_BbKpI5DDEeyAobEy5Y3GMQ" name="claim" type="_e4Z_sJDCEeyAobEy5Y3GMQ" association="_BbJbAJDDEeyAobEy5Y3GMQ"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_BbKpIJDDEeyAobEy5Y3GMQ" name="assessment" type="_iz0sYJDCEeyAobEy5Y3GMQ" association="_BbJbAJDDEeyAobEy5Y3GMQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_BbKpIZDDEeyAobEy5Y3GMQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_BbKpIpDDEeyAobEy5Y3GMQ" value="5"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_HPrlcJDDEeyAobEy5Y3GMQ" memberEnd="_HPszkJDDEeyAobEy5Y3GMQ _HPtaoJDDEeyAobEy5Y3GMQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_HPsMgJDDEeyAobEy5Y3GMQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_HPsMgZDDEeyAobEy5Y3GMQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_HPtaoJDDEeyAobEy5Y3GMQ" name="claim" type="_e4Z_sJDCEeyAobEy5Y3GMQ" association="_HPrlcJDDEeyAobEy5Y3GMQ"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_HPszkJDDEeyAobEy5Y3GMQ" name="advice" type="_k2r8AJDCEeyAobEy5Y3GMQ" association="_HPrlcJDDEeyAobEy5Y3GMQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_HPszkZDDEeyAobEy5Y3GMQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_HPszkpDDEeyAobEy5Y3GMQ" value="5"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Jto1oJDDEeyAobEy5Y3GMQ" memberEnd="_JtpcspDDEeyAobEy5Y3GMQ _JtqDwpDDEeyAobEy5Y3GMQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_JtpcsJDDEeyAobEy5Y3GMQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_JtpcsZDDEeyAobEy5Y3GMQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_JtqDwpDDEeyAobEy5Y3GMQ" name="assessment" type="_iz0sYJDCEeyAobEy5Y3GMQ" association="_Jto1oJDDEeyAobEy5Y3GMQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_L3tggJDDEeyAobEy5Y3GMQ" value="5"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_JtpcspDDEeyAobEy5Y3GMQ" name="advice" type="_k2r8AJDCEeyAobEy5Y3GMQ" association="_Jto1oJDDEeyAobEy5Y3GMQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_JtqDwJDDEeyAobEy5Y3GMQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_JtqDwZDDEeyAobEy5Y3GMQ" value="5"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>

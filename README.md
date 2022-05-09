@@ -1,6 +1,7 @@
 # Tell Me How - Assisting Knowledge Workers in Reaching Their Objectives
 
 This repository provides the proof of concept implementation for different publications.
+
 - To see the state of work for the publication "Modeling Objectives of Knowledge Workers" (DEC2H Workshop at BPM Conference 2021), visit the [dedicated branch]{https://github.com/bptlab/fCM-query-generator/tree/DEC2H2021}.
 - To see the state of work for the publication "Decision Support for Kowledge-Intensive Processes" (ZEUS Workshop 2022), visit [this branch]{https://github.com/bptlab/fCM-query-generator/tree/ZEUS_2022}.
 
@@ -36,8 +37,8 @@ This repository is a [Vue.js application](https://vuejs.org). It uses the materi
 
 The compiler of the input to state space queries can be found in `src/compiler/compiler.js`.
 
-A simple and one more complex example can be found in the `example`-folder. Both describe the process of submissitting and reviewing papers for an academic conference. For both, the fragments of the case model are given (`example/simple/conference.bpmn`, `example/complex/conference_complex.bpmn`). They are visualized in `example/simple/conference.png` and `example/complex/conference_complex.png`. The data models are given in `example/simple/conference.uml` and `example/complex/conference_complex.uml`. The formalized CPN of the fCMs can be found in `example/simple/conference.cpn` and `example/complex/conference_complex_bounded.cpn`/`example/complex/conference_complex_unbounded.cpn`.
-Information on the more detailed example are provided in [example.md](example.md).
+A simple and one more complex example can be found in the `example`-folder. Both describe the process of submissitting and reviewing papers for an academic conference. For both, the fragments of the case model are given (`example/conference/simple/conference.bpmn`, `example/conference/complex/conference_complex.bpmn`). They are visualized in `example/conference/simple/conference.png` and `example/conference/complex/conference_complex.png`. The data models are given in `example/conference/simple/conference.uml` and `example/conference/complex/conference_complex.uml`. The formalized CPN of the fCMs can be found in `example/conference/simple/conference.cpn` and `example/conference/complex/conference_complex_bounded.cpn`/`example/conference/complex/conference_complex_unbounded.cpn`.
+Information on the more detailed example are provided in [example/conference/example.md](example.md).
 
 ## Project setup
 
@@ -59,13 +60,13 @@ The application should then be available at `http://localhost:8080`.
 
 ## Usage
 
-In the following, let us consider the fragments of the simple case model as provided in `example/simple`:
+In the following, let us consider the fragments of the simple case model as provided in `example/conference/simple`:
 
 <img width="678" alt="image" src="https://user-images.githubusercontent.com/32839252/118828489-9bf84180-b8bd-11eb-8734-ba20f3e05c7f.png">
 
 To use the fCM-query-generator, run the project.
 
-It is now possible to upload an fCM-model, e.g. the provided `example/simple/conference.bpmn`. All data objects and activities are parsed and made available for specifying objectives.
+It is now possible to upload an fCM-model, e.g. the provided `example/conference/simple/conference.bpmn`. All data objects and activities are parsed and made available for specifying objectives.
 
 <img width="975" alt="image" src="https://user-images.githubusercontent.com/32839252/118852024-a96bf680-b8d2-11eb-8471-a5b25c7cd4fd.png">
 
@@ -75,7 +76,6 @@ To create a new objective, click `Create New` in the section `Your Objectives`. 
 
 <img width="985" alt="Screenshot 2021-05-14 at 20 55 06" src="https://user-images.githubusercontent.com/32839252/118824077-d4961c00-b8b9-11eb-8bfa-c3edc77d090f.png">
 
-
 ### Modeling Path Cost Functions
 
 To create a new objective, click `Create New` in the section `Your Path Cost Functions`. In the form, users can specify a cost function for any path in the model's state space. It can make statements about the path length, activities that are executed on a path, and data objects that are created on a path. Therefore, it is possible to specify four things. First, the path length can be considered not at all, with the length of the path, or with the squared lenght of the path. Second, it can be specified, if the path length costs should be multiplied or added with the rest of the path costs. Third, for every activity, a cost can be assigned. And fourth, a cost for each newly created data object of each class can be defined.
@@ -84,7 +84,7 @@ To create a new objective, click `Create New` in the section `Your Path Cost Fun
 
 ### Configuring State Space Queries
 
-To specify a state space query, two techniques are available. A user can create a query to derive filter-based recommendations, or score-based recommendations. 
+To specify a state space query, two techniques are available. A user can create a query to derive filter-based recommendations, or score-based recommendations.
 
 A filter-based recommendation query requires a name, one objective, and the current state of execution as input.
 
@@ -94,13 +94,11 @@ A score-based recommendation query requires a name, a set of objectives, a path 
 
 ![Screenshot 2022-05-05 at 14 35 56](https://user-images.githubusercontent.com/32839252/166924866-dede3398-b279-471e-97f8-83cce27461bc.png)
 
-
 For the specified input, the according state space query is automatically compiled. It can be copied and used for the analysis in [CPN Tools](http://cpntools.org).
-
 
 ### Using State Space Queries
 
-The CPN-representation of the examplary fCM can be found in `example/simple/conference.cpn`. To use it, run the latest version of CPN Tools, which can be downloaded [here](http://cpntools.org/category/downloads/).
+The CPN-representation of the examplary fCM can be found in `example/claim/simple/conference.cpn`. To use it, run the latest version of CPN Tools, which can be downloaded [here](http://cpntools.org/category/downloads/).
 
 The state space query is an ASK-CTL formula. More information can be found [here](http://cpntools.org/wp-content/uploads/2018/01/askctlmanual.pdf).
 
