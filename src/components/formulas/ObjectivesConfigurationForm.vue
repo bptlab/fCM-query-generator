@@ -1,24 +1,27 @@
 <template>
   <div>
-    <v-row
+    <v-row cols="auto" class="pr-6">
+      <v-col
       v-for="(objectiveConfiguration, objectiveConfigurationIdx) in objectiveConfigurations"
       :key="objectiveConfigurationIdx"
-      cols="auto"
-    >
-      <v-col cols="4">{{objectiveConfiguration.objective.name}}</v-col>
-      <v-col cols="4">
+      class="py-4"
+      >
+      <v-row cols="auto" justify="space-between">
+        <v-col class="text-body-1 font-weight-bold pt-5">{{objectiveConfiguration.objective.name}}</v-col>
+        <v-col class="pa-0">  <v-checkbox v-model="objectiveConfiguration.required" label="required"></v-checkbox> </v-col>
+      </v-row>
+      <v-row>
         <v-slider
           v-model="objectiveConfiguration.weight"
-          vertical
+          class="pt-8 pr-8 pl-2"
+          horizontal
           min="0"
           max="100"
           thumb-label="always"
         >
           <template v-slot:thumb-label="{ value }">{{ value }}%</template>
         </v-slider>
-      </v-col>
-      <v-col cols="4">
-        <v-checkbox v-model="objectiveConfiguration.required" label="required"></v-checkbox>
+      </v-row>
       </v-col>
     </v-row>
   </div>

@@ -1,11 +1,11 @@
 <template>
   <v-card>
-    <v-card-title>
+    <v-card-title class="pb-0">
       Create a new State Space Query
       <v-spacer />
       <v-icon size="24" @click="$emit('close')">close</v-icon>
     </v-card-title>
-    <v-tabs v-model="tab" class="pa-4">
+    <v-tabs v-model="tab" class="px-4 py-0">
       <v-tab key="FILTER" class="no-uppercase-text">
         <div>Filter-based Recommendations</div>
       </v-tab>
@@ -49,7 +49,7 @@
         </v-card-actions>
       </v-tab-item>
       <v-tab-item key="SCORE">
-        <v-card-text>
+        <v-card-text class="py-0">
           <div>
             <v-text-field v-model="newQuery.name" label="Name" />
           </div>
