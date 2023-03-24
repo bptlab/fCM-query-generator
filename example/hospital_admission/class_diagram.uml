@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_hRPi8MjMEe2SOKyEAc7-3g" name="model">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_hTF9EMjMEe2SOKyEAc7-3g">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_i1Kz0MjMEe2SOKyEAc7-3g" name="Patient"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_nfWrAMjMEe2SOKyEAc7-3g" name="Diagnosis"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_qfMgQMjMEe2SOKyEAc7-3g" name="Treatment Plan"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_sH7YoMjMEe2SOKyEAc7-3g" name="Test Result"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_uvmlgMjMEe2SOKyEAc7-3g" name="Surgery"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_v9EeMMjMEe2SOKyEAc7-3g" name="Medication"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_yyvq0MjMEe2SOKyEAc7-3g" name="XRay"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_EMOfIMjNEe2SOKyEAc7-3g" memberEnd="_EMQ7YMjNEe2SOKyEAc7-3g _EMRicsjNEe2SOKyEAc7-3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_EMPGMMjNEe2SOKyEAc7-3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_EMQUUMjNEe2SOKyEAc7-3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_EMRicsjNEe2SOKyEAc7-3g" name="patient" type="_i1Kz0MjMEe2SOKyEAc7-3g" association="_EMOfIMjNEe2SOKyEAc7-3g"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_EMQ7YMjNEe2SOKyEAc7-3g" name="medication" type="_v9EeMMjMEe2SOKyEAc7-3g" association="_EMOfIMjNEe2SOKyEAc7-3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EMRicMjNEe2SOKyEAc7-3g"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EMRiccjNEe2SOKyEAc7-3g" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_NH1IMMjNEe2SOKyEAc7-3g" memberEnd="_NH1vQsjNEe2SOKyEAc7-3g _NH2WUsjNEe2SOKyEAc7-3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_NH1vQMjNEe2SOKyEAc7-3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_NH1vQcjNEe2SOKyEAc7-3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_NH2WUsjNEe2SOKyEAc7-3g" name="patient" type="_i1Kz0MjMEe2SOKyEAc7-3g" association="_NH1IMMjNEe2SOKyEAc7-3g"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_NH1vQsjNEe2SOKyEAc7-3g" name="treatment plan" type="_qfMgQMjMEe2SOKyEAc7-3g" association="_NH1IMMjNEe2SOKyEAc7-3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NH2WUMjNEe2SOKyEAc7-3g"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NH2WUcjNEe2SOKyEAc7-3g" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_P0m3gMjNEe2SOKyEAc7-3g" memberEnd="_P0nekMjNEe2SOKyEAc7-3g _P0nek8jNEe2SOKyEAc7-3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_P0m3gcjNEe2SOKyEAc7-3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_P0m3gsjNEe2SOKyEAc7-3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_P0nek8jNEe2SOKyEAc7-3g" name="patient" type="_i1Kz0MjMEe2SOKyEAc7-3g" association="_P0m3gMjNEe2SOKyEAc7-3g"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_P0nekMjNEe2SOKyEAc7-3g" name="diagnosis" type="_nfWrAMjMEe2SOKyEAc7-3g" association="_P0m3gMjNEe2SOKyEAc7-3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_P0nekcjNEe2SOKyEAc7-3g"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_P0neksjNEe2SOKyEAc7-3g" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_SplgkMjNEe2SOKyEAc7-3g" memberEnd="_SpmuscjNEe2SOKyEAc7-3g _SpnVwsjNEe2SOKyEAc7-3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_SpmHoMjNEe2SOKyEAc7-3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_SpmusMjNEe2SOKyEAc7-3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_SpnVwsjNEe2SOKyEAc7-3g" name="patient" type="_i1Kz0MjMEe2SOKyEAc7-3g" association="_SplgkMjNEe2SOKyEAc7-3g"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_SpmuscjNEe2SOKyEAc7-3g" name="test result" type="_sH7YoMjMEe2SOKyEAc7-3g" association="_SplgkMjNEe2SOKyEAc7-3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SpnVwMjNEe2SOKyEAc7-3g"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_SpnVwcjNEe2SOKyEAc7-3g" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Y-Tm8MjNEe2SOKyEAc7-3g" memberEnd="_Y-VcIsjNEe2SOKyEAc7-3g _Y-WDMsjNEe2SOKyEAc7-3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Y-VcIMjNEe2SOKyEAc7-3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Y-VcIcjNEe2SOKyEAc7-3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_Y-WDMsjNEe2SOKyEAc7-3g" name="patient" type="_i1Kz0MjMEe2SOKyEAc7-3g" association="_Y-Tm8MjNEe2SOKyEAc7-3g"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_Y-VcIsjNEe2SOKyEAc7-3g" name="surgery" type="_uvmlgMjMEe2SOKyEAc7-3g" association="_Y-Tm8MjNEe2SOKyEAc7-3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Y-WDMMjNEe2SOKyEAc7-3g"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Y-WDMcjNEe2SOKyEAc7-3g" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_aTFokMjNEe2SOKyEAc7-3g" memberEnd="_aTGPosjNEe2SOKyEAc7-3g _aTG2ssjNEe2SOKyEAc7-3g">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_aTGPoMjNEe2SOKyEAc7-3g" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_aTGPocjNEe2SOKyEAc7-3g" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_aTG2ssjNEe2SOKyEAc7-3g" name="patient" type="_i1Kz0MjMEe2SOKyEAc7-3g" association="_aTFokMjNEe2SOKyEAc7-3g"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_aTGPosjNEe2SOKyEAc7-3g" name="xray" type="_yyvq0MjMEe2SOKyEAc7-3g" association="_aTFokMjNEe2SOKyEAc7-3g">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aTG2sMjNEe2SOKyEAc7-3g"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aTG2scjNEe2SOKyEAc7-3g" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>
