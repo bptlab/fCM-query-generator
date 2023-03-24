@@ -37,7 +37,7 @@ This repository is a [Vue.js application](https://vuejs.org). It uses the materi
 
 The compiler of the input to state space queries can be found in `src/compiler/compiler.js`.
 
-Two examples can be found in the `example`-folder. One describes a claim handling process in an insurance company. The other describes the reviewing process for an academic conference. For the conference example, a simple and a more complex variation are provided.
+Three examples can be found in the `example`-folder. One describes a claim handling process in an insurance company. The second describes the reviewing process for an academic conference. A third describes the hospital admission of a patient and the activities performed by medical experts. For the conference example, a simple and a more complex variation are provided.
 
 To evaluate the performance of the generated state space queries, some measurements are provided in the `experiments` folder.
 
